@@ -1,25 +1,41 @@
 import logo from './logo.svg';
+import React, { useContext } from 'react'
+
+import { BrowserRouter, Link, Switch, Route } from 'react-router-dom'
 import './App.css';
+import styled from 'styled-components';
+
+import { Header } from './components/Header';
+
+import { MainProvider, MainContext } from './providers/Provider';
+
+import { Router } from './router/Router';
 
 function App() {
+  // const { configAxios, setLoginFlag } = useContext(MainContext);
+  // (()=>{
+  //   axios.get('http://localhost:3000/books',configAxios).then((res) => {
+  //     // setLoginFlag(() => true)
+  //     console.log(res);
+  //   })
+  //   .catch(error => {
+  //     console.error(error);
+  //   });
+  // })()
+  // ああああああ プロバイダーのデータとかとってこれないのかあああああああ！！！
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <MainProvider>
+    <BrowserRouter>
+      <Header />
+      <Router />
+    </BrowserRouter>
+    </MainProvider>
   );
 }
 
 export default App;
+
+const SContainer = styled.div`
+  min-height: 100vh;
+  /* padding: 10px; */
+`
