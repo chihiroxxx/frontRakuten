@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import { MainContext } from '../providers/Provider'
 
 export const Result = () => {
-  const { data, setData, setText, configAxios } = useContext(MainContext);
+  const { data, setData, setText, configAxios, railsUrl } = useContext(MainContext);
 
   // const {data} = props
 
@@ -54,7 +54,7 @@ export const Result = () => {
 
   const onClickPostRails = () => {
     const trans = time / 1000
-    axios.post('http://localhost:3000/books',{
+    axios.post(`${railsUrl}/books`,{
       booktitle: targetItem.Item.title,
       author: targetItem.Item.author,
       bookimage: targetItem.Item.mediumImageUrl,

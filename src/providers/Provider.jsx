@@ -20,9 +20,11 @@ export const MainProvider = (props) => {
 
   const [ loginFlag, setLoginFlag ] = useState(false)
 
+  const railsUrl = "http://10.0.60.10:3000"
+
   return (
     <MainContext.Provider value={{ testName, data, setData, text, setText,
-    name, setName, password, setPassword, configAxios, booksIndex, setBooksIndex,loginFlag ,setLoginFlag }}>
+    name, setName, password, setPassword, configAxios, booksIndex, setBooksIndex,loginFlag ,setLoginFlag ,railsUrl}}>
       { children }
     </MainContext.Provider>
   )

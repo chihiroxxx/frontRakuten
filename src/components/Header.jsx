@@ -5,12 +5,12 @@ import axios from 'axios';
 import { MainContext } from '../providers/Provider';
 
 export const Header = () => {
-  const { name, setName, password, setPassword, configAxios, loginFlag, setLoginFlag } = useContext(MainContext);
+  const { name, setName, password, setPassword, configAxios, loginFlag, setLoginFlag,railsUrl } = useContext(MainContext);
 
   const onClickLogOut = () => {
     // ログインしているユーザー情報をどうやって持ってくるかあ…
     // ここにsessionを入れて送信！！ ...sessionってそういうことじゃないんだってさ！！！！
-    axios.delete('http://localhost:3000/logout',configAxios)
+    axios.delete(`${railsUrl}/logout`,configAxios)
     .then((res) => {
       setLoginFlag(() => false)
       console.log(res);

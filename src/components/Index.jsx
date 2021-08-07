@@ -4,10 +4,10 @@ import styled from 'styled-components'
 import { MainContext } from '../providers/Provider'
 
 export const Index = () => {
-  const { configAxios, booksIndex, setBooksIndex, setLoginFlag } = useContext(MainContext)
+  const { configAxios, booksIndex, setBooksIndex, setLoginFlag, railsUrl } = useContext(MainContext)
 
   const onClickGetIndexRails = () => {
-    axios.get('http://localhost:3000/books',configAxios).then((res) => {
+    axios.get(`${railsUrl}:3000/books`,configAxios).then((res) => {
       setBooksIndex(() => res.data.books)
     })
     .catch(error => {
@@ -16,7 +16,7 @@ export const Index = () => {
   }
 
   const onClickTest = () => {
-    axios.get('http://localhost:3000',configAxios).then((res) => {
+    axios.get(`${railsUrl}:3000`,configAxios).then((res) => {
     console.log(res)
     setLoginFlag(() => true)
   })

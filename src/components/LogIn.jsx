@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { MainContext } from '../providers/Provider';
 
 export const LonIn = () => {
-  const { name, setName, password, setPassword, configAxios, loginFlag, setLoginFlag } = useContext(MainContext);
+  const { name, setName, password, setPassword, configAxios, loginFlag, setLoginFlag, railsUrl } = useContext(MainContext);
 
   // const [email, setEmail] = useState('')
   // const [password, setPassword] = useState('')
@@ -18,7 +18,7 @@ export const LonIn = () => {
 
 
   const onClickLogIn = () => {
-    axios.post('http://localhost:3000/login',{
+    axios.post(`${railsUrl}/login`,{
     // axios.post('http://localhost:3000/users/sign_in',{
       name: name,
       password: password
