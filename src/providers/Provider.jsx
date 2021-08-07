@@ -21,7 +21,7 @@ export const MainProvider = (props) => {
 
   const [ loginFlag, setLoginFlag ] = useState(false)
 
-  const railsUrl = "http://localhost:3000"
+  const railsUrl = "http://18.182.233.254:3000"
 
   return (
     <MainContext.Provider value={{ testName, data, setData, text, setText,
