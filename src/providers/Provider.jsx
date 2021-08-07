@@ -14,7 +14,8 @@ export const MainProvider = (props) => {
   const [name, setName] = useState('')
   const [password, setPassword] = useState('')
 
-  const configAxios = {headers: { 'X-Requested-With': 'XMLHttpRequest'}, withCredentials: true}
+  const configAxios = {withCredentials: true}
+  // const configAxios = {headers: { 'X-Requested-With': 'XMLHttpRequest'}, withCredentials: true}
 
   const [ booksIndex, setBooksIndex ] = useState([])
 
