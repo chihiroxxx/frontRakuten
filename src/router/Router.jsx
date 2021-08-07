@@ -12,7 +12,7 @@ import axios from 'axios';
 export const Router = () => {
     const { configAxios, setLoginFlag, railsUrl } = useContext(MainContext);
   (() => {
-    axios.get(`${railsUrl}:3000`,configAxios).then((res) => {
+    axios.get(`${railsUrl}`,configAxios).then((res) => {
     console.log(res)
     setLoginFlag(() => true)
   })
