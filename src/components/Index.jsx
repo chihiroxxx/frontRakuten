@@ -6,6 +6,9 @@ import { MainContext } from '../providers/Provider'
 export const Index = () => {
   const { configAxios, booksIndex, setBooksIndex, loginFlag, setLoginFlag, railsUrl, onClickTop } = useContext(MainContext)
 
+  const [targetEditItem, setTargetEditItem] = useState({})
+  const [targetEditThoughts, setTargetEditThoughts] = useState()
+
   const onClickGetIndexRails = () => {
     axios.get(`${railsUrl}/books`,configAxios).then((res) => {
       setBooksIndex(() => res.data.books)
@@ -28,7 +31,44 @@ export const Index = () => {
 
   // loginFlag ? onClickGetIndexRails() : console.log("home画面に戻す処理にする") ;
 
-  console.log(booksIndex)
+  const onClickTargetEdit = (e) => {
+      setTargetEditItem(e)
+      setTargetEditThoughts(e.thoughts)
+  }
+  // onClickTargetEditはいじらない
+
+  console.log(targetEditThoughts)
+
+  const onChangeTargetEditThought = (e)=>{
+    // setTargetEditItem({item: {thoughts: e.target.value}})
+    setTargetEditThoughts(e.target.value)
+  }
+
+
+  const onClickEditPostRails = () =>{
+    axios.put(`${railsUrl}/books/${targetEditItem.id}`,{
+      // id: targetEditItem.item.id,
+      thoughts: targetEditThoughts
+    },configAxios).then((res) => {
+      // console.log(res.data);        // レスポンスデータ
+      // console.log(res.status);      // ステータスコード
+      // console.log(res.statusText);  // ステータステキスト
+      // console.log(res.headers);     // レスポンスヘッダ
+      // console.log(res.config);      // コンフィグ
+
+      // setTargetFlag(() => false);
+      // setTargetItem(() => ({Item: {title: "", author: "", itemUrl: "", mediumImageUrl: ""}}))
+      // setIdea(() => (""))
+      console.log(res);
+    })
+    .catch(error => {
+      console.error(error);
+    });
+
+
+  }
+
+
 
   return(
     <SContainer>
@@ -36,20 +76,29 @@ export const Index = () => {
       <SButton onClick={onClickGetIndexRails}>一覧取得！！！</SButton>
 
       <SButton onClick={onClickTest}>test！！！</SButton>
+      { targetEditThoughts ?
+        <>
+        <SInput
+        value={targetEditThoughts} onChange={onChangeTargetEditThought}
+        />
+        <SButton onClick={onClickEditPostRails}>へんしゅ送信</SButton>
+        </>
+
+      : false}
 
 
       {/* あー、これが再レンダリングしてほしくないってことか！！！ */}
       <ul>
-        {booksIndex.map((item, index) => {
+        {booksIndex.map((item) => {
           return(
-            <SItem key={index}>
+            <SItem key={item.id}>
               <SList>{ item.booktitle }</SList>
               <SImage src={item.bookimage} />
               <SList>{ item.author }</SList>
               <SList>感想： { item.thoughts }</SList>
               <SList>読んだ時間： { item.date }</SList>
               {/* <SList>{ item.Item.itemUrl }</SList> */}
-              <SButton >編集する！！</SButton>
+              <SButton onClick={() => onClickTargetEdit(item)}>編集する！！</SButton>
             </SItem>
               );
         })}
@@ -104,3 +153,12 @@ const SImage = styled.img`
   margin: 0 auto;
   display: block;
 `
+const SInput = styled.input`
+  height: 20px;
+  border-radius: 8px;
+  border: solid #81C784 1px;
+  outline: none;
+  padding: 4px;
+  width: 400px;
+  margin: 10px;
+  `

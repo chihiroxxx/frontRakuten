@@ -21,8 +21,8 @@ export const MainProvider = (props) => {
 
   const [ loginFlag, setLoginFlag ] = useState(false)
 
-  const railsUrl = "http://54.64.212.72:3000"
-  // const railsUrl = "http://localhost:3000/" 開発用
+  // const railsUrl = "http://54.64.212.72:3000" 本番用
+  const railsUrl = "http://localhost:3000"
 
   const onClickTop = () => {
     window.scrollTo({

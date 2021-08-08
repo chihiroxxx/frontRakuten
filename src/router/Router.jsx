@@ -13,11 +13,11 @@ export const Router = () => {
     const { configAxios, setLoginFlag, railsUrl } = useContext(MainContext);
   (() => {
     axios.get(`${railsUrl}`,configAxios).then((res) => {
-    console.log(res)
+    // console.log(res)
     setLoginFlag(() => true)
   })
   .catch(error => {
-    console.error(error);
+    // console.error(error);
     setLoginFlag(() => false)
     });
   })()
