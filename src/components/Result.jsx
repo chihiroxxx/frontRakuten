@@ -78,10 +78,9 @@ export const Result = () => {
   }
 
   const onChangeTime = (e) => {
-    console.log(e)
     setTime(() => e.target.valueAsNumber)
-    console.log(time)
   }
+
   return(
     <SContainer>
       <SButton onClick={targetFlagChangeReset}>リセット！</SButton>
@@ -98,9 +97,12 @@ export const Result = () => {
         <SButton onClick={onClickPostRails}>感想送信</SButton>
       </SItemTarget>
 
-      : <p>false</p>}
+      : <div>
+        <br />
+        <STexst>ようこーーーそ！！！！</STexst>
+        </div>}
 
-      〜いティらん〜
+
       <ul>
         {data.map((item, index) => {
           return(
@@ -127,11 +129,12 @@ const SContainer = styled.div`
   margin: 10px 10px;
 `
 const SItem = styled.div`
-  height: 300px;
+  height: 100%;
   border: solid #81C784 1px;
   background-color: #FAFAFA;
   margin: 10px;
   border-radius: 8px;
+  padding: 8px;
   /* box-shadow: 5px 5px 5px black; */
 `
 const SList = styled.li`
@@ -177,4 +180,10 @@ const SItemTarget = styled.div`
   background-color: #FAFAFA;
   margin: 10px;
   border-radius: 8px;
+  `
+
+const STexst = styled.p`
+  color: #81C784;
+  display: inline-block;
+  margin: 0 auto;
   `

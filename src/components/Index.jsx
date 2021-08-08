@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { MainContext } from '../providers/Provider'
 
 export const Index = () => {
-  const { configAxios, booksIndex, setBooksIndex, setLoginFlag, railsUrl } = useContext(MainContext)
+  const { configAxios, booksIndex, setBooksIndex, loginFlag, setLoginFlag, railsUrl, onClickTop } = useContext(MainContext)
 
   const onClickGetIndexRails = () => {
     axios.get(`${railsUrl}/books`,configAxios).then((res) => {
@@ -26,8 +26,9 @@ export const Index = () => {
     });
   }
 
+  // loginFlag ? onClickGetIndexRails() : console.log("home画面に戻す処理にする") ;
 
-console.log(booksIndex)
+  console.log(booksIndex)
 
   return(
     <SContainer>
@@ -46,13 +47,14 @@ console.log(booksIndex)
               <SImage src={item.bookimage} />
               <SList>{ item.author }</SList>
               <SList>感想： { item.thoughts }</SList>
+              <SList>読んだ時間： { item.date }</SList>
               {/* <SList>{ item.Item.itemUrl }</SList> */}
               <SButton >編集する！！</SButton>
             </SItem>
               );
         })}
       </ul>
-
+      {/* <SButton onClick={onClickTop}>ウエーに戻る</SButton> */}
     </SContainer>
   )
 }
@@ -82,11 +84,12 @@ const SButton = styled.button`
 
 
 const SItem = styled.div`
-  height: 300px;
+  height: 100%;
   border: solid #81C784 1px;
   background-color: #FAFAFA;
   margin: 10px;
   border-radius: 8px;
+  padding: 8px;
   /* box-shadow: 5px 5px 5px black; */
 `
 const SList = styled.li`

@@ -7,7 +7,7 @@ import { API_KEY } from '../api/API_KEY'
 
 
 export const Search = () => {
-  const { data, setData, text, setText } = useContext(MainContext);
+  const { data, setData, text, setText, onClickTop } = useContext(MainContext);
 
   // console.log(API_KEY.RakutenAPI_KEY)
   // const [text, setText] = useState('');
@@ -49,8 +49,6 @@ export const Search = () => {
     setText(() => e.target.value)
   }
 
-  console.log(page)
-
   return(
     <SContainer>
       <SInput placeholder="検索タイトルを入力！"
@@ -59,7 +57,10 @@ export const Search = () => {
       { text }
       <Result />
       { data != "" ?
-      <SButton onClick={onClickNextPage}>次のページを読み込む</SButton>
+      <>
+      <SButton onClick={onClickNextPage}>さらに読み込む</SButton>
+      <SButton onClick={onClickTop}>ウエーに戻る</SButton>
+      </>
       : false }
     </SContainer>
   )
@@ -91,3 +92,4 @@ const SButton = styled.button`
     color: #FFCCBC;
   }
   `
+
