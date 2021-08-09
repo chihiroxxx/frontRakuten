@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { MainContext } from '../providers/Provider'
 import { Result } from './Result'
 import { API_KEY } from '../api/API_KEY'
+import { MyButton } from './atoms/MyButton'
 
 
 export const Search = () => {
@@ -53,11 +54,13 @@ export const Search = () => {
     <SContainer>
       <SInput placeholder="検索タイトルを入力！"
       value={text} onChange={onChangeTarget} />
+      <MyButton onClick={onClickSearch}>検索</MyButton>
       <SButton onClick={onClickSearch}>検索</SButton>
       { text }
       <Result />
       { data != "" ?
       <>
+      <MyButton onClick={onClickNextPage}>さらに読み込む</MyButton>
       <SButton onClick={onClickNextPage}>さらに読み込む</SButton>
       <SButton onClick={onClickTop}>ウエーに戻る</SButton>
       </>

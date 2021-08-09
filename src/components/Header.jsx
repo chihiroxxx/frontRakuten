@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { BrowserRouter, Link, Switch, Route } from 'react-router-dom'
 import axios from 'axios';
 import { MainContext } from '../providers/Provider';
+import { MenuList } from './MenuList';
 
 export const Header = () => {
   const { name, setName, password, setPassword, configAxios, loginFlag, setLoginFlag,railsUrl } = useContext(MainContext);
@@ -40,6 +41,7 @@ export const Header = () => {
       : false
     }
 
+    <MenuList />
     <STexst>タイトル！！！！</STexst>
     </SContainer>
     </>

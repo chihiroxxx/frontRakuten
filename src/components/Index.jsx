@@ -67,6 +67,18 @@ export const Index = () => {
 
 
   }
+  const fileDownload = require('js-file-download');
+
+  const onClickGetCsvRails = () => {
+    axios.get(`${railsUrl}/csv`,configAxios).then((res) => {
+      console.log(res);
+      fileDownload(res.data, "bookIndex.csv")
+    })
+    .catch(error => {
+      console.error(error);
+    });
+
+  }
 
 
 
@@ -74,6 +86,7 @@ export const Index = () => {
     <SContainer>
       〜投稿一覧〜
       <SButton onClick={onClickGetIndexRails}>一覧取得！！！</SButton>
+      <SButton onClick={onClickGetCsvRails}>CSV出力！！！</SButton>
 
       <SButton onClick={onClickTest}>test！！！</SButton>
       { targetEditThoughts ?
