@@ -68,7 +68,7 @@ export const Index = () => {
 
 
   }
-  // const fileDownload = require('js-file-download');
+  const fileDownload = require('js-file-download');
 
   const onClickGetCsvRails = () => {
     axios.get(`${railsUrl}/csv`,configAxios).then((res) => {
