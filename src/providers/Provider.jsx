@@ -1,9 +1,11 @@
 import React, { createContext, useState } from 'react'
+import { API_KEY } from '../api/API_KEY';
 
 
 export const MainContext = createContext({});
 
 export const MainProvider = (props) => {
+  const { railsUrl } = API_KEY
   const { children } = props;
 
   const testName = "aaaa";
@@ -20,9 +22,6 @@ export const MainProvider = (props) => {
   const [ booksIndex, setBooksIndex ] = useState([])
 
   const [ loginFlag, setLoginFlag ] = useState(false)
-
-  const railsUrl = "http://54.64.212.72:3000"
-  // const railsUrl = "http://localhost:3000"
 
   const onClickTop = () => {
     window.scrollTo({
