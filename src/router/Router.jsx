@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { BrowserRouter, Link, Switch, Route } from 'react-router-dom'
 import styled from 'styled-components';
 
@@ -10,8 +10,9 @@ import { MainContext } from '../providers/Provider';
 import axios from 'axios';
 
 export const Router = () => {
-    const { configAxios, setLoginFlag, railsUrl } = useContext(MainContext);
-  (() => {
+    const { configAxios,loginFlag, setLoginFlag, railsUrl } = useContext(MainContext);
+
+  useEffect(() => {
     axios.get(`${railsUrl}`,configAxios).then((res) => {
     // console.log(res)
     setLoginFlag(() => true)
@@ -20,7 +21,7 @@ export const Router = () => {
     // console.error(error);
     setLoginFlag(() => false)
     });
-  })()
+  },[loginFlag])
 
 
   return(

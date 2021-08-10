@@ -41,7 +41,7 @@ export const Header = () => {
       : false
     }
 
-    <MenuList />
+    {/* <MenuList /> */}
     <STexst>タイトル！！！！</STexst>
     </SContainer>
     </>

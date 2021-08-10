@@ -1,5 +1,5 @@
 import axios from 'axios'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { MainContext } from '../providers/Provider'
 
@@ -59,6 +59,7 @@ export const Index = () => {
       // setTargetFlag(() => false);
       // setTargetItem(() => ({Item: {title: "", author: "", itemUrl: "", mediumImageUrl: ""}}))
       // setIdea(() => (""))
+      setTargetEditThoughts()
       console.log(res);
     })
     .catch(error => {
@@ -81,11 +82,11 @@ export const Index = () => {
   }
 
 
-
+  useEffect(() => onClickGetIndexRails(), [])
   return(
     <SContainer>
       〜投稿一覧〜
-      <SButton onClick={onClickGetIndexRails}>一覧取得！！！</SButton>
+      <SButton onClick={onClickGetIndexRails}>一覧更新！！！</SButton>
       <SButton onClick={onClickGetCsvRails}>CSV出力！！！</SButton>
 
       <SButton onClick={onClickTest}>test！！！</SButton>

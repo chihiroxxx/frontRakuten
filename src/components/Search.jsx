@@ -55,14 +55,12 @@ export const Search = () => {
       <SInput placeholder="検索タイトルを入力！"
       value={text} onChange={onChangeTarget} />
       <MyButton onClick={onClickSearch}>検索</MyButton>
-      <SButton onClick={onClickSearch}>検索</SButton>
       { text }
       <Result />
       { data != "" ?
       <>
       <MyButton onClick={onClickNextPage}>さらに読み込む</MyButton>
-      <SButton onClick={onClickNextPage}>さらに読み込む</SButton>
-      <SButton onClick={onClickTop}>ウエーに戻る</SButton>
+      <MyButton onClick={onClickTop}>ウエーに戻る</MyButton>
       </>
       : false }
     </SContainer>
@@ -82,17 +80,3 @@ const SInput = styled.input`
   padding: 4px;
   width: 200px;
   `
-const SButton = styled.button`
-  background-color: #FAFAFA;
-  border: none;
-  padding: 8px;
-  border-radius: 8px;
-  margin: 0 10px;
-  color: #81C784;
-  &:hover {
-    cursor: pointer;
-    background-color: #FFF;
-    color: #FFCCBC;
-  }
-  `
-

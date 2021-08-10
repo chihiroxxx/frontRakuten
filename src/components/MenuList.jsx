@@ -13,6 +13,9 @@ export const MenuList = () => {
   const onClickMenu = () => {
     setFlag(!flag)
   }
+  const onMouseOutMenu = () => {
+    setFlag(false)
+  }
 
 
 
@@ -61,7 +64,7 @@ const SContainer = styled.div`
   return(
     <SContainer>
       {/* <h1>menuuuuuu</h1> */}
-      <SMenuButton onMouseEnter={onClickMenu}>MENU</SMenuButton>
+      <SMenuButton onMouseEnter={onClickMenu} onMouseOut={onMouseOutMenu}>MENU</SMenuButton>
 
       <SList><Link to="/">
       <SButton>HOME</SButton>
