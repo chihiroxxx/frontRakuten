@@ -1,5 +1,6 @@
 import axios from 'axios'
 import React, { useContext, useEffect, useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import { MainContext } from '../providers/Provider'
 
@@ -80,9 +81,15 @@ export const Index = () => {
     });
 
   }
-
+  const history = useHistory()
 
   useEffect(() => onClickGetIndexRails(), [])
+  useEffect(() => checkAuth(), [loginFlag])
+
+  const checkAuth = () => {
+    !loginFlag && history.push("/")
+  }
+
   return(
     <SContainer>
       〜投稿一覧〜
