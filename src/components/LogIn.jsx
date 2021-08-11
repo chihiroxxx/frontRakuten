@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import { MainContext } from '../providers/Provider';
 
 export const LonIn = () => {
-  const { name, setName, password, setPassword, configAxios, loginFlag, setLoginFlag, railsUrl } = useContext(MainContext);
+  const { name, setName, password, setPassword, configAxios, loginFlag, setLoginFlag, railsUrl, userId, setUserId } = useContext(MainContext);
 
   // const [email, setEmail] = useState('')
   // const [password, setPassword] = useState('')
@@ -27,11 +27,13 @@ export const LonIn = () => {
     },configAxios).then((res) => {
       // console.log(res.headers.client);
       // setTargetFlag(() => false); loginflagにしようかな
+      setUserId(res.data.user_id);
       history.push("/index")
       setName(() => (""))
       setPassword(() => (""))
       setLoginFlag(() => true)
       console.log(res);
+      console.log(res.data.user_id);
     })
     .catch((error) => {
       console.error(error);

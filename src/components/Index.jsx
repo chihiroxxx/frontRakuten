@@ -1,11 +1,11 @@
 import axios from 'axios'
 import React, { useContext, useEffect, useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { MainContext } from '../providers/Provider'
 
 export const Index = () => {
-  const { configAxios, booksIndex, setBooksIndex, loginFlag, setLoginFlag, railsUrl, onClickTop } = useContext(MainContext)
+  const { configAxios, booksIndex, setBooksIndex, loginFlag, setLoginFlag, railsUrl, onClickTop, userId } = useContext(MainContext)
 
   const [targetEditItem, setTargetEditItem] = useState({})
   const [targetEditThoughts, setTargetEditThoughts] = useState()
@@ -90,9 +90,11 @@ export const Index = () => {
     !loginFlag && history.push("/")
   }
 
+  const { id } = useParams()
+
   return(
     <SContainer>
-      〜投稿一覧〜
+      〜投稿一覧〜ちるどれんしてる？？
       <SButton onClick={onClickGetIndexRails}>一覧更新！！！</SButton>
       <SButton onClick={onClickGetCsvRails}>CSV出力！！！</SButton>
 

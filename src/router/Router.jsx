@@ -10,12 +10,13 @@ import { MainContext } from '../providers/Provider';
 import axios from 'axios';
 
 export const Router = () => {
-    const { configAxios,loginFlag, setLoginFlag, railsUrl } = useContext(MainContext);
+    const { configAxios,loginFlag, setLoginFlag, railsUrl, setUserId } = useContext(MainContext);
 
   useEffect(() => {
     axios.get(`${railsUrl}`,configAxios).then((res) => {
-    // console.log(res)
-    setLoginFlag(() => true)
+      setUserId(res.data.user_id);
+      // console.log(res)
+      setLoginFlag(() => true)
   })
   .catch(error => {
     // console.error(error);

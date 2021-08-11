@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import { MainContext } from '../providers/Provider'
 
 export const Result = () => {
-  const { data, setData, setText, configAxios, railsUrl } = useContext(MainContext);
+  const { data, setData, setText, configAxios, railsUrl, userId } = useContext(MainContext);
 
   // const {data} = props
 
@@ -59,7 +59,8 @@ export const Result = () => {
       author: targetItem.Item.author,
       bookimage: targetItem.Item.mediumImageUrl,
       thoughts: idea,
-      date: trans
+      date: trans,
+      user_id: userId
     },configAxios).then((res) => {
       // console.log(res.data);        // レスポンスデータ
       // console.log(res.status);      // ステータスコード

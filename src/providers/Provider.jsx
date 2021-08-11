@@ -30,9 +30,11 @@ export const MainProvider = (props) => {
     })
   }
 
+  const [userId, setUserId] = useState()
   return (
     <MainContext.Provider value={{ testName, data, setData, text, setText,
-    name, setName, password, setPassword, configAxios, booksIndex, setBooksIndex,loginFlag ,setLoginFlag ,railsUrl, onClickTop}}>
+    name, setName, password, setPassword, configAxios, booksIndex, setBooksIndex,loginFlag ,setLoginFlag ,railsUrl, onClickTop,
+    userId, setUserId}}>
       { children }
     </MainContext.Provider>
   )
