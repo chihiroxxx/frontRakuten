@@ -1,5 +1,6 @@
 import axios from 'axios'
 import React, { useContext, useState } from 'react'
+import { useHistory } from 'react-router-dom';
 import styled from 'styled-components'
 import { MainContext } from '../providers/Provider';
 
@@ -16,6 +17,7 @@ export const LonIn = () => {
     setPassword(() => e.target.value )
   }
 
+  const history = useHistory();
 
   const onClickLogIn = () => {
     axios.post(`${railsUrl}/login`,{
@@ -25,6 +27,7 @@ export const LonIn = () => {
     },configAxios).then((res) => {
       // console.log(res.headers.client);
       // setTargetFlag(() => false); loginflagにしようかな
+      history.push("/index")
       setName(() => (""))
       setPassword(() => (""))
       setLoginFlag(() => true)

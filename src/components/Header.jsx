@@ -1,20 +1,22 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components'
-import { BrowserRouter, Link, Switch, Route } from 'react-router-dom'
+import { BrowserRouter, Link, Switch, Route, useHistory } from 'react-router-dom'
 import axios from 'axios';
 import { MainContext } from '../providers/Provider';
 import { MenuList } from './MenuList';
 
 export const Header = () => {
-  const { name, setName, password, setPassword, configAxios, loginFlag, setLoginFlag,railsUrl } = useContext(MainContext);
-
+  const { configAxios, loginFlag, setLoginFlag,railsUrl } = useContext(MainContext);
+  const history = useHistory();
   const onClickLogOut = () => {
     // ログインしているユーザー情報をどうやって持ってくるかあ…
     // ここにsessionを入れて送信！！ ...sessionってそういうことじゃないんだってさ！！！！
     axios.delete(`${railsUrl}/logout`,configAxios)
     .then((res) => {
       setLoginFlag(() => false)
+      history.push("/")
       console.log(res);
+
     })
     .catch(error => {
       console.error(error);
