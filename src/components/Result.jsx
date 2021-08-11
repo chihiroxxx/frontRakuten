@@ -3,6 +3,7 @@ import React, { useContext, useState } from 'react'
 import ReactDatePicker from 'react-datepicker'
 import styled from 'styled-components'
 import { MainContext } from '../providers/Provider'
+import { MyButton } from './atoms/MyButton'
 
 export const Result = () => {
   const { data, setData, setText, configAxios, railsUrl, userId } = useContext(MainContext);
@@ -112,7 +113,7 @@ export const Result = () => {
               <a href={item.Item.itemUrl} target="_blank" rel="noopener noreferrer"><SImage src={item.Item.mediumImageUrl} /></a>
               <SList>{ item.Item.author }</SList>
               <SList>{ item.Item.itemUrl }</SList>
-              <SButton onClick={() => onClickTargetItem(item)}>感想をかく</SButton>
+              <SMyButton onClick={() => onClickTargetItem(item)}>感想をかく</SMyButton>
               {/* buttonはuseStateでいけそう */}
             </SItem>
               );
@@ -148,6 +149,10 @@ const SList = styled.li`
 const SImage = styled.img`
   margin: 0 auto;
   display: block;
+`
+const SMyButton =styled(MyButton)`
+  background-color: #FFCCBC;
+  color: #FAFAFA;
 `
 
 const SButton = styled.button`
