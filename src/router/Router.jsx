@@ -33,11 +33,12 @@ export const Router = () => {
           <SContainer>
           <Search />
           </SContainer>
+          {/* <Footer /> */}
 
         </Route>
         <Route path="/login">
           <LonIn />
-          <Footer />
+          {/* <Footer /> */}
         </Route>
         <Route path="/index">
           <Index />

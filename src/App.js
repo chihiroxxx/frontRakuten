@@ -24,18 +24,17 @@ function App() {
   // })()
   // ああああああ プロバイダーのデータとかとってこれないのかあああああああ！！！
   return (
+    <div >
+
     <MainProvider>
     <BrowserRouter>
       <Header />
       <Router />
     </BrowserRouter>
     </MainProvider>
+
+    </div>
   );
 }
 
 export default App;
-
-const SContainer = styled.div`
-  min-height: 100vh;
-  /* padding: 10px; */
-`

@@ -11,7 +11,7 @@ export const Index = () => {
   const [targetEditThoughts, setTargetEditThoughts] = useState()
 
   const onClickGetIndexRails = () => {
-    axios.get(`${railsUrl}/books`,configAxios).then((res) => {
+    axios.get(`${railsUrl}/books`,{headers: { 'X-Requested-With': 'XMLHttpRequest'}, withCredentials: true, params: {user_id: userId}}).then((res) => {
       setBooksIndex(() => res.data.books)
     })
     .catch(error => {
@@ -72,7 +72,7 @@ export const Index = () => {
   const fileDownload = require('js-file-download');
 
   const onClickGetCsvRails = () => {
-    axios.get(`${railsUrl}/csv`,configAxios).then((res) => {
+    axios.get(`${railsUrl}/csv`,{headers: { 'X-Requested-With': 'XMLHttpRequest'}, withCredentials: true, params: {user_id: userId}}).then((res) => {
       console.log(res);
       fileDownload(res.data, "bookIndex.csv")
     })
