@@ -206,23 +206,28 @@ export const Index = () => {
           return(
             <div className="flex items-center justify-center">
 
-            <div className="m-3 block ">
+            <div className="my-4 mx-auto
+            flex items-center justify-center">
 
 
-        <div key={item.id} className="overflow-hidden shadow-lg rounded-lg cursor-pointer ml-1 hover:opacity-85"
-         style={{width: "800px"}}>
+        <div key={item.id} className="overflow-hidden shadow-lg rounded-lg cursor-pointer ml-1 hover:opacity-85
+        w-4/5"
+        //  style={{width: "800px"}}
+         >
             <div className="flex">
 
-              <div className="max-h-full w-80 cursor-default">
+              <div className="max-h-full w-2/5 cursor-default">
                 {/* <a href={item.Item.itemUrl} target="_blank" rel="noopener noreferrer"> */}
-                <img alt="blog photo" src={item.bookimage} className="max-h-full w-full object-cover"/>
+                <img alt="blog photo" src={item.bookimage} className="max-h-full w-80 object-cover"/>
 
                 {/* </a> */}
 
               </div>
 
 
-              <div className="h-full w-full relative">
+              <div className="h-full  relative"
+              style={{width: "550px"}}
+              >
 
                 <div className="bg-white dark:bg-gray-800 w-full h-80 p-4 cursor-default">
                     <p className="text-indigo-500 text-md font-medium">
