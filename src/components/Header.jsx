@@ -15,11 +15,9 @@ export const Header = () => {
     .then((res) => {
       setLoginFlag(() => false)
       history.push("/")
-      console.log(res);
 
     })
     .catch(error => {
-      console.error(error);
     });
 
   }

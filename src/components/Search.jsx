@@ -25,7 +25,6 @@ export const Search = () => {
     }).then((res) => {
       // console.log(...res.data.Items);
       const newArray = [...res.data.Items]
-      console.log(newArray)
       setData(newArray);
       setPage(2)
     })
@@ -39,9 +38,7 @@ export const Search = () => {
       page: page,
     }
     }).then((res) => {
-      // console.log(...res.data.Items);
       const newArray = [...data, ...res.data.Items]
-      console.log(newArray)
       setData(newArray);
       setPage(page + 1)
     })

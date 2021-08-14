@@ -32,11 +32,8 @@ export const LonIn = () => {
       setName(() => (""))
       setPassword(() => (""))
       setLoginFlag(() => true)
-      console.log(res);
-      console.log(res.data.user_id);
     })
     .catch((error) => {
-      console.error(error);
     });
 
   }

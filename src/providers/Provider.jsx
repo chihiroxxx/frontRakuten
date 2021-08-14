@@ -30,6 +30,12 @@ export const MainProvider = (props) => {
     })
   }
 
+  // const targetFlagResetOnlyModal = () => {
+  //   setTargetFlag(() => false);
+  //   setTargetItem(() => ({Item: {title: "", author: "", itemUrl: "", mediumImageUrl: ""}}))
+  //   setIdea(() => (""))
+  // }
+
   const [userId, setUserId] = useState()
   return (
     <MainContext.Provider value={{ testName, data, setData, text, setText,

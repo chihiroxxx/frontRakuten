@@ -33,21 +33,21 @@ export const Result = () => {
 
   const onClickTargetItem = (e) => {
     setTargetItem(() => e)
-    console.log(e)
+
     targetFlagChange()
   }
-  console.log(targetFlag)
+
 
 
   axios.interceptors.request.use(
     config => {
-      console.log(config)
+
       return config
     }
   )
 
   axios.interceptors.response.use(response => {
-    console.log(response)
+
     return response
   })
 
@@ -71,10 +71,10 @@ export const Result = () => {
       setTargetFlag(() => false);
       setTargetItem(() => ({Item: {title: "", author: "", itemUrl: "", mediumImageUrl: ""}}))
       setIdea(() => (""))
-      console.log(res);
+
     })
     .catch(error => {
-      console.error(error);
+
     });
 
   }
