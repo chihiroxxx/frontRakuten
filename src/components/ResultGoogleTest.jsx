@@ -6,13 +6,11 @@ import { MainContext } from '../providers/Provider'
 import { MyButton } from './atoms/MyButton'
 import { Modal } from './organisms/Modal'
 
-export const Result = () => {
-  const { data, setData, setText, configAxios, railsUrl, userId, targetFlagChangeReset, targetItem, setTargetItem, onClickPostRails, setTime , idea, setIdea
-  ,targetFlag, setTargetFlag} = useContext(MainContext);
+export const ResultGoogleTest = () => {
+  const {setText, configAxios, railsUrl, userId,  googleData, setGoogleData, targetFlagChangeReset, targetItem, setTargetItem, onClickPostRails, setTime , idea, setIdea
+  ,targetFlag, setTargetFlag } = useContext(MainContext);
 
-  // const {data} = props
-
-
+  // const [idea, setIdea] = useState('')
 
   // const [targetFlag, setTargetFlag] = useState(false)
 
@@ -24,7 +22,7 @@ export const Result = () => {
   // const targetFlagChangeReset = () => {
   //   setTargetFlag(() => false);
   //   setTargetItem(() => ({Item: {title: "", author: "", itemUrl: "", imageUrl: ""}}))
-  //   setData(() => [])
+  //   // setData(() => [])
   //   setText(() => '')
   //   setIdea(() => (""))
   // }
@@ -34,7 +32,7 @@ export const Result = () => {
   }
 
   const onClickTargetItem = (e) => {
-    const Target = {title: e.Item.title, author: e.Item.author, imageUrl: e.Item.largeImageUrl}
+    const Target = {title: e.volumeInfo.title, author: e.volumeInfo.authors, imageUrl: e.volumeInfo.imageLinks.thumbnail }
     console.log(Target)
     setTargetItem(Target)
 
@@ -67,11 +65,6 @@ export const Result = () => {
   //     date: trans,
   //     user_id: userId
   //   },configAxios).then((res) => {
-  //     // console.log(res.data);        // レスポンスデータ
-  //     // console.log(res.status);      // ステータスコード
-  //     // console.log(res.statusText);  // ステータステキスト
-  //     // console.log(res.headers);     // レスポンスヘッダ
-  //     // console.log(res.config);      // コンフィグ
   //     setTargetFlag(() => false);
   //     setTargetItem(() => ({}))
   //     setIdea(() => (""))
@@ -106,40 +99,45 @@ export const Result = () => {
 
   return(
     <SContainer>
+            {/* <div className=" flex flex-wrap justify-end  mt-4 mr-1">
+        <button onClick={targetFlagChangeReset} className="px-6 py-2 font-medium text-white transition duration-500 ease-in-out transform bg-yellow-300  rounded-md ext-base focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:bg-yellow-200">
+          RESET</button>
+      </div> */}
 
-        {data !== "" &&
+
+        {googleData !== "" &&
 
 
       <ul>
-        {data.map((item, index) => {
+        {googleData.map((item, index) => {
           return(
-            // <SItem key={index}>
 
-
-        // <div className="text-center ">
         <div className="m-3 inline-block ">
 
 
         <div key={index} className="overflow-hidden shadow-lg rounded-lg h-90 w-72 md:w-100 cursor-pointer ml-1 hover:opacity-85">
             <a className="w-full block h-full">
               <div className="h-80">
-                <a href={item.Item.itemUrl} target="_blank" rel="noopener noreferrer">
-                <img alt="blog photo" src={item.Item.largeImageUrl} className="max-h-full w-full object-cover"/>
+                <a href={item.volumeInfo.infoLink } target="_blank" rel="noopener noreferrer">
+                <img alt="blog photo" src={item.volumeInfo.imageLinks == null ? false : item.volumeInfo.imageLinks.thumbnail} className="max-h-full w-full object-cover"/>
 
                 </a>
 
               </div>
                 <div className="bg-white dark:bg-gray-800 w-full p-4">
                     <p className="text-indigo-500 text-md font-medium">
-                        RakutenBook
+                        GoogleBook
                     </p>
                     <div className="h-32 relative p-2">
 
                     <p className="text-gray-800 dark:text-white text-base font-medium mb-2">
-                    { item.Item.title }
+                      {/* タイトル */}
+                    { item.volumeInfo.title }
                     </p>
                     <p className="text-gray-400 dark:text-gray-300 font-light text-md">
-                    { item.Item.author }
+                    { item.volumeInfo.authors == null ?
+                    false
+                  :item.volumeInfo.authors[0] }
                     </p>
                     <div onClick={() => onClickTargetItem(item)}
                      className="object-cover rounded-full bg-indigo-600 h-10 w-10 hover:opacity-80 absolute top-20 right-0">
@@ -152,7 +150,13 @@ export const Result = () => {
         </div>
         </div>
 
+            //   {/* <SList>{ item.Item.title }</SList>
+            //   <a href={item.Item.itemUrl} target="_blank" rel="noopener noreferrer"><SImage src={item.Item.imageUrl} /></a>
+            //   <SList>{ item.Item.author }</SList>
+            //   <SList>{ item.Item.itemUrl }</SList>
+            //   <SMyButton onClick={() => onClickTargetItem(item)}>感想をかく</SMyButton> */}
 
+            // {/* </SItem> */}
               );
         })}
       </ul>
@@ -163,10 +167,9 @@ export const Result = () => {
 
 
 
-      { targetFlag &&
+{ targetFlag &&
         <>
         <Modal />
-
       </>
 
       }
