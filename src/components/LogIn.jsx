@@ -37,13 +37,13 @@ export const LonIn = () => {
     });
 
   }
-
   return(
     <>
 
 <section className="flex flex-col items-center h-screen md:flex-row ">
             <div className="relative hidden w-full h-screen bg-blueGray-400 lg:block md:w-1/3 xl:w-1/3">
-              <img src="https://dummyimage.com/300x600/F3F4F7/000000" alt="" className="absolute object-cover w-full h-full"/>
+              <img src="https://source.unsplash.com/random" alt="" className="absolute object-cover w-full h-full"/>
+              {/* <img src="https://dummyimage.com/300x600/F3F4F7/000000" alt="" className="absolute object-cover w-full h-full"/> */}
               <div className="relative z-10 m-12 text-left">
                 <a className="flex items-center w-32 mb-4 font-medium text-blueGray-900 title-font md:mb-10">
                   {/* <div className="w-2 h-2 p-2 mr-2 rounded-full bg-gradient-to-tr from-blue-300 to-blue-600">
