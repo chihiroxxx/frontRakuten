@@ -23,7 +23,7 @@ export const Header = () => {
   }
   return(
       <>
-    <div className="container items-center">
+    <div className="container items-center -mb-1">
     <div className="text-ind-700 rounded-lg">
       <div className="flex flex-row flex-wrap p-5 mx-auto md:items-center md:flex-row">
         <a href="/" className="pr-2 lg:pr-8 lg:px-6 focus:outline-none">
@@ -66,6 +66,7 @@ export const Header = () => {
       </div>
     </div>
   </div>
+  <div className="bg-gray-900 h-5"></div>
   {/* <SideMenu /> */}
 </>
 
