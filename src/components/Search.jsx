@@ -129,30 +129,24 @@ export const Search = () => {
   return(
     <>
     <SContainer>
-      <div className="flex flex-wrap justify-end ml-auto items-en xl:flex-nowrap md:flex-nowrap lg:flex-wrap mt-4 mr-4">
+      <div className="flex flex-wrap justify-end ml-auto items-en xl:flex-nowrap md:flex-nowrap lg:flex-wrap mt-4 mr-4 mb-5">
         <div className="relative w-72 mr-2">
           <input value={text} onChange={onChangeTarget} type="text" placeholder="検索タイトルを入力！" className="bg-gray-200 w-full px-3 py-1 leading-8 text-black transition duration-500 ease-in-out transform border-transparent rounded-lg bg-blueGray-100 focus:border-blueGray-500 focus:bg-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2" />
         </div>
-        <button onClick={onClickSearch} className="px-6 py-2 font-medium text-white transition duration-500 ease-in-out transform bg-indigo-900  border-blue-600 rounded-md ext-base focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:bg-indigo-500">
+        <button onClick={onClickSearch} className="px-6 py-2 font-medium text-white transition duration-500 ease-in-out transform bg-indigo-900  border-blue-600 rounded-md ext-base focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:bg-indigo-500 mr-3">
           検索</button>
-      </div>
-      <div className=" flex flex-wrap justify-end  mt-4 mr-1">
-        <button onClick={targetFlagChangeReset} className="px-6 py-2 font-medium text-white transition duration-500 ease-in-out transform bg-yellow-300  rounded-md ext-base focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:bg-yellow-200">
+        <button onClick={targetFlagChangeReset} className="px-6 py-2 font-medium text-white transition duration-500 ease-in-out transform bg-yellow-300  rounded-md ext-base focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:bg-yellow-200 mr-3">
           RESET</button>
       </div>
+      {/* <div className=" flex flex-wrap justify-end  mt-4 mr-1">
+      </div> */}
       {/* <Test /> */}
 
       {/* <SInput placeholder="検索タイトルを入力！"
       value={text} onChange={onChangeTarget} /> */}
       {/* <MyButton onClick={onClickSearch}>検索</MyButton> */}
       {/* { text } */}
-      <>
-        <h1 className="my-20 font-black tracking-tighter text-black hover:text-indigo-700 text-5xl title-font text-center cursor-default
-          transition duration-500 ease-in-out transform
-        ">Welcome to MEMENTO TIME!
-                  <div className="mt-3 ml-1 tracking-tighter text-gray-400  text-base font-medium">Search Books now!</div>
-                  </h1>
-        </>
+
 
       <div className=" md:flex">
       <div className="max-w-screen-md mx-auto">
@@ -178,7 +172,28 @@ export const Search = () => {
 
       {/* <MyButton onClick={onClickTop}>ウエーに戻る</MyButton> */}
       </>
-      : false }
+      :
+
+      <>
+        <div className="relative w-full">
+
+        <img src="https://source.unsplash.com/mbKApJz6RSU" alt="memento time" className="mx-auto"/>
+        <div style={{position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)"}}>
+
+        <h1 className=" font-black tracking-tighter text-black hover:text-white text-5xl title-font text-center cursor-default
+          transition duration-500 ease-in-out transform
+        ">Welcome to MEMENTO TIME!
+                  <div className="mt-3 ml-1 tracking-tighter text-gray-400  text-base font-medium">Search Books now!</div>
+                  </h1>
+        </div>
+        </div>
+        </>
+
+
+      }
       <div className="">
 
       <Footer />

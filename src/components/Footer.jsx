@@ -4,7 +4,7 @@ import styled from 'styled-components'
 export const Footer = () => {
   return(
     <>
-<div className=" min-h-screen">
+<div className=" h-28">
 
 <div class="w-full items-center fixed bottom-0 right-0">
             <footer class="text-blueGray-700 transition duration-500 ease-in-out transform  ">

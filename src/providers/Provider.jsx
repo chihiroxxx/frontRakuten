@@ -78,6 +78,7 @@ export const MainProvider = (props) => {
     setTargetFlag(() => false);
     setTargetItem(() => ({Item: {title: "", author: "", itemUrl: "", mediumImageUrl: ""}}))
     setData(() => [])
+    setGoogleData(() => [])
     setText(() => '')
     setIdea(() => (""))
   }
