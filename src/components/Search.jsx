@@ -1,5 +1,5 @@
 import axios from 'axios'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { MainContext } from '../providers/Provider'
 import { Result } from './Result'
@@ -163,6 +163,38 @@ export const Search = () => {
   }
 
   // const mainImage = require('../assets/main.jpg');
+  const getTopPosition = document.scrollingElement;
+  window.onscroll = () => {
+    if (document.getElementById("want") === null){
+      return
+    }
+    const want = document.getElementById("want")
+    if(getTopPosition.scrollTop > 190){
+      want.classList.add("fixed","top-0");
+      // console.log(want)
+      // console.log("大きくスクロール！！！")
+    } else if (getTopPosition.scrollTop < 190){
+      want.classList.remove("fixed","top-0");
+    }
+  }
+  // console.log(getTopPosition.scrollTop)
+  useEffect(() => {
+    if (document.getElementById("google-tab") === null){
+      return
+    }
+    const googleElement = document.getElementById("google-tab")
+    const rakutenElement = document.getElementById("rakuten-tab")
+    phoneTabsState &&
+      googleElement.classList.add("bg-indigo-900","text-white");
+      phoneTabsState &&
+      rakutenElement.classList.remove("bg-indigo-900","text-white");
+
+      !phoneTabsState &&
+      googleElement.classList.remove("bg-indigo-900","text-white");
+      !phoneTabsState &&
+      rakutenElement.classList.add("bg-indigo-900","text-white");
+
+  },[phoneTabsState])
 
   return(
     <>
@@ -186,6 +218,7 @@ export const Search = () => {
     {/* Result画面 */}
 
       <div className="md:flex">
+
             {/* スマホ用 */}
       <div className="md:hidden">
       {/* <PhoneResult /> */}
@@ -194,27 +227,28 @@ export const Search = () => {
 
         {/* うーん...切り替えボタンがなあ... */}
           {data.length !== 0 && googleData.length !== 0 &&
-        <div className="ml-4">
+        <div id="want" className=" ml-4 z-50 bg-white w-full pt-2" style={{"margin-bottom": "-2px"}}>
+          {/* 上 fixed したい */}
           {/* <div className="cursor-default mt-3 ml-1 tracking-tighter text-gray-400  text-base font-medium">On Click Contents Change!!</div> */}
 
           <div className="flex">
       <div>
-      <div onClick={onClickGoogleTabs}
-       className="rounded-b-none border-t-2 border-r-2 border-l-2 border-gray-900 cursor-pointer w-32 text-center px-4 py-1 mr-1 text-base text-blueGray-500 transition duration-500 ease-in-out transform rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:text-white hover:bg-indigo-900 ">
+      <div id="google-tab" onClick={onClickGoogleTabs}
+       className="bg-white rounded-b-none border-t-2 border-r-2 border-l-2 border-gray-900 cursor-pointer w-32 text-center px-4 py-1 mr-1 text-base text-blueGray-500 transition duration-500 ease-in-out transform rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:text-white hover:bg-indigo-900 ">
                 Google
                 {phoneTabsState &&
-                <div className="border-b-4 border-purple-400 ">
+                <div className="border-b-4 opacity-0 border-purple-400 ">
                 </div>
                 }
                 </div>
 
       </div>
       <div>
-      <div onClick={onClickRakutenTabs}
-       className="rounded-b-none border-t-2 border-r-2 border-l-2 border-gray-900 cursor-pointer w-32 text-center px-4 py-1 mr-1 text-base text-blueGray-500 transition duration-500 ease-in-out transform rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:text-white hover:bg-indigo-900 ">
+      <div id="rakuten-tab" onClick={onClickRakutenTabs}
+       className="bg-white rounded-b-none border-t-2 border-r-2 border-l-2 border-gray-900 cursor-pointer w-32 text-center px-4 py-1 mr-1 text-base text-blueGray-500 transition duration-500 ease-in-out transform rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:text-white hover:bg-indigo-900 ">
                 Rakuten
                 {!phoneTabsState &&
-                <div className="border-b-4 border-purple-400 ">
+                <div className="border-b-4 opacity-0 border-purple-400 ">
                 </div>
                 }
                 </div>
@@ -222,7 +256,7 @@ export const Search = () => {
       </div>
 
           </div>
-                <div className="border-t-2 border-gray-900  h-1 w-11/12 pr-2" style={{"margin-top": "-2px"}}></div>
+                <div className="border-t-2 border-gray-900  h-1 w-full pr-2" style={{"margin-top": "-2px"}}></div>
 
         </div>
                  }
