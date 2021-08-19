@@ -142,7 +142,7 @@ export const Result = (props) => {
             <a className="w-full block h-full">
               <div className="h-80">
                 <a href={item.itemUrl} target="_blank" rel="noopener noreferrer">
-                <img alt="blog photo" src={item.imageUrl} className="max-h-full w-full object-cover"/>
+                <img alt="NO IMAGE" src={item.imageUrl} className="max-h-full w-full object-cover"/>
 
                 </a>
 
