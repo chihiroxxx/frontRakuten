@@ -200,16 +200,19 @@ export const Search = () => {
     <>
     <div>
       {/* <Test /> */}
-      <div className="flex flex-wrap justify-end ml-auto items-en xl:flex-nowrap md:flex-nowrap lg:flex-wrap mt-8 mr-4 mb-5">
-        <div className="relative w-72 mr-2">
+        <div className="ml-2">
+      <div className="flex justify-end ml-auto items-en xl:flex-nowrap md:flex-nowrap lg:flex-wrap mt-8 mr-4 mb-5">
+        <div className="relative w-5/12 md:w-72 mr-2">
           <input value={text} onChange={onChangeTarget} type="text" placeholder="検索タイトルを入力！"
            className="bg-gray-200 w-full px-3 py-1 leading-8 text-black transition duration-500 ease-in-out transform border-transparent rounded-lg bg-blueGray-100 focus:border-blueGray-500 focus:bg-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2" />
         </div>
-        <div>
+        <div className="flex">
         <button onClick={onClickSearch} className="px-6 py-2 font-medium text-white transition duration-500 ease-in-out transform bg-indigo-900  border-blue-600 rounded-md ext-base focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:bg-indigo-500 mr-3">
         SEARCH</button>
         <button onClick={targetFlagChangeReset} className="px-6 py-2 font-medium text-white transition duration-500 ease-in-out transform bg-yellow-300  rounded-md ext-base focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:bg-yellow-200 mr-3">
           RESET</button>
+
+        </div>
 
         </div>
       </div>
@@ -225,7 +228,7 @@ export const Search = () => {
 
       <>
 
-        {/* うーん...切り替えボタンがなあ... */}
+        {/* うーん...切り替えボタンがなあ... length!!!!!!! */}
           {data.length !== 0 && googleData.length !== 0 &&
         <div id="want" className=" ml-4 z-50 bg-white w-full pt-2" style={{"margin-bottom": "-2px"}}>
           {/* 上 fixed したい */}
@@ -256,7 +259,7 @@ export const Search = () => {
       </div>
 
           </div>
-                <div className="border-t-2 border-gray-900  h-1 w-full pr-2" style={{"margin-top": "-2px"}}></div>
+                <div className="border-t-2 border-gray-900  h-1 w-11/12 pr-2" style={{"margin-top": "-2px"}}></div>
 
         </div>
                  }
