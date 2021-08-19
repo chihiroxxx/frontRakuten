@@ -37,9 +37,30 @@ export const LonIn = () => {
     });
 
   }
+
+  //新規登録用！！！
+  const onClickSignUp = () => {
+    axios.post(`${railsUrl}/users`,{
+        name: name,
+        password: password
+      },configAxios).then((res) => {
+        setUserId(res.data.user_id);
+        history.push("/index")
+        setName(() => (""))
+        setPassword(() => (""))
+        setLoginFlag(() => true)
+      })
+      .catch((error) => {
+      });
+  }
+
+
+  const [signupFlag, setSignupFlag] = useState(true)
+  const onClickCangeSignupFlag = () => {
+    setSignupFlag(!signupFlag)
+  }
   return(
     <>
-
 <section className="flex flex-col items-center h-screen md:flex-row ">
             <div className="relative hidden w-full h-screen bg-blueGray-400 lg:block md:w-1/3 xl:w-1/3">
               <img src="https://source.unsplash.com/random" alt="" className="absolute object-cover w-full h-full"/>
@@ -52,13 +73,15 @@ export const LonIn = () => {
                 </a>
               </div>
             </div>
+  {signupFlag ?
+
             <div className="flex w-full h-screen px-6 bg-whitelack md:max-w-md lg:max-w-full md:mx-auto md:w-1/2 xl:w-1/3 lg:px-16 xl:px-12 items-left justify-left">
               {/* <div className="w-full py-32 lg:py-6 lg:h-100">
               </div> */}
 
               <div className="mt-6" action="#" method="POST">
-                <h1 className="my-12 font-black tracking-tighter text-black hover:text-indigo-900 text-5xl title-font">Sign Up.
-                <div className="mt-3 ml-1 tracking-tighter text-gray-400  text-base font-medium">Welcome to MEMENTO TIME!</div>
+                <h1 className="cursor-default my-12 font-black tracking-tighter text-black hover:text-indigo-900 text-5xl title-font">Log   In.
+                <div className="mt-3 ml-1 tracking-tighter text-gray-400  text-base font-medium">Welcome Back to MEMENTO TIME!</div>
                 </h1>
                 <div>
                   <label className="text-base font-medium leading-relaxed text-blueGray-700">User Name</label>
@@ -76,9 +99,45 @@ export const LonIn = () => {
                 <button onClick={onClickLogIn}
                 type="submit" className="bg-yellow-400 block w-full px-4 py-3 mt-6 font-semibold text-white transition duration-500 ease-in-out transform rounded-lg  hover:bg-yellow-500 focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 hover:to-black">Log In</button>
               {/* <p className="mt-8 text-center">Need an account? <a href="#" className="font-semibold text-blue-500 hover:text-blue-400">Sign Up</a></p> */}
+
+              {/* <div onClick={onClickCangeSignupFlag}
+              className="cursor-pointer">切り替え</div> */}
+
               </div>
             </div>
-  </section>
+  :
+  <div className="flex w-full h-screen px-6 bg-whitelack md:max-w-md lg:max-w-full md:mx-auto md:w-1/2 xl:w-1/3 lg:px-16 xl:px-12 items-left justify-left">
+              {/* <div className="w-full py-32 lg:py-6 lg:h-100">
+              </div> */}
+
+              <div className="mt-6" action="#" method="POST">
+                <h1 className="cursor-default my-12 font-black tracking-tighter text-black hover:text-indigo-900 text-5xl title-font">Sign Up.
+                <div className="mt-3 ml-1 tracking-tighter text-gray-400  text-base font-medium">Welcome to MEMENTO TIME!</div>
+                </h1>
+                <div>
+                  <label className="text-base font-medium leading-relaxed text-blueGray-700">User Name</label>
+                  <input onChange={onChangeName}
+                  type="name" placeholder="User Name " className="border-2 border-gray-500 w-full px-4 py-2 mt-2 text-base text-indigo-900 border-transparent rounded-lg bg-blueGray-100 ext-blue-700 focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2" autocomplete="" required=""/>
+                </div>
+                <div className="mt-4">
+                  <label className="text-base font-medium leading-relaxed text-blueGray-700">Password</label>
+                  <input onChange={onChangePassword}
+                   type="password" placeholder="Password" minlength="6" className="border-2 border-gray-500 w-full px-4 py-2 mt-2 text-base text-indigo-900 border-transparent rounded-lg bg-blueGray-100 ext-blue-700 focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2" required=""/>
+                </div>
+                <div className="mt-2 text-right">
+                  {/* <a href="#" className="text-sm font-semibold leading-relaxed text-blueGray-700 hover:text-blue-700 focus:text-blue-700">Forgot Password?</a> */}
+                </div>
+                <button onClick={onClickSignUp}
+                type="submit" className="bg-yellow-400 block w-full px-4 py-3 mt-6 font-semibold text-white transition duration-500 ease-in-out transform rounded-lg  hover:bg-yellow-500 focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 hover:to-black">Sign Up</button>
+              {/* <p className="mt-8 text-center">Need an account? <a href="#" className="font-semibold text-blue-500 hover:text-blue-400">Sign Up</a></p> */}
+
+              {/* <div onClick={onClickCangeSignupFlag}
+              className="cursor-pointer">切り替え</div> */}
+
+              </div>
+            </div>
+}
+</section>
 
     </>
     // <SContainer>

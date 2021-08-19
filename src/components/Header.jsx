@@ -9,8 +9,6 @@ export const Header = () => {
   const { configAxios, loginFlag, setLoginFlag,railsUrl } = useContext(MainContext);
   const history = useHistory();
   const onClickLogOut = () => {
-    // ログインしているユーザー情報をどうやって持ってくるかあ…
-    // ここにsessionを入れて送信！！ ...sessionってそういうことじゃないんだってさ！！！！
     axios.delete(`${railsUrl}/logout`,configAxios)
     .then((res) => {
       setLoginFlag(() => false)

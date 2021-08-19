@@ -6,11 +6,11 @@ import { MainContext } from '../providers/Provider'
 import { MyButton } from './atoms/MyButton'
 import { Modal } from './organisms/Modal'
 
-export const Result = () => {
-  const { data, setData, setText, configAxios, railsUrl, userId, targetFlagChangeReset, targetItem, setTargetItem, onClickPostRails, setTime , idea, setIdea
+export const Result = (props) => {
+  const { setData, setText, configAxios, railsUrl, userId, targetFlagChangeReset, targetItem, setTargetItem, onClickPostRails, setTime , idea, setIdea
   ,targetFlag, setTargetFlag} = useContext(MainContext);
 
-  // const {data} = props
+  const {data, apiName} = props
 
 
 
@@ -34,8 +34,8 @@ export const Result = () => {
   }
 
   const onClickTargetItem = (e) => {
-    const Target = {title: e.Item.title, author: e.Item.author, imageUrl: e.Item.largeImageUrl}
-    console.log(Target)
+    const Target = {title: e.title, author: e.author, imageUrl: e.imageUrl}
+    // console.log(Target)
     setTargetItem(Target)
 
     targetFlagChange()
@@ -107,9 +107,27 @@ export const Result = () => {
   return(
     <SContainer>
 
-        {data !== "" &&
+        {data.length !== 0 &&
+        <>
+        <div className="hidden md:block">
+
+        <div
+       className="bg-indigo-900 text-white cursor-default rounded-b-none border-t-2 border-r-2 border-l-2 border-gray-900  w-32 text-center px-4 py-1 mr-1 text-base text-blueGray-500 transition duration-500 ease-in-out transform rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:text-white hover:bg-indigo-900 ">
+                {apiName}
+                {/* <div className="border-b-4 border-purple-400 ">
+                </div> */}
+
+                </div>
+                <div className="border-t-2 border-gray-900  h-1 w-11/12 pr-2" style={{"margin-top": "-2px"}}></div>
+        </div>
 
 
+
+
+        {/* <h1 className="ml-1 text-indigo-900 font-bold text-xl hidden md:block">{apiName} */}
+        {/* <div className="border-b-4 w-10/12 border-purple-400 ">
+                </div> */}
+        {/* </h1> */}
       <ul>
         {data.map((item, index) => {
           return(
@@ -120,26 +138,26 @@ export const Result = () => {
         <div className="m-3 inline-block ">
 
 
-        <div key={index} className="overflow-hidden shadow-lg rounded-lg h-90 w-72 md:w-100 cursor-pointer ml-1 hover:opacity-85">
+        <div key={index} className="overflow-hidden shadow-lg rounded-lg h-90 w-72 cursor-pointer ml-1 hover:opacity-85">
             <a className="w-full block h-full">
               <div className="h-80">
-                <a href={item.Item.itemUrl} target="_blank" rel="noopener noreferrer">
-                <img alt="blog photo" src={item.Item.largeImageUrl} className="max-h-full w-full object-cover"/>
+                <a href={item.itemUrl} target="_blank" rel="noopener noreferrer">
+                <img alt="blog photo" src={item.imageUrl} className="max-h-full w-full object-cover"/>
 
                 </a>
 
               </div>
                 <div className="bg-white dark:bg-gray-800 w-full p-4">
                     <p className="text-indigo-500 text-md font-medium">
-                        RakutenBook
+                        {apiName}Book
                     </p>
                     <div className="h-32 relative p-2">
 
                     <p className="text-gray-800 dark:text-white text-base font-medium mb-2">
-                    { item.Item.title }
+                    { item.title }
                     </p>
                     <p className="text-gray-400 dark:text-gray-300 font-light text-md">
-                    { item.Item.author }
+                    { item.author }
                     </p>
                     <div onClick={() => onClickTargetItem(item)}
                      className="object-cover rounded-full bg-indigo-600 h-10 w-10 hover:opacity-80 absolute top-20 right-0">
@@ -156,7 +174,7 @@ export const Result = () => {
               );
         })}
       </ul>
-
+        </>
 
       }
 

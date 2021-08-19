@@ -6,7 +6,8 @@ import { MainContext } from '../providers/Provider'
 import { MyButton } from './atoms/MyButton'
 import { Modal } from './organisms/Modal'
 
-export const ResultGoogleTest = () => {
+export const ResultGoogleTest = (props) => {
+  const {  } = props;
   const {setText, configAxios, railsUrl, userId,  googleData, setGoogleData, targetFlagChangeReset, targetItem, setTargetItem, onClickPostRails, setTime , idea, setIdea
   ,targetFlag, setTargetFlag } = useContext(MainContext);
 

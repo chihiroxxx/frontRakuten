@@ -8,6 +8,8 @@ import { MyButton } from './atoms/MyButton'
 import { Footer } from './Footer'
 import { Test } from './Test'
 import { ResultGoogleTest } from './ResultGoogleTest'
+import { PhoneResult } from './PhoneResult'
+import mainImage from '../assets/main.jpg'
 
 
 export const Search = () => {
@@ -47,7 +49,7 @@ export const Search = () => {
       page: page,
     }
     }).then((res) => {
-      const newArray = [...data, ...res.data.Items]
+      const newArray = [...data, ...dataArrangeRakutenAPI(res.data.Items)]
       setData(newArray);
     })
   }
@@ -66,6 +68,42 @@ export const Search = () => {
   }
 
 
+  const dataArrangeRakutenAPI = (items) => {
+    const newArray = [];
+    items.map((item, index) => {
+      const oneItem = {
+        title: item.Item.title,
+        author: item.Item.author,
+        itemUrl: item.Item.itemUrl,
+        imageUrl: item.Item.largeImageUrl,
+    }
+    newArray.push(oneItem)
+      // console.log(oneItem,index)
+    })
+    return newArray
+  }
+
+  const dataArrangeGoogleAPI = (items) => {
+    const newArray = [];
+    items.map((item, index) => {
+      const oneItem = {
+        title: item.volumeInfo.title,
+        author:
+          item.volumeInfo.authors == null ?
+          null:
+          item.volumeInfo.authors[0] ,
+        itemUrl: item.volumeInfo.infoLink,
+        imageUrl:
+            item.volumeInfo.imageLinks == null ?
+           null :
+           item.volumeInfo.imageLinks.thumbnail,
+    }
+    newArray.push(oneItem)
+      // console.log(oneItem,index)
+    })
+    return newArray
+
+  }
 
   const onClickGetRakutenAPI= ()=>{
     const appId = API_KEY.RakutenAPI_KEY
@@ -75,17 +113,14 @@ export const Search = () => {
       applicationId: appId}
     }).then((res) => {
       // console.log(...res.data.Items);
-      const newArray = [...res.data.Items]
-      setData(newArray);
+      // console.log(dataArrangeRakutenAPI(res.data.Items))
+      // const newArray = [...res.data.Items] //これもいらなくなる！
+      setData(dataArrangeRakutenAPI(res.data.Items));
       setPage(2)
     })
   }
 
-  // google book API追加用
 
-  // const [ keyword ,setKeyword] = useState();
-
-  // const [googleData, setGoogleData] = useState([]);
 
   const onClickGetGoogleAPI = () => {
     axios.get('https://www.googleapis.com/books/v1/volumes',{params:{
@@ -95,9 +130,9 @@ export const Search = () => {
       startIndex: 0,
     }})
     .then((res) => {
-      // console.log(res);
-      const newArray = [...res.data.items]
-      setGoogleData(newArray);
+      dataArrangeGoogleAPI(res.data.items)
+
+      setGoogleData(dataArrangeGoogleAPI(res.data.items));
     })
   }
 
@@ -113,48 +148,112 @@ export const Search = () => {
     }})
     .then((res) => {
       if (res.data.items != null) {
-        const newArray = [...googleData, ...res.data.items]
+        const newArray = [...googleData, ...dataArrangeGoogleAPI(res.data.items)]
         setGoogleData(newArray);
 
       }
     })
   }
+  const [phoneTabsState, setPhoneTabsState] = useState(true)
+  const onClickGoogleTabs = () => {
+    setPhoneTabsState(true)
+  }
+  const onClickRakutenTabs = () => {
+    setPhoneTabsState(false)
+  }
 
-
-  console.log(googleData)
-
-
-
+  // const mainImage = require('../assets/main.jpg');
 
   return(
     <>
     <div>
-
+      {/* <Test /> */}
       <div className="flex flex-wrap justify-end ml-auto items-en xl:flex-nowrap md:flex-nowrap lg:flex-wrap mt-8 mr-4 mb-5">
         <div className="relative w-72 mr-2">
-          <input value={text} onChange={onChangeTarget} type="text" placeholder="検索タイトルを入力！" className="bg-gray-200 w-full px-3 py-1 leading-8 text-black transition duration-500 ease-in-out transform border-transparent rounded-lg bg-blueGray-100 focus:border-blueGray-500 focus:bg-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2" />
+          <input value={text} onChange={onChangeTarget} type="text" placeholder="検索タイトルを入力！"
+           className="bg-gray-200 w-full px-3 py-1 leading-8 text-black transition duration-500 ease-in-out transform border-transparent rounded-lg bg-blueGray-100 focus:border-blueGray-500 focus:bg-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2" />
         </div>
+        <div>
         <button onClick={onClickSearch} className="px-6 py-2 font-medium text-white transition duration-500 ease-in-out transform bg-indigo-900  border-blue-600 rounded-md ext-base focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:bg-indigo-500 mr-3">
         SEARCH</button>
         <button onClick={targetFlagChangeReset} className="px-6 py-2 font-medium text-white transition duration-500 ease-in-out transform bg-yellow-300  rounded-md ext-base focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:bg-yellow-200 mr-3">
           RESET</button>
+
+        </div>
       </div>
-      {/* <div className=" flex flex-wrap justify-end  mt-4 mr-1">
-      </div> */}
-      {/* <Test /> */}
-
-      {/* <SInput placeholder="検索タイトルを入力！"
-      value={text} onChange={onChangeTarget} /> */}
-      {/* <MyButton onClick={onClickSearch}>検索</MyButton> */}
-      {/* { text } */}
 
 
-      <div className=" md:flex">
-      <div className="max-w-screen-md mx-auto">
-      <ResultGoogleTest />
+    {/* Result画面 */}
+
+      <div className="md:flex">
+            {/* スマホ用 */}
+      <div className="md:hidden">
+      {/* <PhoneResult /> */}
+
+      <>
+
+        {/* うーん...切り替えボタンがなあ... */}
+          {data.length !== 0 && googleData.length !== 0 &&
+        <div className="ml-4">
+          {/* <div className="cursor-default mt-3 ml-1 tracking-tighter text-gray-400  text-base font-medium">On Click Contents Change!!</div> */}
+
+          <div className="flex">
+      <div>
+      <div onClick={onClickGoogleTabs}
+       className="rounded-b-none border-t-2 border-r-2 border-l-2 border-gray-900 cursor-pointer w-32 text-center px-4 py-1 mr-1 text-base text-blueGray-500 transition duration-500 ease-in-out transform rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:text-white hover:bg-indigo-900 ">
+                Google
+                {phoneTabsState &&
+                <div className="border-b-4 border-purple-400 ">
+                </div>
+                }
+                </div>
+
       </div>
-      <div className="max-w-screen-md mx-auto">
-      <Result />
+      <div>
+      <div onClick={onClickRakutenTabs}
+       className="rounded-b-none border-t-2 border-r-2 border-l-2 border-gray-900 cursor-pointer w-32 text-center px-4 py-1 mr-1 text-base text-blueGray-500 transition duration-500 ease-in-out transform rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:text-white hover:bg-indigo-900 ">
+                Rakuten
+                {!phoneTabsState &&
+                <div className="border-b-4 border-purple-400 ">
+                </div>
+                }
+                </div>
+
+      </div>
+
+          </div>
+                <div className="border-t-2 border-gray-900  h-1 w-11/12 pr-2" style={{"margin-top": "-2px"}}></div>
+
+        </div>
+                 }
+                {phoneTabsState ?
+
+                <>
+                <div className=" max-w-screen-md mx-auto">
+                <Result data={googleData} apiName="Google"/>
+                </div>
+                </>
+
+                :
+                <>
+                <div className=" max-w-screen-md mx-auto">
+                  <Result data={data} apiName="Rakuten"/>
+                  </div>
+                </>
+                }
+
+
+
+
+</>
+
+      </div>
+      <div className="hidden md:block max-w-screen-md mx-auto">
+      {/* <ResultGoogleTest /> */}
+      <Result data={googleData} apiName="Google"/>
+      </div>
+      <div className="hidden md:block max-w-screen-md mx-auto">
+      <Result data={data} apiName="Rakuten"/>
 
       </div>
 
@@ -178,7 +277,7 @@ export const Search = () => {
       <>
         <div className="relative w-full">
 
-        <img src="https://source.unsplash.com/mbKApJz6RSU" alt="memento time" className="mx-auto"/>
+        <img src={mainImage} alt="memento time" className="mx-auto"/>
         <div style={{position: "absolute",
             top: "50%",
             left: "50%",
