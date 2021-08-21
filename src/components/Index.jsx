@@ -51,17 +51,8 @@ export const Index = () => {
       // id: targetEditItem.item.id,
       thoughts: targetEditThoughts
     },configAxios).then((res) => {
-      // console.log(res.data);        // レスポンスデータ
-      // console.log(res.status);      // ステータスコード
-      // console.log(res.statusText);  // ステータステキスト
-      // console.log(res.headers);     // レスポンスヘッダ
-      // console.log(res.config);      // コンフィグ
-
-      // setTargetFlag(() => false);
-      // setTargetItem(() => ({Item: {title: "", author: "", itemUrl: "", mediumImageUrl: ""}}))
-      // setIdea(() => (""))
       setTargetEditThoughts()
-
+      onClickGetIndexRails()
     })
     .catch(error => {
       // console.error(error);
@@ -69,6 +60,29 @@ export const Index = () => {
 
 
   }
+  const onClickTargetDelete =  (e)  => {
+    console.log(e.id)
+
+    const deleteId = e.id
+
+    onClickDeleteRails(deleteId);
+  }
+
+  const onClickDeleteRails = (deleteId) =>{
+      axios.delete(`${railsUrl}/books/${deleteId}`,configAxios).then((res) => {
+         setTargetEditThoughts()
+
+       }).then(()=>{
+         // 削除完了のフラッシュメッセージ出す！！！！！！！
+         // あとはreload
+         onClickGetIndexRails()
+       })
+       .catch(error => {
+         // console.error(error);
+       });
+
+  }
+
   const fileDownload = require('js-file-download');
 
   const onClickGetCsvRails = () => {
@@ -131,12 +145,6 @@ export const Index = () => {
       </div>
         </>
 
-      {/* <button onClick={onClickGetIndexRails} className="px-6 py-2 font-medium text-white transition duration-500 ease-in-out transform bg-indigo-900  border-blue-600 rounded-md ext-base focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:bg-indigo-500">
-          UpDate</button>
-      <SButton onClick={onClickGetIndexRails}>一覧更新！！！</SButton>
-      <SButton onClick={onClickGetCsvRails}>CSV出力！！！</SButton>
-
-      <SButton onClick={onClickTest}>test！！！</SButton> */}
       { targetEditThoughts ?
         <>
           <div className="z-50 fixed top-0 left-0 w-full h-full  flex items-center justify-center bg-opacity-50">
@@ -158,19 +166,15 @@ export const Index = () => {
         {/* <h1 className="text-2xl font-semibold leading-none tracking-tighter text-black title-font"> A headline to switch your visitors into users. </h1> */}
         {/* <div className="h-80"> */}
 
-        <img alt="blog photo" src={targetEditItem.bookimage} className="object-cover"/>
+        <img alt="blog photo" src={targetEditItem.bookimage} className="h-56 w-44 object-cover mx-auto"/>
         {/* </div> */}
       </div>
       <div className="flex flex-col w-full mx-auto mb-8 lg:px-20 md:mt-0">
         <div className="relative mt-4">
           <label for="text" className="text-base leading-7 text-blueGray-500">Thought</label>
-          <input value={targetEditThoughts} onChange={onChangeTargetEditThought}
-          type="text" name="name" placeholder="感じたこと" className="border-2 border-gray-200 w-full px-4 py-2 mt-2 text-base text-black transition duration-500 ease-in-out transform border-transparent rounded-lg bg-blueGray-100 focus:border-blueGray-500 focus:bg-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2"/>
+          <textarea value={targetEditThoughts} onChange={onChangeTargetEditThought}
+          type="text" name="name" placeholder="感じたこと" className="resize-none h-36 border-2 border-gray-200 w-full px-4 py-2 mt-2 text-base text-black transition duration-500 ease-in-out transform border-transparent rounded-lg bg-blueGray-100 focus:border-blueGray-500 focus:bg-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2"/>
         </div>
-        {/* <div className="relative mt-4">
-          <label for="name" className="text-base leading-7 text-blueGray-500">Time</label>
-          <input type="datetime-local" className="border-2 border-gray-200 w-full px-4 py-2 mt-2 text-base text-black transition duration-500 ease-in-out transform border-transparent rounded-lg bg-blueGray-100 focus:border-blueGray-500 focus:bg-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2"/>
-        </div> */}
         <div className="flex my-6 mt-4">
           <label className="flex items-center">
 
@@ -188,13 +192,6 @@ export const Index = () => {
 {/* <div className="z-10 w-auto p-1 bg-white"> */}
 </div>
 
-
-
-
-        {/* <SInput
-        value={targetEditThoughts} onChange={onChangeTargetEditThought}
-        />
-        <SButton onClick={onClickEditPostRails}>へんしゅ送信</SButton> */}
         </>
 
       : false}
@@ -211,14 +208,14 @@ export const Index = () => {
 
 
         <div key={item.id} className="overflow-hidden shadow-lg rounded-lg cursor-pointer ml-1 hover:opacity-85
-        w-4/5"
+        md:w-4/5 w-72"
         //  style={{width: "800px"}}
          >
-            <div className="flex">
+            <div className="md:flex">
 
-              <div className="max-h-full w-2/5 cursor-default">
+              <div className="h-40 md:h-full md:max-h-full md:w-2/5 cursor-default bg-gray-100">
                 {/* <a href={item.Item.itemUrl} target="_blank" rel="noopener noreferrer"> */}
-                <img alt="blog photo" src={item.bookimage} className="max-h-full w-80 object-cover"/>
+                <img alt="NO IMAGE" src={item.bookimage} className=" max-h-full w-80 object-scale-down md:object-cover"/>
 
                 {/* </a> */}
 
@@ -229,35 +226,46 @@ export const Index = () => {
               style={{width: "550px"}}
               >
 
-                <div className="bg-white dark:bg-gray-800 w-full h-80 p-4 cursor-default">
+                <div className="w-72 ml-2 md:m-0 bg-white dark:bg-gray-800 md:w-full h-80 p-4 cursor-default">
                     <p className="text-indigo-500 text-md font-medium">
                         Book Title
                     </p>
-                    <div className="h-32 p-2">
+                    <div className="h-20 mb-2 md:mb-0 md:h-32 p-2  md:w-full">
 
-                    <p className="text-gray-800 dark:text-white text-base font-medium mb-2">
-                    { item.booktitle }
-                    </p>
-                    <p className="text-gray-400 dark:text-gray-300 font-light text-md">
-                    { item.author }
-                    </p>
+                        <p className="break-normal text-gray-800 dark:text-white text-base font-medium mb-2">
+                        { item.booktitle }
+                        </p>
+                        <p className="text-gray-400 dark:text-gray-300 font-light text-md">
+                        { item.author }
+                        </p>
                     </div>
-                    <p className="text-indigo-500 text-md font-medium">
-                        Your Thought
-                    </p>
-                    <div className="h-32 p-2">
-                    <p className="text-gray-800 dark:text-white text-base font-medium mb-8">
-                    { item.thoughts }
-                    </p>
-                    <p className=" text-gray-400 dark:text-gray-300 font-light text-md">
-                    { item.date }
-                    </p>
+                        <p className="text-indigo-500 text-md font-medium">
+                            Your Thought
+                        </p>
+                        <div className="h-32 p-2">
+                        <p className="text-gray-800 dark:text-white text-base font-medium mb-8">
+                        { item.thoughts }
+                        </p>
+                        <p className=" text-gray-400 dark:text-gray-300 font-light text-md">
+                        { item.date }
+                        </p>
 
                     </div>
                 </div>
                     <div onClick={() => onClickTargetEdit(item)}
-                     className="object-cover rounded-full bg-indigo-600 h-10 w-10 hover:opacity-80 absolute bottom-8 right-8">
+                     className="mr-1 object-cover rounded-full bg-indigo-600 h-10 w-10 hover:opacity-80
+                      absolute bottom-6 left-44 md:left-auto md:bottom-8 md:right-20 "
+                      // style={{right: "300px"}}
+                      >
                     <svg className="text-white object-cover p-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+
+                    </div>
+                    <div onClick={() => onClickTargetDelete(item)}
+                     className="object-cover rounded-full bg-red-600 h-10 w-10 hover:opacity-80
+                      absolute bottom-6 left-56 md:left-auto md:bottom-8 md:right-8 "
+                      // style={{right: "300px"}}
+                      >
+                        <svg class="text-white object-cover p-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
 
                     </div>
               </div>
@@ -265,14 +273,7 @@ export const Index = () => {
         </div>
         </div>
             </div>
-            // <SItem key={item.id}>
-            //   <SList>{ item.booktitle }</SList>
-            //   <SImage src={item.bookimage} />
-            //   <SList>{ item.author }</SList>
-            //   <SList>感想： { item.thoughts }</SList>
-            //   <SList>読んだ時間： { item.date }</SList>
-            //   <SButton onClick={() => onClickTargetEdit(item)}>編集する！！</SButton>
-            // </SItem>
+
               );
         })}
       </ul>

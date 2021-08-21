@@ -183,7 +183,7 @@ export const Result = (props) => {
 
       { targetFlag &&
         <>
-        <Modal />
+        <Modal indexFlag={false}/>
 
       </>
 

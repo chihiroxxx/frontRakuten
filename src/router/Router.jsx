@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { Footer } from '../components/Footer';
 import { Search } from '../components/Search';
-import { LonIn } from '../components/LogIn';
+import { Lonin } from '../components/Login';
 import { Index } from '../components/Index';
 import { MainContext } from '../providers/Provider';
 import axios from 'axios';
@@ -37,7 +37,7 @@ export const Router = () => {
 
         </Route>
         <Route path="/login">
-          <LonIn />
+          <Lonin />
           {/* <Footer /> */}
         </Route>
         <Route path="/index">

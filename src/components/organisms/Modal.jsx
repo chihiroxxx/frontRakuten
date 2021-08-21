@@ -2,7 +2,8 @@ import axios from "axios";
 import { useContext, useState } from "react"
 import { MainContext } from "../../providers/Provider";
 
-export const Modal = () =>{
+export const Modal = (props) =>{
+  const { indexFlag } = props
   const { data, setData, setText, configAxios, railsUrl, userId, onClickPostRails,idea, setIdea,targetItem, setTargetItem,targetFlag, setTargetFlag, setTime } = useContext(MainContext);
 
   // const [targetFlag, setTargetFlag] = useState(false)
@@ -93,10 +94,14 @@ export const Modal = () =>{
                   <input value={idea} onChange={onChangeIdea}
                   type="text" placeholder="感じたこと" className="border-2 border-gray-200 w-full px-4 py-2 mt-2 text-base text-black transition duration-500 ease-in-out transform border-transparent rounded-lg bg-blueGray-100 focus:border-blueGray-500 focus:bg-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2"/>
                 </div>
-                <div className="relative mt-4">
-                  <label for="name" className="text-base leading-7 text-blueGray-500">Time</label>
-                  <input onChange={onChangeTime} type="datetime-local" className="border-2 border-gray-200 w-full px-4 py-2 mt-2 text-base text-black transition duration-500 ease-in-out transform border-transparent rounded-lg bg-blueGray-100 focus:border-blueGray-500 focus:bg-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2"/>
-                </div>
+
+                {!indexFlag &&
+                  <div className="relative mt-4">
+                    <label for="name" className="text-base leading-7 text-blueGray-500">Time</label>
+                    <input onChange={onChangeTime} type="datetime-local" className="border-2 border-gray-200 w-full px-4 py-2 mt-2 text-base text-black transition duration-500 ease-in-out transform border-transparent rounded-lg bg-blueGray-100 focus:border-blueGray-500 focus:bg-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2"/>
+                  </div>
+
+                }
                 <div className="flex my-6 mt-4">
                   <label className="flex items-center">
 

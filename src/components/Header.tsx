@@ -1,14 +1,16 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, VFC } from 'react';
 import styled from 'styled-components'
 import { BrowserRouter, Link, Switch, Route, useHistory } from 'react-router-dom'
 import axios from 'axios';
 import { MainContext } from '../providers/Provider';
 import { SideMenu } from './SideMenu';
 
-export const Header = () => {
+export const Header: VFC = () => {
   const { configAxios, loginFlag, setLoginFlag,railsUrl } = useContext(MainContext);
+
   const history = useHistory();
-  const onClickLogOut = () => {
+
+  const onClickLogOut = (): void => {
     axios.delete(`${railsUrl}/logout`,configAxios)
     .then((res) => {
       setLoginFlag(() => false)
@@ -20,8 +22,9 @@ export const Header = () => {
 
   }
   // メニューバー！
-    const [menuFlag, setMenuFlag] = useState(false);
-    const  onClickMenu = () => {
+    const [menuFlag, setMenuFlag] = useState<boolean>(false);
+
+    const  onClickMenu = (): void => {
       setMenuFlag(!menuFlag)
     }
 

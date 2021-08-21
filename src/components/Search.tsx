@@ -1,5 +1,5 @@
 import axios from 'axios'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { ChangeEvent, useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { MainContext } from '../providers/Provider'
 import { Result } from './Result'
@@ -9,38 +9,22 @@ import { Footer } from './Footer'
 import { Test } from './Test'
 import { ResultGoogleTest } from './ResultGoogleTest'
 import { PhoneResult } from './PhoneResult'
-import mainImage from '../assets/main.jpg'
+import mainImage from '../assets/main.jpg' //TOP画面のimage画像
 
 
 export const Search = () => {
   const { data, setData, text, setText, onClickTop, googleData, setGoogleData,targetFlagChangeReset } = useContext(MainContext);
 
-  // console.log(API_KEY.RakutenAPI_KEY)
-  // const [text, setText] = useState('');
-  // const [data, setData] = useState([]);
   const [page, setPage] = useState(2)
 
-  // const onClickSearch = () => {
-  //   const appId = API_KEY.RakutenAPI_KEY
-  //   axios.get("https://app.rakuten.co.jp/services/api/BooksTotal/Search/20170404?", {
-  //     params: {format: "json",
-  //     keyword: text,
-  //     applicationId: appId}
-  //   }).then((res) => {
-  //     // console.log(...res.data.Items);
-  //     const newArray = [...res.data.Items]
-  //     setData(newArray);
-  //     setPage(2)
-  //   })
-  // }
-  const onClickNextPage = () => {
+  const onClickNextPage = ():void => {
     onClickRakutenAPINextPage()
     onClickGoogleAPINextPage()
     setPage(page + 1)
     setGooglePage(googlePage + 30)
   }
 
-  const onClickRakutenAPINextPage = () => {
+  const onClickRakutenAPINextPage = ():void => {
     const appId = API_KEY.RakutenAPI_KEY
     axios.get("https://app.rakuten.co.jp/services/api/BooksTotal/Search/20170404?", {
       params: {format: "json",
@@ -54,7 +38,7 @@ export const Search = () => {
     })
   }
 
-  const onChangeTarget = (e) => {
+  const onChangeTarget = (e: ChangeEvent<HTMLInputElement>) => {
     setText(() => e.target.value)
   }
 
@@ -62,15 +46,23 @@ export const Search = () => {
 
 
 
-  const onClickSearch = () => {
+  const onClickSearch = (): void => {
     onClickGetGoogleAPI();
     onClickGetRakutenAPI();
   }
 
+  interface RakutenItems{
+    Item:{
+      title: string,
+      author: string,
+      itemUrl: string,
+      largeImageUrl: string
 
-  const dataArrangeRakutenAPI = (items) => {
-    const newArray = [];
-    items.map((item, index) => {
+    }
+  }
+  const dataArrangeRakutenAPI = (items: [RakutenItems]) => {
+    const newArray: object[] = [];
+    items.map((item, index: number) => {
       const oneItem = {
         title: item.Item.title,
         author: item.Item.author,
@@ -83,9 +75,20 @@ export const Search = () => {
     return newArray
   }
 
-  const dataArrangeGoogleAPI = (items) => {
-    const newArray = [];
-    items.map((item, index) => {
+  interface GoogleItems{
+    volumeInfo:{
+      title: string,
+      authors: string[],
+      infoLink: string,
+      imageLinks: {
+        thumbnail: string
+      }
+    }
+  }
+
+  const dataArrangeGoogleAPI = (items: [GoogleItems]) => {
+    const newArray: object[] = [];
+    items.map((item, index: number) => {
       const oneItem = {
         title: item.volumeInfo.title,
         author:
@@ -99,22 +102,18 @@ export const Search = () => {
            item.volumeInfo.imageLinks.thumbnail,
     }
     newArray.push(oneItem)
-      // console.log(oneItem,index)
     })
     return newArray
 
   }
 
-  const onClickGetRakutenAPI= ()=>{
+  const onClickGetRakutenAPI= () => {
     const appId = API_KEY.RakutenAPI_KEY
     axios.get("https://app.rakuten.co.jp/services/api/BooksTotal/Search/20170404?", {
       params: {format: "json",
       keyword: text,
       applicationId: appId}
     }).then((res) => {
-      // console.log(...res.data.Items);
-      // console.log(dataArrangeRakutenAPI(res.data.Items))
-      // const newArray = [...res.data.Items] //これもいらなくなる！
       setData(dataArrangeRakutenAPI(res.data.Items));
       setPage(2)
     })
@@ -125,9 +124,8 @@ export const Search = () => {
   const onClickGetGoogleAPI = () => {
     axios.get('https://www.googleapis.com/books/v1/volumes',{params:{
       q: `intitle:${text}`,
-      // startIndex: 1
-      maxResults: 30,
-      startIndex: 0,
+      maxResults: 30, //楽天に合わせた
+      startIndex: 0, //ページ数などではなくItem数で取得する仕様のよう スタートは0
     }})
     .then((res) => {
       dataArrangeGoogleAPI(res.data.items)
@@ -142,9 +140,8 @@ export const Search = () => {
   const onClickGoogleAPINextPage = () => {
     axios.get('https://www.googleapis.com/books/v1/volumes',{params:{
       q: `intitle:${text}`,
-      // startIndex: 1
-      maxResults: 30,
-      startIndex: googlePage,
+      maxResults: 30, //楽天に合わせた
+      startIndex: googlePage, //ページ数などではなくItem数で取得する仕様のよう スタートは0
     }})
     .then((res) => {
       if (res.data.items != null) {
@@ -165,10 +162,11 @@ export const Search = () => {
   // const mainImage = require('../assets/main.jpg');
   const getTopPosition = document.scrollingElement;
   window.onscroll = () => {
-    if (document.getElementById("want") === null){
+    // if (document.getElementById("want") === null){
+    const want = document.getElementById("want")
+    if (getTopPosition === null || want === null){
       return
     }
-    const want = document.getElementById("want")
     if(getTopPosition.scrollTop > 190){
       want.classList.add("fixed","top-0");
       // console.log(want)
@@ -177,13 +175,18 @@ export const Search = () => {
       want.classList.remove("fixed","top-0");
     }
   }
+
   // console.log(getTopPosition.scrollTop)
   useEffect(() => {
+    // if (document.getElementById("google-tab") === null){
     if (document.getElementById("google-tab") === null){
       return
     }
     const googleElement = document.getElementById("google-tab")
     const rakutenElement = document.getElementById("rakuten-tab")
+    if (googleElement === null || rakutenElement === null ){
+      return
+    }
     phoneTabsState &&
       googleElement.classList.add("bg-indigo-900","text-white");
       phoneTabsState &&
@@ -195,6 +198,13 @@ export const Search = () => {
       rakutenElement.classList.add("bg-indigo-900","text-white");
 
   },[phoneTabsState])
+
+
+
+  const styleJSX: React.CSSProperties ={
+    marginBottom: "-2px"
+  }
+
 
   return(
     <>
@@ -230,7 +240,7 @@ export const Search = () => {
 
         {/* うーん...切り替えボタンがなあ... length!!!!!!! */}
           {data.length !== 0 && googleData.length !== 0 &&
-        <div id="want" className=" ml-4 z-50 bg-white w-full pt-2" style={{"margin-bottom": "-2px"}}>
+        <div id="want" className=" ml-4 z-50 bg-white w-full pt-2" style={styleJSX}> {/* : React.CSSProperties */}
           {/* 上 fixed したい */}
           {/* <div className="cursor-default mt-3 ml-1 tracking-tighter text-gray-400  text-base font-medium">On Click Contents Change!!</div> */}
 
@@ -259,7 +269,7 @@ export const Search = () => {
       </div>
 
           </div>
-                <div className="border-t-2 border-gray-900  h-1 w-11/12 pr-2" style={{"margin-top": "-2px"}}></div>
+                <div className="border-t-2 border-gray-900  h-1 w-11/12 pr-2" style={styleJSX}></div>
 
         </div>
                  }
@@ -320,10 +330,10 @@ export const Search = () => {
             left: "50%",
             transform: "translate(-50%, -50%)"}}>
 
-        <h1 className=" font-black tracking-tighter text-black hover:text-white text-5xl title-font text-center cursor-default
+        <h1 className=" font-black tracking-tighter  text-white hover:text-yellow-300 text-5xl title-font text-center cursor-default
           transition duration-500 ease-in-out transform
         ">Welcome to MEMENTO TIME!
-                  <div className="mt-3 ml-1 tracking-tighter text-gray-400  text-base font-medium">Search Books now!</div>
+                  <div className="mt-3 ml-1 tracking-tighter text-gray-600  text-base font-medium">Search Books now!</div>
                   </h1>
         </div>
         </div>
