@@ -10,6 +10,8 @@ import { Test } from './Test'
 import { ResultGoogleTest } from './ResultGoogleTest'
 import { PhoneResult } from './PhoneResult'
 import mainImage from '../assets/main.jpg' //TOP画面のimage画像
+import MainTitle from './animations/MainTitle'
+import './Search.scss';
 
 
 export const Search = () => {
@@ -322,19 +324,22 @@ export const Search = () => {
       :
 
       <>
-        <div className="relative w-full">
+        <div className="relative w-full ">
 
-        <img src={mainImage} alt="memento time" className="mx-auto"/>
-        <div style={{position: "absolute",
+        <img src={mainImage} alt="memento time" className="mx-auto "/>
+        <div className="w-screen z-10" style={{position: "absolute",
             top: "50%",
             left: "50%",
-            transform: "translate(-50%, -50%)"}}>
+            transform: "translate(-50%, -50%)",}}>
+              <div>
 
-        <h1 className=" font-black tracking-tighter  text-white hover:text-yellow-300 text-5xl title-font text-center cursor-default
+              <MainTitle />
+              </div>
+        {/* <h1 className=" font-black tracking-tighter  text-white hover:text-yellow-300 text-5xl title-font text-center cursor-default
           transition duration-500 ease-in-out transform
-        ">Welcome to MEMENTO TIME!
-                  <div className="mt-3 ml-1 tracking-tighter text-gray-600  text-base font-medium">Search Books now!</div>
-                  </h1>
+        ">Welcome to */}
+                  {/* <div className="mt-3 ml-1 tracking-tighter text-gray-600  text-base font-medium">Search Books now!</div> */}
+                  {/* </h1> */}
         </div>
         </div>
         </>

@@ -1,5 +1,7 @@
 import axios from "axios"
 import { useState } from "react"
+import './Test.scss';
+import mainImage from '../assets/main.jpg' //TOP画面のimage画像
 
 export const Test = () => {
   // const [ keyword ,setKeyword] = useState();
@@ -32,12 +34,53 @@ export const Test = () => {
     document.cookie = "aaa=; expires=0";
   }
 
+  // const sytle = {
+  //   ".three-dot-spinner": {
+
+  //   }
+  // }
+
   return(
-  <>
-  <button onClick={onClickGetGo}>sssss</button>
-  {/* <input type="text" onChange={OnChangeKeyword}/>
-  <button onClick={onClickGetGoogleAPI}>googleAPIから</button> */}
-  <button onClick={onClickCookie}>クッキー！</button>
+    <>
+
+    <div className="cover-slide hover-darken inview">
+    <img src={mainImage} alt="memento time" className="mx-auto img-zoom"/>
+    </div>
+
+    {/* <div className="three-dot-spinner">
+        <div className="bounce1"></div>
+        <div className="bounce2"></div>
+        <div className="bounce3"></div>
+    </div>
+
+    <div className="rect-spinner">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+
+    <div id="container">
+      <div className="animate-title inview">
+        <span className="char">M</span>
+        <span className="char">E</span>
+        <span className="char">M</span>
+        <span className="char">E</span>
+        <span className="char">N</span>
+        <span className="char">T</span>
+        <span className="char">O</span>
+        <span className="char">T</span>
+        <span className="char">O</span>
+      </div>
+    </div> */}
+
+          <>
+          {/* <button onClick={onClickGetGo}>sssss</button> */}
+          {/* <input type="text" onChange={OnChangeKeyword}/>
+          <button onClick={onClickGetGoogleAPI}>googleAPIから</button> */}
+          {/* <button onClick={onClickCookie}>クッキー！</button> */}
+          </>
   </>
 
   )
