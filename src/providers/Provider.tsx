@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { createContext, Dispatch, ReactNode, useState } from 'react'
+import React, { createContext, Dispatch, ReactNode, useEffect, useState } from 'react'
 import { API_KEY } from '../api/API_KEY';
 
 // interface MainContext{
@@ -15,6 +15,7 @@ interface Props{
 }
 
 export const MainProvider = (props: Props) => {
+
   const { railsUrl } = API_KEY
   const { children } = props;
 
@@ -24,8 +25,8 @@ export const MainProvider = (props: Props) => {
   const [name, setName] = useState<string>()
   const [password, setPassword] = useState<string>()
 
-  // const configAxios = {withCredentials: true}
-  const configAxios = {headers: { 'X-Requested-With': 'XMLHttpRequest'}, withCredentials: true}
+  const configAxios = {withCredentials: true}
+  // const configAxios = {headers: { 'X-Requested-With': 'XMLHttpRequest'}, withCredentials: true}
 
   const [ booksIndex, setBooksIndex ] = useState([])
 
@@ -87,6 +88,13 @@ export const MainProvider = (props: Props) => {
     setText(() => '')
     setIdea(() => (""))
   }
+
+  // useEffect(()=>{
+  //   const ip :string[] = window.location.href.split('/')
+  //   console.log(ip[2])
+  //   setMyIp(`http://${ip[2]}:3000`)
+  // },[])
+  // const [myIp, setMyIp] = useState<string>()
 
   return (
     <MainContext.Provider value={{ data, setData, text, setText,

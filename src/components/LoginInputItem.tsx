@@ -1,15 +1,23 @@
-import React, { useContext } from 'react'
+import React, { ChangeEvent, Dispatch, SetStateAction, useContext } from 'react'
 import { MainContext } from '../providers/Provider';
 
-const LoginInputItem = (props) => {
-  const { acitonTitle ,actionComment,onClickAciton, onClickCangeSignupFlag } = props
+
+interface Props{
+  acitonTitle: string,
+  actionComment: string,
+  onClickAciton: Dispatch<SetStateAction<void>>,
+}
+
+const LoginInputItem = (props: Props) => {
+  const { acitonTitle ,actionComment,onClickAciton} = props
+  // onClickCangeSignupFlag ???
   const { setName,setPassword } = useContext(MainContext);
 
 
-  const onChangeName = (e) => {
+  const onChangeName = (e: ChangeEvent<HTMLInputElement>) => {
     setName(() => e.target.value)
   }
-  const onChangePassword = (e) => {
+  const onChangePassword = (e: ChangeEvent<HTMLInputElement>) => {
     setPassword(() => e.target.value )
   }
   return (
@@ -34,7 +42,7 @@ const LoginInputItem = (props) => {
                 </div>
                 <div className="mt-2 text-right">
                 </div>
-                <button onClick={onClickAciton}
+                <button onClick={() =>onClickAciton}
                 type="submit"
                 className="bg-yellow-400 block w-full px-4 py-3 mt-6 font-semibold text-white transition duration-500 ease-in-out transform rounded-lg  hover:bg-yellow-500 focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 hover:to-black">
                   {acitonTitle}</button>

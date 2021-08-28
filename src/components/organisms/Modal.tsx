@@ -1,8 +1,13 @@
 import axios from "axios";
-import { useContext, useState } from "react"
+import { ChangeEvent, useContext, useState } from "react"
 import { MainContext } from "../../providers/Provider";
 
-export const Modal = (props) =>{
+interface Props{
+  indexFlag: boolean,
+}
+
+
+export const Modal = (props: Props) =>{
   const { indexFlag } = props
   const { data, setData, setText, configAxios, railsUrl, userId, onClickPostRails,idea, setIdea,targetItem, setTargetItem,targetFlag, setTargetFlag, setTime } = useContext(MainContext);
 
@@ -46,11 +51,11 @@ export const Modal = (props) =>{
   // }
 
 
-  const onChangeIdea = (e) => {
+  const onChangeIdea = (e: ChangeEvent<HTMLInputElement>) => {
     setIdea(() => e.target.value)
   }
 
-  const onChangeTime = (e) => {
+  const onChangeTime = (e: ChangeEvent<HTMLInputElement>) => {
     setTime(() => e.target.valueAsNumber)
   }
 
@@ -90,14 +95,14 @@ export const Modal = (props) =>{
               </div>
               <div className="flex flex-col w-full mx-auto mb-8 lg:px-20 md:mt-0">
                 <div className="relative mt-4">
-                  <label for="text" className="text-base leading-7 text-blueGray-500">Thought</label>
+                  <label htmlFor="text" className="text-base leading-7 text-blueGray-500">Thought</label>
                   <input value={idea} onChange={onChangeIdea}
                   type="text" placeholder="感じたこと" className="border-2 border-gray-200 w-full px-4 py-2 mt-2 text-base text-black transition duration-500 ease-in-out transform border-transparent rounded-lg bg-blueGray-100 focus:border-blueGray-500 focus:bg-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2"/>
                 </div>
 
                 {!indexFlag &&
                   <div className="relative mt-4">
-                    <label for="name" className="text-base leading-7 text-blueGray-500">Time</label>
+                    <label htmlFor="name" className="text-base leading-7 text-blueGray-500">Time</label>
                     <input onChange={onChangeTime} type="datetime-local" className="border-2 border-gray-200 w-full px-4 py-2 mt-2 text-base text-black transition duration-500 ease-in-out transform border-transparent rounded-lg bg-blueGray-100 focus:border-blueGray-500 focus:bg-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2"/>
                   </div>
 

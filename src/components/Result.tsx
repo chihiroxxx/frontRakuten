@@ -1,16 +1,31 @@
 import axios from 'axios'
-import React, { useContext, useState } from 'react'
-import ReactDatePicker from 'react-datepicker'
+import React, { ChangeEvent, useContext, useState } from 'react'
+// import ReactDatePicker from 'react-datepicker'
 import styled from 'styled-components'
 import { MainContext } from '../providers/Provider'
 import { MyButton } from './atoms/MyButton'
 import { Modal } from './organisms/Modal'
 
-export const Result = (props) => {
+
+interface Props{
+  data: PreparedData[]
+  apiName: string
+}
+
+interface PreparedData{
+  title: string,
+  author: string,
+  itemUrl: string,
+  imageUrl: string,
+}
+
+export const Result = (props: Props) => {
   const { setData, setText, configAxios, railsUrl, userId, targetFlagChangeReset, targetItem, setTargetItem, onClickPostRails, setTime , idea, setIdea
   ,targetFlag, setTargetFlag} = useContext(MainContext);
 
   const {data, apiName} = props
+
+
 
 
 
@@ -29,11 +44,11 @@ export const Result = (props) => {
   //   setIdea(() => (""))
   // }
 
-  const onChangeIdea = (e) => {
+  const onChangeIdea = (e: ChangeEvent<HTMLInputElement>) => {
     setIdea(() => e.target.value)
   }
 
-  const onClickTargetItem = (e) => {
+  const onClickTargetItem = (e: TargetItem) => {
     const Target = {title: e.title, author: e.author, imageUrl: e.imageUrl}
     // console.log(Target)
     setTargetItem(Target)
@@ -83,7 +98,7 @@ export const Result = (props) => {
 
   // }
 
-  const onChangeTime = (e) => {
+  const onChangeTime = (e: ChangeEvent<HTMLInputElement>) => {
     setTime(() => e.target.valueAsNumber)
   }
 
@@ -101,7 +116,16 @@ export const Result = (props) => {
   }
 
 
+  interface TargetItem {
+    title: string;
+    author: string;
+    imageUrl: string;
+    itemUrl: string;
+  }
 
+  const styleJSX: React.CSSProperties ={
+    marginTop: "-2px"
+  }
 
 
   return(
@@ -118,7 +142,7 @@ export const Result = (props) => {
                 </div> */}
 
                 </div>
-                <div className="border-t-2 border-gray-900  h-1 w-11/12 pr-2" style={{"margin-top": "-2px"}}></div>
+                <div className="border-t-2 border-gray-900  h-1 w-11/12 pr-2" style={styleJSX}></div>
         </div>
 
 

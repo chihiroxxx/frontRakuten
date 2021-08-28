@@ -1,5 +1,5 @@
 import axios from 'axios'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { ChangeEvent, useContext, useEffect, useState } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { MainContext } from '../providers/Provider'
@@ -8,8 +8,8 @@ import BookCalendar from './organisms/BookCalendar'
 export const Index = () => {
   const { configAxios, booksIndex, setBooksIndex, loginFlag, setLoginFlag, railsUrl, onClickTop, userId } = useContext(MainContext)
 
-  const [targetEditItem, setTargetEditItem] = useState({})
-  const [targetEditThoughts, setTargetEditThoughts] = useState()
+  const [targetEditItem, setTargetEditItem] = useState<TargetEditItem>({id: 0,date: "", author: "",booktitle: "", bookimage: "", thoughts: ""})
+  const [targetEditThoughts, setTargetEditThoughts] = useState<string>()
 
   const onClickGetIndexRails = () => {
     axios.get(`${railsUrl}/books`,{headers: { 'X-Requested-With': 'XMLHttpRequest'}, withCredentials: true, params: {user_id: userId}}).then((res) => {
@@ -33,7 +33,7 @@ export const Index = () => {
 
   // loginFlag ? onClickGetIndexRails() : console.log("home画面に戻す処理にする") ;
 
-  const onClickTargetEdit = (e) => {
+  const onClickTargetEdit = (e: Item) => {
       // console.log(e)
       setTargetEditItem(e)
       setTargetEditThoughts(e.thoughts)
@@ -41,7 +41,7 @@ export const Index = () => {
   // onClickTargetEditはいじらない
 
 
-  const onChangeTargetEditThought = (e)=>{
+  const onChangeTargetEditThought = (e: ChangeEvent<HTMLInputElement>)=>{
     // setTargetEditItem({item: {thoughts: e.target.value}})
     setTargetEditThoughts(e.target.value)
   }
@@ -52,7 +52,7 @@ export const Index = () => {
       // id: targetEditItem.item.id,
       thoughts: targetEditThoughts
     },configAxios).then((res) => {
-      setTargetEditThoughts()
+      setTargetEditThoughts("")
       onClickGetIndexRails()
     })
     .catch(error => {
@@ -61,7 +61,7 @@ export const Index = () => {
 
 
   }
-  const onClickTargetDelete =  (e)  => {
+  const onClickTargetDelete =  (e: Item)  => {
     console.log(e.id)
 
     const deleteId = e.id
@@ -69,9 +69,9 @@ export const Index = () => {
     onClickDeleteRails(deleteId);
   }
 
-  const onClickDeleteRails = (deleteId) =>{
+  const onClickDeleteRails = (deleteId: number) =>{
       axios.delete(`${railsUrl}/books/${deleteId}`,configAxios).then((res) => {
-         setTargetEditThoughts()
+         setTargetEditThoughts("")
 
        }).then(()=>{
          // 削除完了のフラッシュメッセージ出す！！！！！！！
@@ -104,14 +104,14 @@ export const Index = () => {
     !loginFlag && history.push("/")
   }
 
-  const { id } = useParams()
+  // const { id } = useParams()
 
   // 共通化したくないからProviderにあげないことにする
   const [targetFlag, setTargetFlag] = useState(false)
 
   const targetFlagResetOnlyModal = () => {
     setTargetFlag(() => false);
-    setTargetEditItem({})
+    setTargetEditItem({id: 0,date: "", author: "",booktitle: "", bookimage: "", thoughts: ""})
     setTargetEditThoughts("")
   }
 
@@ -124,9 +124,31 @@ export const Index = () => {
 
   // const mapContent =
 
+  interface Item{
+    id: number,
+    date: string,
+    booktitle: string,
+    author: string,
+    bookimage: string,
+    thoughts: any,
+    // itemUrl: string,
+    // largeImageUrl: string
 
 
+  }
 
+  interface TargetEditItem {
+    id: number,
+    date: string,
+    booktitle: string,
+    author: string,
+    bookimage: string,
+    thoughts: any,
+    // title: string;
+    // author: string;
+    // imageUrl: string;
+    // itemUrl: string;
+  }
 
 
 
@@ -144,18 +166,18 @@ export const Index = () => {
                   <div className="mt-3 ml-1 tracking-tighter text-gray-400  text-base font-medium">Enjoy Books now!</div>
                   </h1>
                   <div className="mb-3">
-<nav class="flex flex-wrap items-center justify-center text-base md:ml-auto md:mr-auto">
+<nav className="flex flex-wrap items-center justify-center text-base md:ml-auto md:mr-auto">
                   <div onClick={onClickGetIndexRails}
                    className="flex items-center cursor-pointer mr-5 hover:text-yellow-400 transition duration-500 ease-in-out transform">
                   <svg className=" w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
-                  <div class="px-4 py-1 mr-1 text-base text-blueGray-500  rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 ">
+                  <div className="px-4 py-1 mr-1 text-base text-blueGray-500  rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 ">
                     Reload</div>
 
                   </div>
                   <div onClick={onClickGetCsvRails}
                   className="flex items-center cursor-pointer mr-5 hover:text-yellow-400 transition duration-500 ease-in-out transform">
                   <svg className="w-6 h-6 " fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                  <div class="px-4 py-1 mr-1 text-base text-blueGray-500  rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 ">
+                  <div className="px-4 py-1 mr-1 text-base text-blueGray-500  rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 ">
                     Get CSV</div>
 
                   </div>
@@ -190,9 +212,9 @@ export const Index = () => {
       </div>
       <div className="flex flex-col w-full mx-auto mb-8 lg:px-20 md:mt-0">
         <div className="relative mt-4">
-          <label for="text" className="text-base leading-7 text-blueGray-500">Thought</label>
-          <textarea value={targetEditThoughts} onChange={onChangeTargetEditThought}
-          type="text" name="name" placeholder="感じたこと" className="resize-none h-36 border-2 border-gray-200 w-full px-4 py-2 mt-2 text-base text-black transition duration-500 ease-in-out transform border-transparent rounded-lg bg-blueGray-100 focus:border-blueGray-500 focus:bg-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2"/>
+          <label htmlFor="text" className="text-base leading-7 text-blueGray-500">Thought</label>
+          <textarea value={targetEditThoughts} onChange={()=>onChangeTargetEditThought}
+           name="name" placeholder="感じたこと" className="resize-none h-36 border-2 border-gray-200 w-full px-4 py-2 mt-2 text-base text-black transition duration-500 ease-in-out transform border-transparent rounded-lg bg-blueGray-100 focus:border-blueGray-500 focus:bg-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2"/>
         </div>
         <div className="flex my-6 mt-4">
           <label className="flex items-center">
@@ -219,7 +241,7 @@ export const Index = () => {
       {/* あー、これが再レンダリングしてほしくないってことか！！！ */}
       <ul>
         {/* { mapContent } */}
-        {booksIndex.map((item) => {
+        {booksIndex.map((item: Item) => {
     const dateStr = new Date(item.date).toDateString()
 
     return(
@@ -289,7 +311,7 @@ export const Index = () => {
                 absolute bottom-6 left-56 md:left-auto md:bottom-8 md:right-8 "
                 // style={{right: "300px"}}
                 >
-                  <svg class="text-white object-cover p-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                  <svg className="text-white object-cover p-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
 
               </div>
         </div>

@@ -1,5 +1,5 @@
 import axios from 'axios'
-import React, { ChangeEvent, useContext, useEffect, useState } from 'react'
+import React, { ChangeEvent, TextareaHTMLAttributes, useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { MainContext } from '../providers/Provider'
 import { Result } from './Result'
@@ -41,6 +41,7 @@ export const Search = () => {
   }
 
   const onChangeTarget = (e: ChangeEvent<HTMLInputElement>) => {
+  // const onChangeTarget = (e: ChangeEvent<HTMLInputElement> | TextareaHTMLAttributes<HTMLTextAreaElement>) => {
     setText(() => e.target.value)
   }
 
@@ -63,7 +64,7 @@ export const Search = () => {
     }
   }
   const dataArrangeRakutenAPI = (items: [RakutenItems]) => {
-    const newArray: object[] = [];
+    const newArray: PreparedData[] = [];
     items.map((item, index: number) => {
       const oneItem = {
         title: item.Item.title,
@@ -89,24 +90,31 @@ export const Search = () => {
   }
 
   const dataArrangeGoogleAPI = (items: [GoogleItems]) => {
-    const newArray: object[] = [];
+    const newArray: PreparedData[] = [];
     items.map((item, index: number) => {
       const oneItem = {
         title: item.volumeInfo.title,
         author:
           item.volumeInfo.authors == null ?
-          null:
+          "":
           item.volumeInfo.authors[0] ,
         itemUrl: item.volumeInfo.infoLink,
         imageUrl:
             item.volumeInfo.imageLinks == null ?
-           null :
+           "" :
            item.volumeInfo.imageLinks.thumbnail,
     }
     newArray.push(oneItem)
     })
     return newArray
 
+  }
+
+  interface PreparedData{
+    title: string,
+    author: string,
+    itemUrl: string,
+    imageUrl: string,
   }
 
   const onClickGetRakutenAPI= () => {

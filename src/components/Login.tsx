@@ -59,6 +59,10 @@ export const Lonin: VFC = () => {
     // }
     // return toggleBottonName
   }
+  // console.log(window.location.href)
+
+
+  // const axiostest :string = `${location.href}:3000`
 
   return(
     <>
