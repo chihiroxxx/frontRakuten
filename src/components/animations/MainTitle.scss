@@ -39,9 +39,9 @@ $cBlack: black;
   font-family: "Acme", sans-serif;
   &.inview {
     & .char {
-      font-size: 4.5em;
+      font-size: 7em;
       &.mini {
-        font-size: 3em;
+        font-size: 4.5em;
       }
       display: inline-block;
       @include animation(
@@ -82,14 +82,14 @@ $cBlack: black;
   }
 }
 
-@media (min-width: 768px) {
+@media (max-width: 768px) {
   .animate-title {
     &.inview {
       & .char {
-        font-size: 7em;
-      }
-      &.mini {
         font-size: 4.5em;
+        &.mini {
+          font-size: 2.5em;
+        }
       }
     }
   }
