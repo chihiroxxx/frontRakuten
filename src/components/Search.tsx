@@ -17,7 +17,7 @@ import './Search.scss';
 export const Search = () => {
   const { data, setData, text, setText, onClickTop, googleData, setGoogleData,targetFlagChangeReset } = useContext(MainContext);
   const appId = process.env.REACT_APP_RAKUTEN_API_KEY
-  console.log(appId)
+  // console.log(appId)
   const [page, setPage] = useState(2)
 
   const onClickNextPage = ():void => {
