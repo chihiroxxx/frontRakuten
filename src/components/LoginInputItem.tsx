@@ -5,7 +5,7 @@ import { MainContext } from '../providers/Provider';
 interface Props{
   acitonTitle: string,
   actionComment: string,
-  onClickAciton: Dispatch<SetStateAction<void>>,
+  onClickAciton: any,
 }
 
 const LoginInputItem = (props: Props) => {
@@ -42,7 +42,7 @@ const LoginInputItem = (props: Props) => {
                 </div>
                 <div className="mt-2 text-right">
                 </div>
-                <button onClick={() =>onClickAciton}
+                <button onClick={onClickAciton}
                 type="submit"
                 className="bg-yellow-400 block w-full px-4 py-3 mt-6 font-semibold text-white transition duration-500 ease-in-out transform rounded-lg  hover:bg-yellow-500 focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 hover:to-black">
                   {acitonTitle}</button>

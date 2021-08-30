@@ -16,7 +16,8 @@ interface Props{
 
 export const MainProvider = (props: Props) => {
 
-  const { railsUrl } = API_KEY
+  const  railsUrl  = process.env.REACT_APP_RAILS_URL //ここをENVにしたい！！
+  console.log(railsUrl)
   const { children } = props;
 
   const [data, setData] = useState([]);

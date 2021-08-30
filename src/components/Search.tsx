@@ -16,7 +16,8 @@ import './Search.scss';
 
 export const Search = () => {
   const { data, setData, text, setText, onClickTop, googleData, setGoogleData,targetFlagChangeReset } = useContext(MainContext);
-
+  const appId = process.env.REACT_APP_RAKUTEN_API_KEY
+  console.log(appId)
   const [page, setPage] = useState(2)
 
   const onClickNextPage = ():void => {
@@ -27,7 +28,7 @@ export const Search = () => {
   }
 
   const onClickRakutenAPINextPage = ():void => {
-    const appId = API_KEY.RakutenAPI_KEY
+    // const appId = API_KEY.RakutenAPI_KEY
     axios.get("https://app.rakuten.co.jp/services/api/BooksTotal/Search/20170404?", {
       params: {format: "json",
       keyword: text,
@@ -117,8 +118,8 @@ export const Search = () => {
     imageUrl: string,
   }
 
+
   const onClickGetRakutenAPI= () => {
-    const appId = API_KEY.RakutenAPI_KEY
     axios.get("https://app.rakuten.co.jp/services/api/BooksTotal/Search/20170404?", {
       params: {format: "json",
       keyword: text,
