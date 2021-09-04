@@ -3,7 +3,7 @@ import React, { ChangeEvent, TextareaHTMLAttributes, useContext, useEffect, useS
 import styled from 'styled-components'
 import { MainContext } from '../providers/Provider'
 import { Result } from './Result'
-import { API_KEY } from '../api/API_KEY'
+// import { API_KEY } from '../api/API_KEY'
 import { MyButton } from './atoms/MyButton'
 import { Footer } from './Footer'
 import { Test } from './Test'
@@ -19,6 +19,7 @@ export const Search = () => {
   const appId = process.env.REACT_APP_RAKUTEN_API_KEY
   // console.log(appId)
   const [page, setPage] = useState(2)
+  // commit commit!!!!!!!!!!!
 
   const onClickNextPage = ():void => {
     onClickRakutenAPINextPage()

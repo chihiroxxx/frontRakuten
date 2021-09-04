@@ -13,7 +13,7 @@ export const Router = () => {
     const { configAxios,loginFlag, setLoginFlag, railsUrl, setUserId } = useContext(MainContext);
 
   useEffect(() => {
-    axios.get(`${railsUrl}`,configAxios).then((res) => {
+    axios.get(`${railsUrl}/`,configAxios).then((res) => {
       setUserId(res.data.user_id);
       // console.log(res)
       setLoginFlag(() => true)

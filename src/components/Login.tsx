@@ -3,6 +3,7 @@ import React, { ChangeEvent, useContext, useState, VFC } from 'react'
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components'
 import { MainContext } from '../providers/Provider';
+import ErrorMessage from './ErrorMessage';
 import LoginInputItem from './LoginInputItem';
 
 export const Lonin: VFC = () => {
@@ -24,11 +25,14 @@ export const Lonin: VFC = () => {
       setLoginFlag(() => true)
     })
     .catch((error) => {
+      console.log(error)
+      // alert("ログインできません...（Usernameとpasswordをご確認ください...）")
     });
 
   }
-
+// const [errorFlag, setErrorFlag] = useState<boolean>(false);
   //新規登録用！！！
+  let errorMessage;
   const onClickSignUp = ():void => {
     axios.post(`${railsUrl}/users`,{
         name: name,
@@ -41,6 +45,10 @@ export const Lonin: VFC = () => {
         setLoginFlag(() => true)
       })
       .catch((error) => {
+        // document.querySelector('main')?.addEventListener()
+        // console.log(error)
+        // alert("作成できません...（名前は小文字英数字16文字以内でお願いします）")
+        // てかさ送る前にバリデーションかけよ？？？
       });
   }
 
@@ -66,7 +74,8 @@ export const Lonin: VFC = () => {
 
   return(
     <>
-<section className="flex flex-col items-center h-screen md:flex-row ">
+<section
+className="flex flex-col items-center h-screen md:flex-row ">
             <div className="relative hidden w-full h-screen bg-blueGray-400 lg:block md:w-1/3 xl:w-1/3">
               <img src="https://source.unsplash.com/random" alt="" className="absolute object-cover w-full h-full"/>
               {/* <img src="https://dummyimage.com/300x600/F3F4F7/000000" alt="" className="absolute object-cover w-full h-full"/> */}

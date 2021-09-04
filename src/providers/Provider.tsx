@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { createContext, Dispatch, ReactNode, useEffect, useState } from 'react'
-import { API_KEY } from '../api/API_KEY';
+// import { API_KEY } from '../api/API_KEY';
 
 // interface MainContext{
 //   name?: string,
