@@ -76,7 +76,7 @@ export const Lonin: VFC = () => {
     <>
 <section
 className="flex flex-col items-center h-screen md:flex-row ">
-            <div className="relative hidden w-full h-screen bg-blueGray-400 lg:block md:w-1/3 xl:w-1/3">
+            <div className="relative hidden w-full h-screen bg-blueGray-400 lg:block md:w-1/3">
               <img src="https://source.unsplash.com/random" alt="" className="absolute object-cover w-full h-full"/>
               {/* <img src="https://dummyimage.com/300x600/F3F4F7/000000" alt="" className="absolute object-cover w-full h-full"/> */}
               <div className="relative z-10 m-12 text-left">
@@ -88,7 +88,7 @@ className="flex flex-col items-center h-screen md:flex-row ">
               </div>
             </div>
 
-            <div className="flex w-full h-screen px-6 bg-whitelack md:max-w-md lg:max-w-full md:mx-auto md:w-1/2 xl:w-1/3 lg:px-16 xl:px-12 items-left justify-left">
+            <div className="flex w-full h-screen px-6 bg-whitelack md:max-w-md lg:max-w-full md:mx-auto md:w-1/2 lg:px-16 xl:px-12 items-left justify-left">
               <div className="mt-6">
 
   {signupFlag ?

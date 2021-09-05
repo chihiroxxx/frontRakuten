@@ -1,4 +1,5 @@
 import React, { ChangeEvent, Dispatch, SetStateAction, useContext } from 'react'
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { MainContext } from '../providers/Provider';
 
 
@@ -6,6 +7,25 @@ interface Props{
   acitonTitle: string,
   actionComment: string,
   onClickAciton: any,
+}
+
+// interface FormInput{
+//   username: string,
+//   password: string
+// }
+interface FormStatus{
+  username: string,
+  password: string
+//   username:{
+//   required: string;
+//   maxLength: number;
+//   pattern: string;
+// }
+//   password:{
+//     required: string;
+//     minLength: number;
+//     pattern: string;
+//   }
 }
 
 const LoginInputItem = (props: Props) => {
@@ -20,8 +40,19 @@ const LoginInputItem = (props: Props) => {
   const onChangePassword = (e: ChangeEvent<HTMLInputElement>) => {
     setPassword(() => e.target.value )
   }
+
+  // React Hook Formのところ-------------------------------
+  const { register, handleSubmit, formState: {errors} , reset } = useForm<FormStatus>({criteriaMode: "all", shouldFocusError: true})
+  const onSubmit: SubmitHandler<FormStatus> = (data) => {
+    // console.log(data.password)
+    setName(() => data.username)
+    setPassword(() => data.password)
+    onClickAciton()
+  };
+
   return (
     <>
+              <form onSubmit={handleSubmit(onSubmit)}>
 
                 <h1 className="cursor-default my-12 font-black tracking-tighter text-black hover:text-indigo-900 text-5xl title-font">
                   {acitonTitle} .
@@ -29,23 +60,37 @@ const LoginInputItem = (props: Props) => {
                   {actionComment}</div>
                 </h1>
                 <div>
-                  <label className="text-base font-medium leading-relaxed text-blueGray-700">User Name</label>
-                  <input onChange={onChangeName}
+                  <label className="text-base font-medium leading-relaxed text-blueGray-700">User Name <span className="tracking-tighter text-gray-400  text-sm font-medium" >※ lower case letter and number</span></label>
+                  {/* <p className="mt-3 ml-1 tracking-tighter text-gray-400  text-base font-medium">小文字英数字</p> */}
+                  <input //onChange={onChangeName} name="username"
+                  {...register("username", {"required":  true,maxLength: 16,pattern: /[a-z0-9]/,})}
+                  // {...register("maxLength", {maxLength: 16})}
+                  // {...register("pattern", {pattern: /^[a-z]+$/i})}
                   type="name" placeholder="User Name "
-                  className="border-2 border-gray-500 w-full px-4 py-2 mt-2 text-base text-indigo-900 border-transparent rounded-lg bg-blueGray-100 ext-blue-700 focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2"/>{/* autocomplete="" required=""*/}
+                  className="border-2 border-gray-500 w-full px-4 py-2 mt-2 text-base text-indigo-900 border-transparent rounded-lg bg-blueGray-100 ext-blue-700 focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2"/>
+                  <span className="text-red-500 ">{errors.username?.types?.required && "User Nameが入力されていません"}<br/>
+                  {errors.username?.types?.maxLength && "16文字以内で入力してください"}<br/>
+                  {errors.username?.types?.pattern && "小文字英数字で入力してください"}<br/></span>
+                  {/* autocomplete="" required=""*/}
                 </div>
                 <div className="mt-4">
-                  <label className="text-base font-medium leading-relaxed text-blueGray-700">Password</label>
-                  <input onChange={onChangePassword}
+                  <label className="text-base font-medium leading-relaxed text-blueGray-700">Password <span className="tracking-tighter text-gray-400  text-sm font-medium" >※ lower case letter and number, 8 or more characters </span></label>
+                  <input //onChange={onChangePassword} name="password"
+                   {...register("password", { required: true, minLength: 8 ,pattern: /[a-z0-9]/})}
                    type="password" placeholder="Password"
-                   className="border-2 border-gray-500 w-full px-4 py-2 mt-2 text-base text-indigo-900 border-transparent rounded-lg bg-blueGray-100 ext-blue-700 focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2"/>{/* required="" minlength="6" */}
+                   className="border-2 border-gray-500 w-full px-4 py-2 mt-2 text-base text-indigo-900 border-transparent rounded-lg bg-blueGray-100 ext-blue-700 focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2"/>
+                   <span className="text-red-500 ">{errors.password?.types?.required && "Passwordが入力されていません"}<br/>
+                   {errors.password?.types?.minLength && "8文字以上で入力してください"}<br/>
+                   {errors.password?.types?.pattern && "小文字英数字で入力してください"}<br/></span>
+                   {/* required="" minlength="6" */}
                 </div>
                 <div className="mt-2 text-right">
                 </div>
-                <button onClick={onClickAciton}
+                <button //onClick={onClickAciton}
                 type="submit"
                 className="bg-yellow-400 block w-full px-4 py-3 mt-6 font-semibold text-white transition duration-500 ease-in-out transform rounded-lg  hover:bg-yellow-500 focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 hover:to-black">
                   {acitonTitle}</button>
+              </form>
 
               {/* <div onClick={onClickCangeSignupFlag}
               className="cursor-pointer">切り替え</div> */}
