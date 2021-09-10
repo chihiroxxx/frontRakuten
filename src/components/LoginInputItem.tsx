@@ -45,9 +45,9 @@ const LoginInputItem = (props: Props) => {
   const { register, handleSubmit, formState: {errors} , reset } = useForm<FormStatus>({criteriaMode: "all", shouldFocusError: true})
   const onSubmit: SubmitHandler<FormStatus> = (data) => {
     // console.log(data.password)
-    setName(() => data.username)
-    setPassword(() => data.password)
-    onClickAciton()
+    // setName(() => data.username)
+    // setPassword(() => data.password)
+    onClickAciton(data.username, data.password)
   };
 
   return (

@@ -1,3 +1,4 @@
+import { useDisclosure } from '@chakra-ui/react'
 import axios from 'axios'
 import React, { ChangeEvent, useContext, useState } from 'react'
 // import ReactDatePicker from 'react-datepicker'
@@ -5,6 +6,7 @@ import styled from 'styled-components'
 import { MainContext } from '../providers/Provider'
 import { MyButton } from './atoms/MyButton'
 import { Modal } from './organisms/Modal'
+import ModalTest from './organisms/ModalTest'
 
 
 interface Props{
@@ -25,7 +27,7 @@ export const Result = (props: Props) => {
 
   const {data, apiName} = props
 
-
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
 
 
@@ -54,6 +56,7 @@ export const Result = (props: Props) => {
     setTargetItem(Target)
 
     targetFlagChange()
+    onOpen()
   }
 
 
@@ -126,6 +129,7 @@ export const Result = (props: Props) => {
   const styleJSX: React.CSSProperties ={
     marginTop: "-2px"
   }
+
 
 
   return(
@@ -207,7 +211,8 @@ export const Result = (props: Props) => {
 
       { targetFlag &&
         <>
-        <Modal indexFlag={false}/>
+        {/* <Modal indexFlag={false}/> */}
+        <ModalTest indexFlag={false} isOpen={isOpen} onClose={onClose}/>
 
       </>
 

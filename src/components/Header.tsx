@@ -6,7 +6,7 @@ import { MainContext } from '../providers/Provider';
 import { SideMenu } from './SideMenu';
 
 export const Header: VFC = () => {
-  const { configAxios, loginFlag, setLoginFlag,railsUrl } = useContext(MainContext);
+  const { configAxios, loginFlag, setLoginFlag,railsUrl,showToast } = useContext(MainContext);
 
   const history = useHistory();
 
@@ -15,7 +15,7 @@ export const Header: VFC = () => {
     .then((res) => {
       setLoginFlag(() => false)
       history.push("/")
-
+      showToast("ログアウトしました")
     })
     .catch(error => {
     });

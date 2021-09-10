@@ -1,3 +1,4 @@
+import { Box, useToast } from '@chakra-ui/react';
 import axios from 'axios';
 import React, { createContext, Dispatch, ReactNode, useEffect, useState } from 'react'
 // import { API_KEY } from '../api/API_KEY';
@@ -45,6 +46,9 @@ export const MainProvider = (props: Props) => {
 
   const [googleData, setGoogleData] = useState([]);
 
+  const [tsutayaData, setTsutayaData] = useState([])
+  const [kinoData, setKinoData] = useState([])
+
   interface TargetItem {
     title: string;
     author: string;
@@ -57,23 +61,28 @@ export const MainProvider = (props: Props) => {
 
 
   const onClickPostRails = () => {
-    const trans: number = time / 1000
-    axios.post(`${railsUrl}/books`,{
-      booktitle: targetItem.title,
-      author: targetItem.author,
-      bookimage: targetItem.imageUrl,
-      thoughts: idea,
-      date: trans,
-      user_id: userId
-    },configAxios).then((res) => {
-      setTargetFlag(() => false);
-      setTargetItem(() => ({title: "", author: "", imageUrl: "",itemUrl: ""}))
-      setIdea(() => (""))
+    if(loginFlag){
+      const trans: number = time / 1000
+      axios.post(`${railsUrl}/books`,{
+        booktitle: targetItem.title,
+        author: targetItem.author,
+        bookimage: targetItem.imageUrl,
+        thoughts: idea,
+        date: trans,
+        user_id: userId
+      },configAxios).then((res) => {
+        setTargetFlag(() => false);
+        setTargetItem(() => ({title: "", author: "", imageUrl: "",itemUrl: ""}))
+        setIdea(() => (""))
 
-    })
-    .catch(error => {
+      })
+      .catch(error => {
+      });
 
-    });
+    } else {
+      showToast("ログインしてください")
+
+    }
 
   }
 
@@ -86,6 +95,8 @@ export const MainProvider = (props: Props) => {
     setTargetItem(() => ({title: "", author: "", imageUrl: "",itemUrl: ""}))
     setData(() => [])
     setGoogleData(() => [])
+    setTsutayaData(() => [])
+    setKinoData(() => [])
     setText(() => '')
     setIdea(() => (""))
   }
@@ -96,11 +107,23 @@ export const MainProvider = (props: Props) => {
   //   setMyIp(`http://${ip[2]}:3000`)
   // },[])
   // const [myIp, setMyIp] = useState<string>()
+  const toast = useToast()
+  const showToast = (message: string) => {
+    toast({
+      position: "top",
+      duration: 2000,
+      render: () => (
+        <Box color="white" p={3} className="bg-indigo-800 rounded-md">
+          {message}
+        </Box>
+      ),
+    })}
 
   return (
     <MainContext.Provider value={{ data, setData, text, setText,
     name, setName, password, setPassword, configAxios, booksIndex, setBooksIndex,loginFlag ,setLoginFlag ,railsUrl, onClickTop,
-    userId, setUserId, googleData, setGoogleData, targetFlagChangeReset, targetItem, setTargetItem,onClickPostRails, setTime,idea, setIdea,targetFlag, setTargetFlag}}>
+    userId, setUserId, googleData, setGoogleData, targetFlagChangeReset, targetItem, setTargetItem,onClickPostRails, setTime,idea, setIdea,targetFlag, setTargetFlag,showToast,
+    tsutayaData,setTsutayaData,kinoData, setKinoData}}>
       { children }
     </MainContext.Provider>
   )

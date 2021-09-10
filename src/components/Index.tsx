@@ -157,7 +157,7 @@ export const Index = () => {
   return(
     <>
       <>
-      {/* <BookCalendar /> */}
+      <BookCalendar />
       <div>
 
         <h1 className="my-10 font-black tracking-tighter text-black hover:text-indigo-700 text-3xl title-font text-center cursor-default

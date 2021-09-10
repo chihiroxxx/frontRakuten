@@ -5,14 +5,18 @@ import styled from 'styled-components'
 import { MainContext } from '../providers/Provider';
 import ErrorMessage from './ErrorMessage';
 import LoginInputItem from './LoginInputItem';
+import { Box, useToast } from "@chakra-ui/react"
 
 export const Lonin: VFC = () => {
-  const { name, setName, password, setPassword, configAxios, loginFlag, setLoginFlag, railsUrl, userId, setUserId } = useContext(MainContext);
+  const {  configAxios, loginFlag, setLoginFlag, railsUrl, userId, setUserId ,showToast} = useContext(MainContext);
+  // const { name, setName, password, setPassword, configAxios, loginFlag, setLoginFlag, railsUrl, userId, setUserId } = useContext(MainContext);
 
 
   const history = useHistory();
 
-  const onClickLogIn = (): void => {
+  // const toast = useToast()
+
+  const onClickLogIn = (name: string, password: string): void => {
     axios.post(`${railsUrl}/login`,{
       name: name,
       password: password
@@ -20,12 +24,15 @@ export const Lonin: VFC = () => {
 
       setUserId(res.data.user_id);
       history.push("/index")
-      setName(() => (""))
-      setPassword(() => (""))
+      // setName(() => (""))
+      // setPassword(() => (""))
       setLoginFlag(() => true)
+      showToast("ログインしました")
     })
     .catch((error) => {
-      console.log(error)
+      showToast("ログインできません")
+      // console.log(error)
+      // showToast("ログインしました")
       // alert("ログインできません...（Usernameとpasswordをご確認ください...）")
     });
 
@@ -33,25 +40,37 @@ export const Lonin: VFC = () => {
 // const [errorFlag, setErrorFlag] = useState<boolean>(false);
   //新規登録用！！！
   let errorMessage;
-  const onClickSignUp = ():void => {
+  const onClickSignUp = (name: string, password: string):void => {
     axios.post(`${railsUrl}/users`,{
         name: name,
         password: password
       },configAxios).then((res) => {
         setUserId(res.data.user_id);
         history.push("/index")
-        setName(() => (""))
-        setPassword(() => (""))
+        // setName(() => (""))
+        // setPassword(() => (""))
         setLoginFlag(() => true)
+        showToast("アカウント作成しました")
       })
       .catch((error) => {
+        showToast("アカウント作成できません")
         // document.querySelector('main')?.addEventListener()
         // console.log(error)
         // alert("作成できません...（名前は小文字英数字16文字以内でお願いします）")
         // てかさ送る前にバリデーションかけよ？？？
       });
   }
-
+//  const showToast = (message: string) => {
+//   toast({
+//     position: "top",
+//     duration: 2000,
+//     render: () => (
+//       <Box color="white" p={3} className="bg-indigo-800 rounded-md">
+//         {message}
+//       </Box>
+//     ),
+//   })
+//  }
 
   const [signupFlag, setSignupFlag] = useState<boolean>(true)
 
@@ -71,6 +90,8 @@ export const Lonin: VFC = () => {
 
 
   // const axiostest :string = `${location.href}:3000`
+
+
 
   return(
     <>

@@ -15,8 +15,9 @@ import './Search.scss';
 
 
 export const Search = () => {
-  const { data, setData, text, setText, onClickTop, googleData, setGoogleData,targetFlagChangeReset } = useContext(MainContext);
+  const { data, setData, text, setText, onClickTop, googleData, setGoogleData,targetFlagChangeReset,tsutayaData,setTsutayaData,kinoData, setKinoData } = useContext(MainContext);
   const appId = process.env.REACT_APP_RAKUTEN_API_KEY
+  const goUrl = process.env.REACT_APP_GO_URL
   // console.log(appId)
   const [page, setPage] = useState(2)
   // commit commit!!!!!!!!!!!
@@ -24,6 +25,7 @@ export const Search = () => {
   const onClickNextPage = ():void => {
     onClickRakutenAPINextPage()
     onClickGoogleAPINextPage()
+    onClickGetGoTsutayaAPINextPage()
     setPage(page + 1)
     setGooglePage(googlePage + 30)
   }
@@ -52,8 +54,18 @@ export const Search = () => {
 
 
   const onClickSearch = (): void => {
+    setData([])
+    setGoogleData([])
+    setTsutayaData([])
+    setKinoData([])
+    setPage(2)
+    setGooglePage(30)
+
+
     onClickGetGoogleAPI();
     onClickGetRakutenAPI();
+    onClickGetGoTsutayaAPI();
+    onClickGetGoKinoAPI();
   }
 
   interface RakutenItems{
@@ -163,6 +175,23 @@ export const Search = () => {
       }
     })
   }
+
+  const onClickGetGoTsutayaAPINextPage =() =>{
+    axios.get(`${goUrl}/tsutaya?`,{params:
+    {q: text,
+      page:  page, //ひとまずpage1 tsutayaは30件か...
+    }}).then((res)=> {
+      if (res.data != null) {
+        const newArray = [...tsutayaData, ...res.data]
+
+        setTsutayaData(newArray)
+        // console.log(newArray)
+
+      }
+      // const newArray = [...data, ...dataArrangeRakutenAPI(res.data.Items)]
+      // setData(newArray);
+    })
+  }
   const [phoneTabsState, setPhoneTabsState] = useState(true)
   const onClickGoogleTabs = () => {
     setPhoneTabsState(true)
@@ -189,33 +218,118 @@ export const Search = () => {
   }
 
   // console.log(getTopPosition.scrollTop)
-  useEffect(() => {
-    // if (document.getElementById("google-tab") === null){
-    if (document.getElementById("google-tab") === null){
-      return
-    }
-    const googleElement = document.getElementById("google-tab")
-    const rakutenElement = document.getElementById("rakuten-tab")
-    if (googleElement === null || rakutenElement === null ){
-      return
-    }
-    phoneTabsState &&
-      googleElement.classList.add("bg-indigo-900","text-white");
-      phoneTabsState &&
-      rakutenElement.classList.remove("bg-indigo-900","text-white");
+  // useEffect(() => {
+  //   // if (document.getElementById("google-tab") === null){
+  //   if (document.getElementById("google-tab") === null){
+  //     return
+  //   }
+  //   const googleElement = document.getElementById("google-tab")
+  //   const rakutenElement = document.getElementById("rakuten-tab")
+  //   if (googleElement === null || rakutenElement === null ){
+  //     return
+  //   }
+  //   phoneTabsState &&
+  //     googleElement.classList.add("bg-indigo-900","text-white");
+  //     phoneTabsState &&
+  //     rakutenElement.classList.remove("bg-indigo-900","text-white");
 
-      !phoneTabsState &&
-      googleElement.classList.remove("bg-indigo-900","text-white");
-      !phoneTabsState &&
-      rakutenElement.classList.add("bg-indigo-900","text-white");
+  //     !phoneTabsState &&
+  //     googleElement.classList.remove("bg-indigo-900","text-white");
+  //     !phoneTabsState &&
+  //     rakutenElement.classList.add("bg-indigo-900","text-white");
 
-  },[phoneTabsState])
+  // },[phoneTabsState])
 
 
 
   const styleJSX: React.CSSProperties ={
     marginBottom: "-2px"
   }
+
+  let arrngKinoData : [] = [] // useStateにする...
+
+  const onClickGetGoKinoAPI = ()=>{
+    axios.get(`${goUrl}/kino?`,{params:
+    {q: text,
+      page: page - 1, //ひとまずpage1 で紀伊國屋は20件か... うーむ...
+    }}).then((res)=> {
+      if (res.data != null) {
+      setKinoData(res.data)
+      arrngKinoData = res.data.slice(0,30)
+      // console.log(arrngKinoData)
+      // console.log(res)
+    }
+    })
+
+  }
+  const onClickGetGoTsutayaAPI = ()=>{
+    axios.get(`${goUrl}/tsutaya?`,{params:
+    {q: text,
+      page:  page - 1, //ひとまずpage1 tsutayaは30件か...
+    }}).then((res)=> {
+      if (res.data != null) {
+      setTsutayaData(res.data)
+      // console.log(res)
+      }
+    })
+  }
+
+
+  const [tabStatus, setTabStatus] = useState(1)
+
+
+//   const tabfunc = () : JSX.Element => {
+//     switch (tabStatus){
+//     case 1:
+//       console.log("1です")
+//       return <span>GoodMorning</span>
+
+//     case 2:
+//       console.log("2です")
+//       return <span>GoodMorning2</span>
+
+//   }
+//   return <span>GoodMorning2</span>
+// }
+
+useEffect(() => {
+  if (document.getElementById("google-tab") !== null){
+  switch (tabStatus){
+    case 1:
+      document.getElementById("google-tab")!.classList.add("bg-indigo-900","text-white");
+      // document.getElementById("google-tab")!.classList.toggle("bg-indigo-900");
+      // document.getElementById("google-tab")!.classList.toggle("text-white");
+      document.getElementById("rakuten-tab")!.classList.remove("bg-indigo-900","text-white");
+      document.getElementById("tsutaya-tab")!.classList.remove("bg-indigo-900","text-white");
+      document.getElementById("kinokuniya-tab")!.classList.remove("bg-indigo-900","text-white");
+      break
+    case 2:
+      document.getElementById("rakuten-tab")!.classList.add("bg-indigo-900","text-white");
+      // document.getElementById("rakuten-tab")!.classList.toggle("bg-indigo-900");
+      // document.getElementById("rakuten-tab")!.classList.toggle("text-white");
+      document.getElementById("google-tab")!.classList.remove("bg-indigo-900","text-white");
+      document.getElementById("tsutaya-tab")!.classList.remove("bg-indigo-900","text-white");
+      document.getElementById("kinokuniya-tab")!.classList.remove("bg-indigo-900","text-white");
+      break
+    case 3:
+      document.getElementById("tsutaya-tab")!.classList.add("bg-indigo-900","text-white");
+      // document.getElementById("rakuten-tab")!.classList.toggle("bg-indigo-900");
+      // document.getElementById("rakuten-tab")!.classList.toggle("text-white");
+      document.getElementById("google-tab")!.classList.remove("bg-indigo-900","text-white");
+      document.getElementById("rakuten-tab")!.classList.remove("bg-indigo-900","text-white");
+      document.getElementById("kinokuniya-tab")!.classList.remove("bg-indigo-900","text-white");
+      break
+    case 4:
+      document.getElementById("kinokuniya-tab")!.classList.add("bg-indigo-900","text-white");
+      // document.getElementById("rakuten-tab")!.classList.toggle("bg-indigo-900");
+      // document.getElementById("rakuten-tab")!.classList.toggle("text-white");
+      document.getElementById("google-tab")!.classList.remove("bg-indigo-900","text-white");
+      document.getElementById("rakuten-tab")!.classList.remove("bg-indigo-900","text-white");
+      document.getElementById("tsutaya-tab")!.classList.remove("bg-indigo-900","text-white");
+      break
+  }}
+},[tabStatus])
+
 
 
   return(
@@ -258,24 +372,50 @@ export const Search = () => {
 
           <div className="flex">
       <div>
-      <div id="google-tab" onClick={onClickGoogleTabs}
-       className="bg-white rounded-b-none border-t-2 border-r-2 border-l-2 border-gray-900 cursor-pointer w-32 text-center px-4 py-1 mr-1 text-base text-blueGray-500 transition duration-500 ease-in-out transform rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:text-white hover:bg-indigo-900 ">
+      {/* <div id="google-tab" onClick={onClickGoogleTabs} */}
+      <div id="google-tab" onClick={()=>setTabStatus(1)}
+       className="bg-white rounded-b-none border-t-2 border-r-2 border-l-2 border-gray-900 cursor-pointer w-20 text-center px-1 py-1 mr-1 text-xs text-blueGray-500 transition duration-500 ease-in-out transform rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:text-white hover:bg-indigo-900 ">
                 Google
-                {phoneTabsState &&
+                {/* {phoneTabsState &&
                 <div className="border-b-4 opacity-0 border-purple-400 ">
                 </div>
-                }
+                } */}
                 </div>
 
       </div>
       <div>
-      <div id="rakuten-tab" onClick={onClickRakutenTabs}
-       className="bg-white rounded-b-none border-t-2 border-r-2 border-l-2 border-gray-900 cursor-pointer w-32 text-center px-4 py-1 mr-1 text-base text-blueGray-500 transition duration-500 ease-in-out transform rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:text-white hover:bg-indigo-900 ">
+      {/* <div id="rakuten-tab" onClick={onClickRakutenTabs} */}
+      <div id="rakuten-tab" onClick={()=>setTabStatus(2)}
+       className="bg-white rounded-b-none border-t-2 border-r-2 border-l-2 border-gray-900 cursor-pointer w-20 text-center px-1 py-1 mr-1 text-xs text-blueGray-500 transition duration-500 ease-in-out transform rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:text-white hover:bg-indigo-900 ">
                 Rakuten
-                {!phoneTabsState &&
+                {/* {!phoneTabsState &&
                 <div className="border-b-4 opacity-0 border-purple-400 ">
                 </div>
-                }
+                } */}
+                </div>
+
+      </div>
+      <div>
+      {/* <div id="rakuten-tab" onClick={onClickRakutenTabs} */}
+      <div id="tsutaya-tab" onClick={()=>setTabStatus(3)}
+       className="bg-white rounded-b-none border-t-2 border-r-2 border-l-2 border-gray-900 cursor-pointer w-20 text-center px-1 py-1 mr-1 text-xs text-blueGray-500 transition duration-500 ease-in-out transform rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:text-white hover:bg-indigo-900 ">
+                TSUTAYA
+                {/* {!phoneTabsState &&
+                <div className="border-b-4 opacity-0 border-purple-400 ">
+                </div>
+                } */}
+                </div>
+
+      </div>
+      <div>
+      {/* <div id="rakuten-tab" onClick={onClickRakutenTabs} */}
+      <div id="kinokuniya-tab" onClick={()=>setTabStatus(4)}
+       className="bg-white rounded-b-none border-t-2 border-r-2 border-l-2 border-gray-900 cursor-pointer w-20 text-center px-1 py-1 mr-1 text-xs text-blueGray-500 transition duration-500 ease-in-out transform rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:text-white hover:bg-indigo-900 ">
+                Kinokuniya
+                {/* {!phoneTabsState &&
+                <div className="border-b-4 opacity-0 border-purple-400 ">
+                </div>
+                } */}
                 </div>
 
       </div>
@@ -285,10 +425,10 @@ export const Search = () => {
 
         </div>
                  }
-                {phoneTabsState ?
+                {/* {phoneTabsState ?
 
                 <>
-                <div className=" max-w-screen-md mx-auto">
+                <div className="max-w-screen-md mx-auto">
                 <Result data={googleData} apiName="Google"/>
                 </div>
                 </>
@@ -299,9 +439,41 @@ export const Search = () => {
                   <Result data={data} apiName="Rakuten"/>
                   </div>
                 </>
+                } */}
+
+
+                {
+                  tabStatus === 1 &&
+                  <>
+                <div className="max-w-screen-md mx-auto">
+                <Result data={googleData} apiName="Google"/>
+                </div>
+                </>
                 }
-
-
+                {
+                  tabStatus === 2 &&
+                  <>
+                <div className=" max-w-screen-md mx-auto">
+                  <Result data={data} apiName="Rakuten"/>
+                  </div>
+                </>
+                }
+                {
+                  tabStatus === 3 &&
+                  <>
+                <div className=" max-w-screen-md mx-auto">
+                <Result data={tsutayaData} apiName="TSUTAYA"/>
+                  </div>
+                </>
+                }
+                {
+                  tabStatus === 4 &&
+                  <>
+                <div className=" max-w-screen-md mx-auto">
+                <Result data={kinoData} apiName="Kinokuniya"/>
+                  </div>
+                </>
+                }
 
 
 </>
@@ -313,7 +485,12 @@ export const Search = () => {
       </div>
       <div className="hidden md:block max-w-screen-md mx-auto">
       <Result data={data} apiName="Rakuten"/>
-
+      </div>
+      <div className="hidden md:block max-w-screen-md mx-auto">
+      <Result data={tsutayaData} apiName="TSUTAYA"/>
+      </div>
+      <div className="hidden md:block max-w-screen-md mx-auto">
+      <Result data={kinoData} apiName="Kinokuniya"/>
       </div>
 
       </div>

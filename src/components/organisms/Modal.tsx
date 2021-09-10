@@ -90,7 +90,7 @@ export const Modal = (props: Props) =>{
                 {/* <h1 className="text-2xl font-semibold leading-none tracking-tighter text-black title-font"> A headline to switch your visitors into users. </h1> */}
                 {/* <div className="h-80"> */}
 
-                <img alt="blog photo" src={targetItem.imageUrl} className="object-cover"/>
+                <img alt="blog photo" src={targetItem.imageUrl} className=" object-center md:object-cover"/>
                 {/* </div> */}
               </div>
               <div className="flex flex-col w-full mx-auto mb-8 lg:px-20 md:mt-0">

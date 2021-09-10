@@ -1,14 +1,48 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Test } from '../Test';
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
 
 const BookCalendar = () => {
+    // const testData = {
+    //     month_item: {
+    //         2021-09-10: {te}
+
+    //     }
+
+    // }
+
+    const getTileContent = ({date, view}) => {
+        if (view !== "month") {
+          return null;
+        }
+        console.log(date)
+
+        // const targetDate = "2021-09-10"
+        return
+        // return (
+
+        //     // "sss"
+        // //   <p >
+        // //     <br />
+        // //     XXX予約数： AAA
+        // //     <br />
+        // //     YYY予約数： BBB
+        // //   </p>
+        // );
+      };
 
   return(
 
 
     <>
+    <Calendar locale="ja-JP" calendarType="US" value={new Date()}
+    // tileContent="test"
+    tileContent={getTileContent}
+    // onClickDay={(value) => {}}
+    />
     {/* <Test /> */}
-    <div>
+    {/* <div>
         <div className="mx-auto container py-20 px-6">
             <div className="w-full flex items-cente justify-between">
                 <div>
@@ -223,7 +257,7 @@ const BookCalendar = () => {
             }
         }`}
         </style>
-    </div>
+    </div> */}
     </>
   )
 }

@@ -23,7 +23,9 @@ export const Test = () => {
   // }
 
   const onClickGetGo = () => {
-    axios.get('http://localhost:8082').then((res)=> {
+    axios.get('http://localhost:9090/api/go/books/tsutaya?',{params:
+    {q: "react",
+  }}).then((res)=> {
       console.log(res)
     })
   }
@@ -43,10 +45,10 @@ export const Test = () => {
   return(
     <>
 
-    <div className="cover-slide hover-darken inview">
+    {/* <div className="cover-slide hover-darken inview">
     <img src={mainImage} alt="memento time" className="mx-auto img-zoom"/>
-    </div>
-
+    </div> */}
+    <button onClick={onClickGetGo}>GO GETTTTTTTT</button>
     {/* <div className="three-dot-spinner">
         <div className="bounce1"></div>
         <div className="bounce2"></div>
