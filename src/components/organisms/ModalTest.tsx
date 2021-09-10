@@ -34,7 +34,7 @@ const ModalTest = (props: Props) => {
           <ModalCloseButton />
           <ModalHeader>full in your thought!!</ModalHeader>
           {/* <h2 className="mb-3 text-xs font-semibold tracking-widest text-black uppercase title-font">full in your thought </h2> */}
-          <img alt="NO IMAGE" src={targetItem.imageUrl} className=" object-center md:object-cover"/>
+          <img alt="NO IMAGE" src={targetItem.imageUrl} className="object-cover"/>
           <ModalBody>
           <div className="flex flex-col w-full mx-auto mb-8  md:mt-0">
                 <div className="relative mt-4">

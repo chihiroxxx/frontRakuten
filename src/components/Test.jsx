@@ -48,7 +48,8 @@ export const Test = () => {
     {/* <div className="cover-slide hover-darken inview">
     <img src={mainImage} alt="memento time" className="mx-auto img-zoom"/>
     </div> */}
-    <button onClick={onClickGetGo}>GO GETTTTTTTT</button>
+    <button onClick={onClickGetGo}
+    className="rounded-full">GO GETTTTTTTT</button>
     {/* <div className="three-dot-spinner">
         <div className="bounce1"></div>
         <div className="bounce2"></div>

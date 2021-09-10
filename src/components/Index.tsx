@@ -1,9 +1,12 @@
+import { AlertDialog, AlertDialogBody, AlertDialogCloseButton, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Button, useDisclosure } from '@chakra-ui/react'
 import axios from 'axios'
 import React, { ChangeEvent, useContext, useEffect, useState } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { MainContext } from '../providers/Provider'
 import BookCalendar from './organisms/BookCalendar'
+
+
 
 export const Index = () => {
   const { configAxios, booksIndex, setBooksIndex, loginFlag, setLoginFlag, railsUrl, onClickTop, userId } = useContext(MainContext)
@@ -19,7 +22,7 @@ export const Index = () => {
       // console.error(error);
     });
   }
-
+  console.log(booksIndex)
   const onClickTest = () => {
     axios.get(`${railsUrl}`,configAxios).then((res) => {
     // console.log(res)
@@ -61,13 +64,19 @@ export const Index = () => {
 
 
   }
+  // let deleteId : number
+  const [deleteId, setDeleteId] = useState<number>(0)
   const onClickTargetDelete =  (e: Item)  => {
+    onOpen()
+    // うーん....削除しちゃうなあ....
     console.log(e.id)
 
-    const deleteId = e.id
+    setDeleteId(e.id)
+    // const deleteId = e.id
 
-    onClickDeleteRails(deleteId);
+    // onClickDeleteRails(deleteId);
   }
+
 
   const onClickDeleteRails = (deleteId: number) =>{
       axios.delete(`${railsUrl}/books/${deleteId}`,configAxios).then((res) => {
@@ -77,6 +86,7 @@ export const Index = () => {
          // 削除完了のフラッシュメッセージ出す！！！！！！！
          // あとはreload
          onClickGetIndexRails()
+         onClose()
        })
        .catch(error => {
          // console.error(error);
@@ -151,13 +161,33 @@ export const Index = () => {
   }
 
 
+  // console.log(new Date(booksIndex[0].date))
 
 
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const cancelRef = React.useRef<any>()
 
+  useEffect(() => calendarDate(),[booksIndex])
+
+  const calendarDate = () => {
+    // let arr: [string]
+    if (booksIndex.length !== 0){
+      const arr = booksIndex.map((i: Item) => {
+        const arrangDate  = new Date(i.date)
+        return(`${arrangDate.getFullYear()}${arrangDate.getMonth()}${arrangDate.getDate()}`)
+      })
+      // booksIndex.map((item: Item) => {
+      //   arr += item.date
+      //   // const newArray = [...googleData, ...dataArrangeGoogleAPI(res.data.items)]
+      // })
+      // console.log(arr)
+      setIndexDateArr(arr)
+    }
+  }
+  const [indexDateArr, setIndexDateArr] = useState([])
   return(
     <>
       <>
-      <BookCalendar />
       <div>
 
         <h1 className="my-10 font-black tracking-tighter text-black hover:text-indigo-700 text-3xl title-font text-center cursor-default
@@ -238,6 +268,12 @@ export const Index = () => {
       : false}
 
 
+
+      <div className="md:flex justify-between flex-row-reverse">
+
+      <div className="text-xs w-80 md:mr-6 mx-auto">
+          <BookCalendar indexDateArr={indexDateArr}/>
+        </div>
       {/* あー、これが再レンダリングしてほしくないってことか！！！ */}
       <ul>
         {/* { mapContent } */}
@@ -306,7 +342,8 @@ export const Index = () => {
               <svg className="text-white object-cover p-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
 
               </div>
-              <div onClick={() => onClickTargetDelete(item)}
+
+               <div onClick={() => onClickTargetDelete(item)}
                className="object-cover rounded-full bg-red-600 h-10 w-10 hover:opacity-80
                 absolute bottom-6 left-56 md:left-auto md:bottom-8 md:right-8 "
                 // style={{right: "300px"}}
@@ -323,11 +360,40 @@ export const Index = () => {
         );
   })}
       </ul>
+
+      </div>
       <div className="rounded-full bg-yellow-400 h-16 w-16 hover:opacity-80 fixed bottom-5 right-5 " onClick={onClickTop}>
       <svg className="text-white object-cover p-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11l7-7 7 7M5 19l7-7 7 7"></path></svg>
 
       </div>
       {/* <SButton onClick={onClickTop}>ウエーに戻る</SButton> */}
+      <>
+      <AlertDialog
+        motionPreset="slideInBottom"
+        leastDestructiveRef={cancelRef}
+        onClose={onClose}
+        isOpen={isOpen}
+        isCentered
+      >
+        <AlertDialogOverlay />
+
+        <AlertDialogContent>
+          <AlertDialogHeader>It's DELETE?</AlertDialogHeader>
+          <AlertDialogCloseButton />
+          <AlertDialogBody>
+            Are you sure you want to delete it?
+          </AlertDialogBody>
+          <AlertDialogFooter>
+            <Button ref={cancelRef} onClick={onClose}>
+              No
+            </Button>
+            <Button colorScheme="red" ml={3} onClick={() => onClickDeleteRails(deleteId)}>
+              Yes
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+      </>
     </>
   )
 }
