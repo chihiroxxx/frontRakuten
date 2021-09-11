@@ -35,7 +35,7 @@ const ModalTest = (props: Props) => {
     // setPassword(() => data.password)
     // onClickAciton(data.username, data.password)
 
-    console.log(data)
+    console.log(data.date)
     onClickPostRails(data) // railsの方で引数取るようにする...
 
     //で送ったらformstatusリセットだろうなああ....

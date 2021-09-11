@@ -386,7 +386,9 @@ useEffect(() => {
       {/* <Test /> */}
       <div className="ml-2">
       <div className="flex justify-end ml-auto items-en xl:flex-nowrap md:flex-nowrap lg:flex-wrap mt-8 mr-4 mb-5">
-      <Tooltip label="検索したい本のタイトルを入力してください！">
+      <Tooltip label="検索したい本のタイトルを入力してください！" closeDelay={500}
+      //bg="gray.800"
+      placement="bottom-start">
         <div className="relative w-5/12 md:w-72 mr-2">
           <input value={text} onChange={onChangeTarget} type="text" placeholder="検索タイトルを入力！"
            className="bg-gray-200 w-full px-3 py-1 leading-8 text-black transition duration-500 ease-in-out transform border-transparent rounded-lg bg-blueGray-100 focus:border-blueGray-500 focus:bg-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2" />

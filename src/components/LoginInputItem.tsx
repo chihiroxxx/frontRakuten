@@ -62,7 +62,7 @@ const LoginInputItem = (props: Props) => {
                 </h1>
                 <div>
                 <Tooltip label="小文字英数字で入力してください！" placement="top-start"
-                bg="gray.500">
+                bg="gray.500" closeDelay={500}>
                   <label className="text-base font-medium leading-relaxed text-blueGray-700">User Name <span className="tracking-tighter text-gray-400  text-sm font-medium" >※ lower case letter and number</span></label>
                   {/* <p className="mt-3 ml-1 tracking-tighter text-gray-400  text-base font-medium">小文字英数字</p> */}
                   </Tooltip>
@@ -79,7 +79,7 @@ const LoginInputItem = (props: Props) => {
                 </div>
                 <div className="mt-4">
                 <Tooltip label="小文字英数字8文字以上で入力してください！" placement="top-start"
-                bg="gray.500">
+                bg="gray.500" closeDelay={500}>
                   <label className="text-base font-medium leading-relaxed text-blueGray-700">Password <span className="tracking-tighter text-gray-400  text-sm font-medium" >※ lower case letter and number, 8 or more characters </span></label>
                   </Tooltip>
                   <input //onChange={onChangePassword} name="password"
