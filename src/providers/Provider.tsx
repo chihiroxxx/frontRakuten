@@ -59,15 +59,22 @@ export const MainProvider = (props: Props) => {
   const [time, setTime] = useState<number>(new Date().getTime()) // .toLocaleString("en","Asia/Tokyo") したいなああ
   const [targetFlag, setTargetFlag] = useState<boolean>(false)
 
-
-  const onClickPostRails = () => {
+  interface PostProps {
+    thoughts: string
+    date: number
+  }
+  const onClickPostRails = (props: PostProps) => {
     if(loginFlag){
-      const trans: number = time / 1000
+      const arrngeDate = new Date(props.date).getTime()
+      const trans: number = arrngeDate / 1000
+      console.log(props.thoughts)
       axios.post(`${railsUrl}/books`,{
         booktitle: targetItem.title,
         author: targetItem.author,
         bookimage: targetItem.imageUrl,
-        thoughts: idea,
+        thoughts: props.thoughts,
+        // date: props.date,
+        // thoughts: idea,
         date: trans,
         user_id: userId
       },configAxios).then((res) => {

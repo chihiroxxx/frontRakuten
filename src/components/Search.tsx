@@ -12,6 +12,7 @@ import { PhoneResult } from './PhoneResult'
 import mainImage from '../assets/main.jpg' //TOP画面のimage画像
 import MainTitle from './animations/MainTitle'
 import './Search.scss';
+import { Tooltip } from '@chakra-ui/react'
 
 
 export const Search = () => {
@@ -26,8 +27,10 @@ export const Search = () => {
     onClickRakutenAPINextPage()
     onClickGoogleAPINextPage()
     onClickGetGoTsutayaAPINextPage()
+    onClickGetGoKinoAPINextPage()
     setPage(page + 1)
     setGooglePage(googlePage + 30)
+    // setKinoPage(kinoPage + 2)
   }
 
   const onClickRakutenAPINextPage = ():void => {
@@ -60,12 +63,15 @@ export const Search = () => {
     setKinoData([])
     setPage(2)
     setGooglePage(30)
+    setKinoPage(1)
+    setKinoArrangeData([])
 
 
     onClickGetGoogleAPI();
     onClickGetRakutenAPI();
     onClickGetGoTsutayaAPI();
     onClickGetGoKinoAPI();
+
   }
 
   interface RakutenItems{
@@ -192,6 +198,25 @@ export const Search = () => {
       // setData(newArray);
     })
   }
+  const [kinoPage, setKinoPage] = useState(1)
+  const onClickGetGoKinoAPINextPage = ()=>{
+    axios.get(`${goUrl}/kino?`,{params:
+    {q: text,
+      page: kinoPage, //ひとまずpage1 で紀伊國屋は20件か... うーむ...
+    }}).then((res)=> {
+      if (res.data != null) {
+        const newArray = [...kinoData, ...res.data]
+        setKinoData(newArray)
+        // arrngKinoData = res.data.slice(0,30)
+        // console.log(arrngKinoData)
+        // console.log(res)
+      }
+    })
+    console.log( Math.floor(kinoPage / 2) + 1)
+
+
+  }
+
   const [phoneTabsState, setPhoneTabsState] = useState(true)
   const onClickGoogleTabs = () => {
     setPhoneTabsState(true)
@@ -246,19 +271,20 @@ export const Search = () => {
     marginBottom: "-2px"
   }
 
-  let arrngKinoData : [] = [] // useStateにする...
+  // let arrngKinoData : [] = [] // useStateにする...
 
   const onClickGetGoKinoAPI = ()=>{
     axios.get(`${goUrl}/kino?`,{params:
     {q: text,
-      page: page - 1, //ひとまずpage1 で紀伊國屋は20件か... うーむ...
+      page: kinoPage, //ひとまずpage1 で紀伊國屋は20件か... うーむ...
     }}).then((res)=> {
       if (res.data != null) {
       setKinoData(res.data)
-      arrngKinoData = res.data.slice(0,30)
+      // arrngKinoData = res.data.slice(0,30)
       // console.log(arrngKinoData)
       // console.log(res)
     }
+    // setKinoPage(kinoPage + 2)
     })
 
   }
@@ -329,19 +355,43 @@ useEffect(() => {
       break
   }}
 },[tabStatus])
+  const kinoArrange = () => {
 
+    if (kinoData.length !== 0){
+      // const arr = kinoData.map((i: PreparedData) => {
 
+      // })
+      // let arr: PreparedData[] = []
+      // for(let i = 0; i <= 30 ; i++){
+      //   setKinoArrangeData(...kinoData ,kinoData[i])
+      //   // console.log(kinoData[i])
+      // }
+      const i = (Math.floor(kinoPage / 2) + 1)
+      console.log(i * 30)
+      const arr = kinoData.slice(0,30 * i)
+      setKinoArrangeData(arr)
+      console.log(arr)
+      // console.log(kinoData)
+      // console.log(kinoArrangeData)
+      setKinoPage(kinoPage + 2)
+    }
+  }
+  useEffect(()=> kinoArrange(),[kinoData])
+  const [kinoArrangeData, setKinoArrangeData ] = useState([])
+  console.log(kinoArrangeData)
 
   return(
     <>
     <div>
       {/* <Test /> */}
-        <div className="ml-2">
+      <div className="ml-2">
       <div className="flex justify-end ml-auto items-en xl:flex-nowrap md:flex-nowrap lg:flex-wrap mt-8 mr-4 mb-5">
+      <Tooltip label="検索したい本のタイトルを入力してください！">
         <div className="relative w-5/12 md:w-72 mr-2">
           <input value={text} onChange={onChangeTarget} type="text" placeholder="検索タイトルを入力！"
            className="bg-gray-200 w-full px-3 py-1 leading-8 text-black transition duration-500 ease-in-out transform border-transparent rounded-lg bg-blueGray-100 focus:border-blueGray-500 focus:bg-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2" />
         </div>
+        </Tooltip>
         <div className="flex">
         <button onClick={onClickSearch} className="px-3 md:px-6 py-2 font-medium text-white transition duration-500 ease-in-out transform bg-indigo-900  border-blue-600 rounded-md ext-base focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:bg-indigo-500 mr-3">
         SEARCH</button>
@@ -349,7 +399,6 @@ useEffect(() => {
           RESET</button>
 
         </div>
-
         </div>
       </div>
 
@@ -470,7 +519,8 @@ useEffect(() => {
                   tabStatus === 4 &&
                   <>
                 <div className=" max-w-screen-md mx-auto">
-                <Result data={kinoData} apiName="Kinokuniya"/>
+                <Result data={kinoArrangeData} apiName="Kinokuniya"/>
+                {/* <Result data={kinoData} apiName="Kinokuniya"/> */}
                   </div>
                 </>
                 }
@@ -490,7 +540,8 @@ useEffect(() => {
       <Result data={tsutayaData} apiName="TSUTAYA"/>
       </div>
       <div className="hidden md:block max-w-screen-md mx-auto">
-      <Result data={kinoData} apiName="Kinokuniya"/>
+      <Result data={kinoArrangeData} apiName="Kinokuniya"/>
+      {/* <Result data={kinoData} apiName="Kinokuniya"/> */}
       </div>
 
       </div>
