@@ -6,11 +6,12 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 interface Props{
   indexFlag: boolean,
   isOpen: boolean,
-  onClose: () => void
+  onClose: () => void,
+  targetEditThoughts: any
 }
 
-const ModalTest = (props: Props) => {
-  const { indexFlag, isOpen, onClose } = props
+const ModalIndex = (props: Props) => {
+  const { indexFlag, isOpen, onClose ,targetEditThoughts} = props
 
   const { data, setData, setText, configAxios, railsUrl, userId, onClickPostRails,idea, setIdea,targetItem, setTargetItem,targetFlag, setTargetFlag, setTime } = useContext(MainContext);
 
@@ -58,21 +59,21 @@ const ModalTest = (props: Props) => {
           <ModalCloseButton />
           <ModalHeader>full in your thought!!</ModalHeader>
           {/* <h2 className="mb-3 text-xs font-semibold tracking-widest text-black uppercase title-font">full in your thought </h2> */}
-          <img alt="NO IMAGE" src={targetItem.imageUrl} className="object-contain h-72"/>
+          <img alt="NO IMAGE" src={targetEditThoughts.imageUrl} className="object-contain h-72"/>
           <ModalBody>
           <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col w-full mx-auto mb-8  md:mt-0">
                 <div className="relative mt-4">
                   <label htmlFor="text" className="text-base leading-7 text-blueGray-500">Thought</label>
-                  <textarea //value={idea} // onChange={onChangeIdea}
-                   placeholder="感じたこと" className="border-2 border-gray-200 w-full px-4 py-2 mt-2 text-base text-black transition duration-500 ease-in-out transform border-transparent rounded-lg bg-blueGray-100 focus:border-blueGray-500 focus:bg-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2"
+                  <input //value={idea} // onChange={onChangeIdea}
+                  type="text" placeholder="感じたこと" className="border-2 border-gray-200 w-full px-4 py-2 mt-2 text-base text-black transition duration-500 ease-in-out transform border-transparent rounded-lg bg-blueGray-100 focus:border-blueGray-500 focus:bg-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2"
                   {...register("thoughts", {"required":  true})}
                   />
                      <span className="text-red-500 ">{errors.thoughts?.types?.required && "Thoughtが入力されていません"}<br/></span>
                 </div>
                 <div className="relative mt-4">
                   <label htmlFor="text" className="text-base leading-7 text-blueGray-500">Page</label>
-                  <input //value={idea} // onChange={onChangeIdea}
+                  <input value={targetEditThoughts} // onChange={onChangeIdea}
                   type="text" placeholder="ページ数" className="border-2 border-gray-200 w-full px-4 py-2 mt-2 text-base text-black transition duration-500 ease-in-out transform border-transparent rounded-lg bg-blueGray-100 focus:border-blueGray-500 focus:bg-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2"
                   {...register("page", {maxLength: 10,pattern: /[0-9]/,})}
                   />
@@ -88,7 +89,7 @@ const ModalTest = (props: Props) => {
                      <span className="text-red-500 ">{errors.readingtime?.types?.maxLength && "10文字以内で入力してください"}<br/>
                                                         {errors.readingtime?.types?.pattern && "半角数字で入力してください"}<br/></span>
                 </div>
-
+{/*
                 {!indexFlag &&
                   <div className="relative mt-4">
                     <label htmlFor="name" className="text-base leading-7 text-blueGray-500">Time</label>
@@ -100,7 +101,7 @@ const ModalTest = (props: Props) => {
                      <span className="text-red-500 ">{errors.date?.types?.required && "Dateが入力されていません"}<br/></span>
                   </div>
 
-                }
+                } */}
                 <div className="flex my-6 mt-4">
                   <label className="flex items-center">
 
@@ -121,4 +122,4 @@ const ModalTest = (props: Props) => {
   )
 }
 
-export default ModalTest
+export default ModalIndex

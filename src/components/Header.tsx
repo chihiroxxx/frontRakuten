@@ -11,6 +11,7 @@ export const Header: VFC = () => {
   const history = useHistory();
 
   const onClickLogOut = (): void => {
+    /*
     axios.delete(`${railsUrl}/logout`,configAxios)
     .then((res) => {
       setLoginFlag(() => false)
@@ -19,7 +20,16 @@ export const Header: VFC = () => {
     })
     .catch(error => {
     });
+    */
 
+
+  // ここで、cookieから token削除の処理する！！！
+
+  document.cookie = "token=; max-age=0";
+
+    history.push("/")
+    setLoginFlag(() => false)
+    showToast("ログアウトしました")
   }
   // メニューバー！
     const [menuFlag, setMenuFlag] = useState<boolean>(false);
@@ -47,6 +57,7 @@ export const Header: VFC = () => {
             <li>
             <Link to="/">
               <div className="px-4 py-1 mr-1 text-base text-blueGray-500 transition duration-500 ease-in-out transform rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:text-white hover:bg-indigo-900 ">
+              {/* <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg> */}
                 HOME</div>
                 </Link>
             </li>
@@ -66,6 +77,12 @@ export const Header: VFC = () => {
             <Link to="/index">
               <div className="px-4 py-1 mr-1 text-base text-blueGray-500 transition duration-500 ease-in-out transform rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:text-white hover:bg-indigo-900 ">
                 INDEX</div>
+                </Link>
+            </li>
+            <li>
+            <Link to="/collection">
+              <div className="px-4 py-1 mr-1 text-base text-blueGray-500 transition duration-500 ease-in-out transform rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:text-white hover:bg-indigo-900 ">
+                COLLECTION</div>
                 </Link>
             </li>
             </>}

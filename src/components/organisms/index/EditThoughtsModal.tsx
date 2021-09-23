@@ -1,46 +1,85 @@
-import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, useDisclosure } from '@chakra-ui/react'
-import React, { ChangeEvent, useContext } from 'react'
-import { MainContext } from '../../providers/Provider'
+import React, { useContext, useEffect } from 'react'
+import { useDisclosure } from '@chakra-ui/react'
+import { MainContext } from '../../../providers/Provider'
+import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay } from '@chakra-ui/react'
 import { SubmitHandler, useForm } from 'react-hook-form';
+import axios from 'axios';
 
-interface Props{
-  indexFlag: boolean,
-  isOpen: boolean,
-  onClose: () => void
+
+interface Props {
+  thought : Thought
+
 }
 
-const ModalTest = (props: Props) => {
-  const { indexFlag, isOpen, onClose } = props
+interface Thought{
+  id: number,
+  date: string,
+  booktitle: string,
+  author: string,
+  bookimage: string,
+  thoughts: any,
+  page?: number,
+  readingtime?: number,
 
-  const { data, setData, setText, configAxios, railsUrl, userId, onClickPostRails,idea, setIdea,targetItem, setTargetItem,targetFlag, setTargetFlag, setTime } = useContext(MainContext);
+}
 
-  const onChangeIdea = (e: ChangeEvent<HTMLInputElement>) => {
-    setIdea(() => e.target.value)
-  }
+const EditThoughtsModal = (props: Props) => {
 
-  const onChangeTime = (e: ChangeEvent<HTMLInputElement>) => {
-    setTime(() => e.target.valueAsNumber)
-  }
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const cancelRef = React.useRef<any>()
+  const { thought } = props
 
-  const targetFlagResetOnlyModal = () => {
-    setTargetFlag(() => false);
-    setTargetItem(() => ({}))
-    setIdea(() => (""))
-  }
+  const { editIsOk, SetEditIsOk,railsUrl,configAxios,onClickGetIndexRails} = useContext(MainContext);
+
   // React Hook Formのところ-------------------------------
-  const { register, handleSubmit, formState: {errors} , reset } = useForm<FormStatus>({criteriaMode: "all", shouldFocusError: true})
+  const { register, handleSubmit, formState: {errors} , reset, setValue } = useForm<FormStatus>({criteriaMode: "all", shouldFocusError: true})
+  // const test = () => {
+  // これでモーダル初期レンダリング時に元のthoughtのvalue入れられる！！よし！
+  setValue('thoughts', thought.thoughts)
+  setValue('date', thought.date)
+  // }
+  // useEffect(test,[])
+  // test()
+
   const onSubmit: SubmitHandler<FormStatus> = (data) => {
-    // console.log(data.password)
-    // setName(() => data.username)
-    // setPassword(() => data.password)
-    // onClickAciton(data.username, data.password)
 
     console.log(data.date)
-    onClickPostRails(data) // railsの方で引数取るようにする...
 
-    //で送ったらformstatusリセットだろうなああ....
-    reset(data)
-  };
+  //  const Target = {title: collection.booktitle, author: collection.author, imageUrl: collection.bookimage}
+  //  setTargetItem(Target)
+
+  //   onClickPostRails(data) // railsの方で引数取るようにする...
+  onClickEditPostRails(data)
+    reset() //ああ余計な引数を取るから、resetされなかったんだ...あああ...
+    onClose()
+
+    //  ん？？？交互にエラーになってる....
+
+    // ブランクにする処理の方が早いから、エラーになってるぽいなあ...
+     // setTargetItem({title: "", author: "", imageUrl: "",itemUrl: ""})
+     // SetCreateIsOk(false)
+ };
+ const onClickEditPostRails = (data : FormStatus) =>{
+  const formData = new FormData()
+  formData.append("thoughts", data.thoughts)
+  axios.patch(`${railsUrl}/restricted/thoughts/${thought.id}`,
+  formData
+  // {
+  //   // id: targetEditItem.item.id,
+  //   thoughts: targetEditThoughts
+  // }
+  ,configAxios
+  ).then((res) => {
+
+    onClickGetIndexRails() // これもプロバイダーで良さそうだけども。
+  })
+  .catch(error => {
+    // console.error(error);
+  });
+
+
+}
+
 
   interface FormStatus{
     thoughts: string,
@@ -50,6 +89,26 @@ const ModalTest = (props: Props) => {
 
   }
 
+
+  // この辺りが、モーダルとか開くなどのロジック部分！！！
+  const openChange = () => {
+    if (editIsOk){
+      onOpen()
+    }
+    else {
+      // onClose()
+      // SetCountIsOk(false)
+
+    }
+  }
+  const isOpenChange = () => {
+    if (!isOpen){
+      SetEditIsOk(false)
+    }
+  }
+
+  useEffect(openChange,[editIsOk])
+  useEffect(isOpenChange,[isOpen])
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose} motionPreset="slideInBottom">
@@ -58,7 +117,9 @@ const ModalTest = (props: Props) => {
           <ModalCloseButton />
           <ModalHeader>full in your thought!!</ModalHeader>
           {/* <h2 className="mb-3 text-xs font-semibold tracking-widest text-black uppercase title-font">full in your thought </h2> */}
-          <img alt="NO IMAGE" src={targetItem.imageUrl} className="object-contain h-72"/>
+
+      {/* ここの src={collection.bookimage} はこれでいいのか！！ なぜなら、SEND押した後に、collectionのbook情報を、targetItemにセットするから！*/}
+          <img alt="NO IMAGE" src={thought.bookimage} className="object-contain h-72"/>
           <ModalBody>
           <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col w-full mx-auto mb-8  md:mt-0">
@@ -89,25 +150,21 @@ const ModalTest = (props: Props) => {
                                                         {errors.readingtime?.types?.pattern && "半角数字で入力してください"}<br/></span>
                 </div>
 
-                {!indexFlag &&
                   <div className="relative mt-4">
                     <label htmlFor="name" className="text-base leading-7 text-blueGray-500">Time</label>
-                    <input // onChange={onChangeTime}
+                    <input
                     type="datetime-local" className="border-2 border-gray-200 w-full px-4 py-2 mt-2 text-base text-black transition duration-500 ease-in-out transform border-transparent rounded-lg bg-blueGray-100 focus:border-blueGray-500 focus:bg-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2"
-                    // value={Date.now()}
                     {...register("date", {"required":  true})}
                     />
                      <span className="text-red-500 ">{errors.date?.types?.required && "Dateが入力されていません"}<br/></span>
                   </div>
 
-                }
                 <div className="flex my-6 mt-4">
                   <label className="flex items-center">
 
                   </label>
                 </div>
                 <button type="submit"
-                // onClick={onClickPostRails}
                 className="w-full px-16 py-2 mr-2 text-base font-medium text-white transition duration-500 ease-in-out transform bg-yellow-300 border-yellow-300 rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:bg-yellow-400 ">
                    SEND </button>
                 <p className="mx-auto mt-3 text-xs text-blueGray-500"> memento mori..</p>
@@ -121,4 +178,4 @@ const ModalTest = (props: Props) => {
   )
 }
 
-export default ModalTest
+export default EditThoughtsModal

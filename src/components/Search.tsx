@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { MainContext } from '../providers/Provider'
 import { Result } from './Result'
 // import { API_KEY } from '../api/API_KEY'
-import { MyButton } from './atoms/MyButton'
+// import { MyButton } from './atoms/MyButton'
 import { Footer } from './Footer'
 import { Test } from './Test'
 import { ResultGoogleTest } from './ResultGoogleTest'
@@ -13,10 +13,11 @@ import mainImage from '../assets/main.jpg' //TOP画面のimage画像
 import MainTitle from './animations/MainTitle'
 import './Search.scss';
 import { Tooltip } from '@chakra-ui/react'
+import TopButton from './atoms/TopButton'
 
 
 export const Search = () => {
-  const { data, setData, text, setText, onClickTop, googleData, setGoogleData,targetFlagChangeReset,tsutayaData,setTsutayaData,kinoData, setKinoData } = useContext(MainContext);
+  const { data, setData, text, setText, onClickTop, googleData, setGoogleData,targetFlagChangeReset,tsutayaData,setTsutayaData,kinoData, setKinoData,kinoArrangeData, setKinoArrangeData } = useContext(MainContext);
   const appId = process.env.REACT_APP_RAKUTEN_API_KEY
   const goUrl = process.env.REACT_APP_GO_URL
   // console.log(appId)
@@ -71,7 +72,6 @@ export const Search = () => {
     onClickGetRakutenAPI();
     onClickGetGoTsutayaAPI();
     onClickGetGoKinoAPI();
-
   }
 
   interface RakutenItems{
@@ -111,6 +111,7 @@ export const Search = () => {
 
   const dataArrangeGoogleAPI = (items: [GoogleItems]) => {
     const newArray: PreparedData[] = [];
+    if (items != null){
     items.map((item, index: number) => {
       const oneItem = {
         title: item.volumeInfo.title,
@@ -125,7 +126,7 @@ export const Search = () => {
            item.volumeInfo.imageLinks.thumbnail,
     }
     newArray.push(oneItem)
-    })
+    })}
     return newArray
 
   }
@@ -158,9 +159,10 @@ export const Search = () => {
       startIndex: 0, //ページ数などではなくItem数で取得する仕様のよう スタートは0
     }})
     .then((res) => {
+      if (res.data != null){
       dataArrangeGoogleAPI(res.data.items)
 
-      setGoogleData(dataArrangeGoogleAPI(res.data.items));
+      setGoogleData(dataArrangeGoogleAPI(res.data.items))}
     })
   }
 
@@ -377,8 +379,59 @@ useEffect(() => {
     }
   }
   useEffect(()=> kinoArrange(),[kinoData])
-  const [kinoArrangeData, setKinoArrangeData ] = useState([])
+  // const [kinoArrangeData, setKinoArrangeData ] = useState([])
   console.log(kinoArrangeData)
+
+
+
+
+  // #scrolled
+
+  const cb = (entris:any, observer:any) => {
+    console.log("intersecting!!!?")
+    entris.forEach((entry:any) => {
+      if(entry.isIntersecting) {
+        console.log("inview!!")
+        console.log(entry.target)
+        entry.target.classList.add("viewing")
+        // entry.target.classList.remove("invisible")
+
+      }else{
+        console.log("outview!!")
+        // entry.target.classList.add("invisible")
+
+
+        // entry.target.classList.remove("testclass") //これつけるとズーーーっと出たり入ったりする
+        // つまり、一覧だから、初回に入るときにエフェクトがあればいいかな？と思う
+        // 見づらいかなって
+
+      }
+    })
+  }
+  const options = {
+    // rootMargin: "-300px  0px"
+  }
+  const io = new IntersectionObserver(cb, options)
+  // if(document.querySelector('.scrolled')){
+  //   const els = document.querySelectorAll('.scrolled')
+  //   console.log(els)
+  //   els.forEach(el => io.observe(el))
+  //   // io.observe(document.querySelector('.scrolled')!)
+
+  // }
+  // if(document.querySelector('#scrolled')){
+  //   io.observe(document.querySelector('#scrolled')!)
+
+  // }
+
+  const watchScroll = () => {
+    const els = document.querySelectorAll('.scrolled')
+    console.log(els)
+    els.forEach(el => io.observe(el))
+    // io.observe(document.querySelector('.scrolled')!)
+  }
+useEffect(watchScroll,[googleData, data, kinoData, tsutayaData])
+
 
   return(
     <>
@@ -589,10 +642,11 @@ useEffect(() => {
       <div className="">
 
       <Footer />
-      <div className="rounded-full bg-yellow-400 h-16 w-16 hover:opacity-80 fixed bottom-5 right-5 " onClick={onClickTop}>
+      {/* <div className="rounded-full bg-yellow-400 h-16 w-16 hover:opacity-80 fixed bottom-5 right-5 " onClick={onClickTop}>
       <svg className="text-white object-cover p-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11l7-7 7 7M5 19l7-7 7 7"></path></svg>
 
-      </div>
+      </div> */}
+      <TopButton />
       </div>
     </div>
       </>

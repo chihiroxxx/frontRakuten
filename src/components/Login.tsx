@@ -17,12 +17,19 @@ export const Lonin: VFC = () => {
   // const toast = useToast()
 
   const onClickLogIn = (name: string, password: string): void => {
-    axios.post(`${railsUrl}/login`,{
+    const data = new FormData()
+    data.append("name", name)
+    data.append("password_digest", password)
+    axios.post(`http://localhost:9090/api/v1/login`,
+    data
+    /*{
       name: name,
       password: password
-    },configAxios).then((res) => {
-
-      setUserId(res.data.user_id);
+    }
+    ,configAxios*/).then((res) => {
+      // console.log(res.data.token)
+      document.cookie = `token=${res.data.token}`
+      setUserId(res.data.userid);
       history.push("/index")
       // setName(() => (""))
       // setPassword(() => (""))
@@ -39,8 +46,31 @@ export const Lonin: VFC = () => {
   }
 // const [errorFlag, setErrorFlag] = useState<boolean>(false);
   //新規登録用！！！
-  let errorMessage;
   const onClickSignUp = (name: string, password: string):void => {
+    const data = new FormData()
+    data.append("name", name)
+    data.append("password_digest", password)
+    axios.post('http://localhost:9090/api/v1/users',data).then((res) => {
+      document.cookie = `token=${res.data.token}`
+      setUserId(res.data.userid);
+      history.push("/index")
+      // setName(() => (""))
+      // setPassword(() => (""))
+      setLoginFlag(() => true)
+      showToast("アカウント作成しました")
+      console.log(res.data.userid)
+      // setUserId(res.data); //ひとまずコメントアウト（現状user_idを送り返してないから）
+      // setUserId(res.data.user_id); //ひとまずコメントアウト（現状user_idを送り返してないから）
+      console.log(res.data)
+    })
+    .catch((error) => {
+      showToast("アカウント作成できません")
+      // document.querySelector('main')?.addEventListener()
+      // console.log(error)
+      // alert("作成できません...（名前は小文字英数字16文字以内でお願いします）")
+      // てかさ送る前にバリデーションかけよ？？？
+    });
+    /*
     axios.post(`${railsUrl}/users`,{
         name: name,
         password: password
@@ -59,6 +89,7 @@ export const Lonin: VFC = () => {
         // alert("作成できません...（名前は小文字英数字16文字以内でお願いします）")
         // てかさ送る前にバリデーションかけよ？？？
       });
+      */
   }
 //  const showToast = (message: string) => {
 //   toast({

@@ -4,10 +4,10 @@ import React, { ChangeEvent, useContext, useState } from 'react'
 // import ReactDatePicker from 'react-datepicker'
 import styled from 'styled-components'
 import { MainContext } from '../providers/Provider'
-import { MyButton } from './atoms/MyButton'
+// import { MyButton } from './atoms/MyButton'
 import { Modal } from './organisms/Modal'
 import ModalTest from './organisms/ModalTest'
-
+// import './Result.scss'; //うーーーーん楽天だけ？？ //レンダリングのしようか...
 
 interface Props{
   data: PreparedData[]
@@ -132,6 +132,52 @@ export const Result = (props: Props) => {
 
 
 
+
+  // #scrolled
+
+  // const cb = (entris:any, observer:any) => {
+  //   console.log("intersecting!!!?")
+  //   entris.forEach((entry:any) => {
+  //     if(entry.isIntersecting) {
+  //       console.log("inview!!")
+  //       console.log(entry.target)
+  //       entry.target.classList.add("viewing")
+  //       // entry.target.classList.remove("invisible")
+
+  //     }else{
+  //       console.log("outview!!")
+  //       // entry.target.classList.add("invisible")
+
+
+  //       // entry.target.classList.remove("testclass") //これつけるとズーーーっと出たり入ったりする
+  //       // つまり、一覧だから、初回に入るときにエフェクトがあればいいかな？と思う
+  //       // 見づらいかなって
+
+  //     }
+  //   })
+  // }
+  // const options = {
+  //   // rootMargin: "-300px  0px"
+  // }
+  // const io = new IntersectionObserver(cb, options)
+  // if(document.querySelector('.scrolled')){
+  //   const els = document.querySelectorAll('.scrolled')
+  //   console.log(els)
+  //   els.forEach(el => io.observe(el))
+  //   // io.observe(document.querySelector('.scrolled')!)
+
+  // }
+  // // if(document.querySelector('#scrolled')){
+  // //   io.observe(document.querySelector('#scrolled')!)
+
+  // // }
+
+
+
+
+
+
+
   return(
     <SContainer>
 
@@ -163,7 +209,7 @@ export const Result = (props: Props) => {
 
 
         // <div className="text-center ">
-        <div className="m-3 inline-block ">
+        <div className="m-3 inline-block scrolled">
 
 
         <div key={index} className="overflow-hidden shadow-lg rounded-lg h-90 w-72 cursor-pointer ml-1 hover:opacity-85">
@@ -248,10 +294,10 @@ const SImage = styled.img`
   margin: 0 auto;
   display: block;
 `
-const SMyButton =styled(MyButton)`
-  background-color: #FFCCBC;
-  color: #FAFAFA;
-`
+// const SMyButton =styled(MyButton)`
+//   background-color: #FFCCBC;
+//   color: #FAFAFA;
+// `
 
 const SButton = styled.button`
   background-color: #FFCCBC;

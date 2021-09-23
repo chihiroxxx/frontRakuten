@@ -2,68 +2,69 @@ import { AlertDialog, AlertDialogBody, AlertDialogCloseButton, AlertDialogConten
 import axios from 'axios'
 import React, { ChangeEvent, useContext, useEffect, useState } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
-import styled from 'styled-components'
-import { MainContext } from '../providers/Provider'
-import BookCalendar from './organisms/BookCalendar'
 
+import { MainContext } from '../providers/Provider'
+// import IndexItems from './IndexItems'
+import BookCalendar from './organisms/BookCalendar'
+import EditThoughtsModal from './organisms/index/EditThoughtsModal'
+import './Index.scss';
+import TotalLabelItem from './organisms/TotalLabelItem'
+import BookChartItem from './organisms/BookChartItem'
+import TopButton from './atoms/TopButton'
 
 
 export const Index = () => {
-  const { configAxios, booksIndex, setBooksIndex, loginFlag, setLoginFlag, railsUrl, onClickTop, userId } = useContext(MainContext)
+  const { configAxios, booksIndex, setBooksIndex, loginFlag, setLoginFlag, railsUrl, userId, token,editIsOk, SetEditIsOk,onClickGetIndexRails,showToast } = useContext(MainContext)
+  // const { booksIndex }:{booksIndex: Item[]} = useContext(MainContext)
 
   const [targetEditItem, setTargetEditItem] = useState<TargetEditItem>({id: 0,date: "", author: "",booktitle: "", bookimage: "", thoughts: ""})
   const [targetEditThoughts, setTargetEditThoughts] = useState<string>()
 
-  const onClickGetIndexRails = () => {
-    axios.get(`${railsUrl}/books`,{headers: { 'X-Requested-With': 'XMLHttpRequest'}, withCredentials: true, params: {user_id: userId}}).then((res) => {
-      setBooksIndex(() => res.data.books)
-    })
-    .catch(error => {
-      // console.error(error);
-    });
-  }
+
   console.log(booksIndex)
-  const onClickTest = () => {
-    axios.get(`${railsUrl}`,configAxios).then((res) => {
-    // console.log(res)
-    setLoginFlag(() => true)
-  })
-  .catch(error => {
-    // console.error(error);
-    setLoginFlag(() => false)
-    });
-  }
+  // const onClickTest = () => {
+  //   axios.get(`${railsUrl}`,configAxios).then((res) => {
+  //   // console.log(res)
+  //   setLoginFlag(() => true)
+  // })
+  // .catch(error => {
+  //   // console.error(error);
+  //   setLoginFlag(() => false)
+  //   });
+  // }
 
   // loginFlag ? onClickGetIndexRails() : console.log("home画面に戻す処理にする") ;
+  const [editThought, SetEditThought] = useState<Item>({id: -1, date: "",booktitle:"",author:"",bookimage:"",
+                                                                        thoughts:"",page: -1,readingtime: -1,})
+  const onClickThoughtCreate = (t: Item) =>{
+    if (!editIsOk){
+      SetEditIsOk(true)
 
-  const onClickTargetEdit = (e: Item) => {
-      // console.log(e)
-      setTargetEditItem(e)
-      setTargetEditThoughts(e.thoughts)
-  }
-  // onClickTargetEditはいじらない
+    }else{
+      SetEditIsOk(false)
 
-
-  const onChangeTargetEditThought = (e: any)=>{
-    // setTargetEditItem({item: {thoughts: e.target.value}})
-    setTargetEditThoughts(e.target.value)
-  }
-
-
-  const onClickEditPostRails = () =>{
-    axios.put(`${railsUrl}/books/${targetEditItem.id}`,{
-      // id: targetEditItem.item.id,
-      thoughts: targetEditThoughts
-    },configAxios).then((res) => {
-      setTargetEditThoughts("")
-      onClickGetIndexRails()
-    })
-    .catch(error => {
-      // console.error(error);
-    });
-
+    }
+    SetEditThought(t)
+    // ここで処理すべきものだったからか！？！？
+    // const Target = {title: c.booktitle, author: c.author, imageUrl: c.bookimage}
+    // setTargetItem(Target)
 
   }
+  // const onClickTargetEdit = (e: Item) => {
+  //     // console.log(e)
+  //     setTargetEditItem(e)
+  //     setTargetEditThoughts(e.thoughts)
+  // }
+  // // onClickTargetEditはいじらない
+
+
+  // const onChangeTargetEditThought = (e: any)=>{
+  //   // setTargetEditItem({item: {thoughts: e.target.value}})
+  //   setTargetEditThoughts(e.target.value)
+  // }
+
+
+
   // let deleteId : number
   const [deleteId, setDeleteId] = useState<number>(0)
   const onClickTargetDelete =  (e: Item)  => {
@@ -79,7 +80,7 @@ export const Index = () => {
 
 
   const onClickDeleteRails = (deleteId: number) =>{
-      axios.delete(`${railsUrl}/books/${deleteId}`,configAxios).then((res) => {
+      axios.delete(`${railsUrl}/restricted/thoughts/${deleteId}`,configAxios).then((res) => {
          setTargetEditThoughts("")
 
        }).then(()=>{
@@ -87,6 +88,7 @@ export const Index = () => {
          // あとはreload
          onClickGetIndexRails()
          onClose()
+         showToast("削除しました")
        })
        .catch(error => {
          // console.error(error);
@@ -97,8 +99,21 @@ export const Index = () => {
   const fileDownload = require('js-file-download');
 
   const onClickGetCsvRails = () => {
-    axios.get(`${railsUrl}/csv`,{headers: { 'X-Requested-With': 'XMLHttpRequest'}, withCredentials: true, params: {user_id: userId}}).then((res) => {
-      fileDownload(res.data, "bookIndex.csv")
+    axios.get(`${railsUrl}/restricted/thoughts/csv/${userId}`,
+    {headers: {
+      Authorization: `Bearer ${token()}`,
+    },
+    responseType: "blob"
+  },
+    /* {headers: { 'X-Requested-With': 'XMLHttpRequest'}, withCredentials: true,
+     params: {user_id: userId}} */
+    ).then((res) => {
+      const blob = new Blob([res.data], {
+        type: res.data.type
+      });
+      console.log(res)
+      // fileDownload(res.data, "bookIndex.csv")
+      fileDownload(blob, "index.csv")
     })
     .catch(error => {
       // console.error(error);
@@ -108,6 +123,7 @@ export const Index = () => {
   const history = useHistory()
 
   useEffect(() => onClickGetIndexRails(), [])
+  useEffect(() => onClickGetIndexRails(), [userId])
   useEffect(() => checkAuth(), [loginFlag])
 
   const checkAuth = () => {
@@ -117,13 +133,13 @@ export const Index = () => {
   // const { id } = useParams()
 
   // 共通化したくないからProviderにあげないことにする
-  const [targetFlag, setTargetFlag] = useState(false)
+  // const [targetFlag, setTargetFlag] = useState(false)
 
-  const targetFlagResetOnlyModal = () => {
-    setTargetFlag(() => false);
-    setTargetEditItem({id: 0,date: "", author: "",booktitle: "", bookimage: "", thoughts: ""})
-    setTargetEditThoughts("")
-  }
+  // const targetFlagResetOnlyModal = () => {
+  //   setTargetFlag(() => false);
+  //   setTargetEditItem({id: 0,date: "", author: "",booktitle: "", bookimage: "", thoughts: ""})
+  //   setTargetEditThoughts("")
+  // }
 
 
 
@@ -141,6 +157,8 @@ export const Index = () => {
     author: string,
     bookimage: string,
     thoughts: any,
+    page?: number,
+    readingtime?: number,
     // itemUrl: string,
     // largeImageUrl: string
 
@@ -185,11 +203,70 @@ export const Index = () => {
     }
   }
   const [indexDateArr, setIndexDateArr] = useState([])
+
+
+
+
+
+  // #scrolled
+
+  const cb = (entris:any, observer:any) => {
+    console.log("intersecting!!!?")
+    entris.forEach((entry:any) => {
+      if(entry.isIntersecting) {
+        console.log("inview!!")
+        console.log(entry.target)
+        entry.target.classList.add("viewing")
+        // entry.target.classList.remove("invisible")
+
+      }else{
+        console.log("outview!!")
+        // entry.target.classList.add("invisible")
+
+
+        // entry.target.classList.remove("testclass") //これつけるとズーーーっと出たり入ったりする
+        // つまり、一覧だから、初回に入るときにエフェクトがあればいいかな？と思う
+        // 見づらいかなって
+
+      }
+    })
+  }
+  const options = {
+    // rootMargin: "-300px  0px"
+  }
+  const io = new IntersectionObserver(cb, options)
+  if(document.querySelector('.scrolled')){
+    const els = document.querySelectorAll('.scrolled')
+    els.forEach(el => io.observe(el))
+    // io.observe(document.querySelector('.scrolled')!)
+
+  }
+  // if(document.querySelector('#scrolled')){
+  //   io.observe(document.querySelector('#scrolled')!)
+
+  // }
+
+
+
+
+
+  const getTotalTest = () => {
+    axios.get(`${railsUrl}/restricted/thoughts/total/${userId}`,configAxios
+    ).then((res) => {
+      console.log(res)
+    })
+    .catch(error => {
+    });
+  }
+
+
+
+
   return(
     <>
       <>
       <div>
-
+        {/* <button onClick={getTotalTest} >get total test!!!!</button> */}
         <h1 className="my-10 font-black tracking-tighter text-black hover:text-indigo-700 text-3xl title-font text-center cursor-default
           transition duration-500 ease-in-out transform
         ">Awesome YOUR THOUGHTS!
@@ -201,12 +278,22 @@ export const Index = () => {
                 bg="gray.600" closeDelay={500}>
                   <div onClick={onClickGetIndexRails}
                    className="flex items-center cursor-pointer mr-5 hover:text-yellow-400 transition duration-500 ease-in-out transform">
-                  <svg className=" w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
-                  <div className="px-4 py-1 mr-1 text-base text-blueGray-500  rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 ">
-                    Reload</div>
+                    <svg className=" w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                    <div className="px-4 py-1 mr-1 text-base text-blueGray-500  rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 ">
+                      Reload</div>
 
                   </div>
                   </Tooltip>
+                  {/* <Tooltip label="読んだコレクションを見てみましょう！" placement="top"
+                bg="gray.600" closeDelay={500}>
+                  <div //onClick={onClickGetIndexRails}
+                   className="flex items-center cursor-pointer mr-5 hover:text-yellow-400 transition duration-500 ease-in-out transform">
+                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z"></path></svg>
+                    <div className="px-4 py-1 mr-1 text-base text-blueGray-500  rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 ">
+                      MyCollections</div>
+
+                  </div>
+                  </Tooltip> */}
                   <Tooltip label="CSVをダウンロードします！" placement="top"
                 bg="gray.600" //defaultIsOpen
                 closeDelay={500}>
@@ -222,8 +309,9 @@ export const Index = () => {
                   </div>
       </div>
         </>
-
-      { targetEditThoughts ?
+          <EditThoughtsModal thought={editThought}/>
+      {/* { targetEditThoughts ?
+      // ここか、モーダル...
         <>
           <div className="z-50 fixed top-0 left-0 w-full h-full  flex items-center justify-center bg-opacity-50">
 
@@ -241,11 +329,10 @@ export const Index = () => {
       </div>
       <div className="flex flex-col w-full mx-auto lg:px-20 text-center">
         <h2 className="mb-3 text-xs font-semibold tracking-widest text-black uppercase title-font">edit your thought </h2>
-        {/* <h1 className="text-2xl font-semibold leading-none tracking-tighter text-black title-font"> A headline to switch your visitors into users. </h1> */}
-        {/* <div className="h-80"> */}
 
-        <img alt="blog photo" src={targetEditItem.bookimage} className="h-56 w-44 object-cover mx-auto"/>
-        {/* </div> */}
+
+        <img alt="NO Image..." src={targetEditItem.bookimage} className="h-56 w-44 object-cover mx-auto"/>
+
       </div>
       <div className="flex flex-col w-full mx-auto mb-8 lg:px-20 md:mt-0">
         <div className="relative mt-4">
@@ -267,28 +354,35 @@ export const Index = () => {
 </div>
 
 <div onClick={targetFlagResetOnlyModal} className="z-0 fixed top-0 left-0 w-full h-full bg-gray-800 flex items-center justify-center bg-opacity-50">
-{/* <div className="z-10 w-auto p-1 bg-white"> */}
+
 </div>
 
         </>
 
-      : false}
+      : false} */}
 
 
 
       <div className="md:flex justify-between flex-row-reverse">
-
       <div className="text-xs w-80 md:mr-6 mx-auto">
+          {/* <TotalLabelItem title="weekly" indexDateArr={indexDateArr}/> */}
+          <TotalLabelItem title="Monthly"
+          //  indexDateArr={indexDateArr}
+          />
           <BookCalendar indexDateArr={indexDateArr}/>
+          <BookChartItem />
         </div>
       {/* あー、これが再レンダリングしてほしくないってことか！！！ */}
       <ul>
+  {/* ------------------------------------------------------------------------------------------------ */}
         {/* { mapContent } */}
+        {/* <IndexItems booksIndex={booksIndex}/> */}
         {booksIndex.map((item: Item) => {
     const dateStr = new Date(item.date).toDateString()
 
     return(
-      <div className="flex items-center justify-center">
+      <div className="flex items-center justify-center scrolled" >{/*id="scrolled"*/}
+      {/* <div className="flex items-center justify-center"> */}
 
       <div className="my-4 mx-auto
       flex items-center justify-center">
@@ -302,7 +396,7 @@ export const Index = () => {
 
         <div className="h-40 md:h-full md:max-h-full md:w-2/5 cursor-default bg-gray-100">
           {/* <a href={item.Item.itemUrl} target="_blank" rel="noopener noreferrer"> */}
-          <img alt="NO IMAGE" src={item.bookimage} className=" max-h-full w-80 object-scale-down md:object-cover object-center"/>
+          <img alt="NO Image..." src={item.bookimage} className=" max-h-full w-80 object-scale-down md:object-cover object-center"/>
 
           {/* </a> */}
 
@@ -313,35 +407,52 @@ export const Index = () => {
         style={{width: "550px"}}
         >
 
-          <div className="w-72 ml-2 md:m-0 bg-white dark:bg-gray-800 md:w-full h-80 p-4 cursor-default">
+          <div className="h-80 w-72 ml-2 md:m-0 bg-white dark:bg-gray-800 md:w-full  p-4 cursor-default flex justify-between flex-col">
+              <div className="h-24">
               <p className="text-indigo-500 text-md font-medium">
                   Book Title
               </p>
-              <div className="h-20 mb-2 md:mb-0 md:h-32 p-2  md:w-full">
+              <div className="mb-2 md:mb-0  p-2  md:w-full">
 
-                  <p className="break-normal text-gray-800 dark:text-white text-base font-medium mb-2">
+                  <p className="break-normal text-gray-800 dark:text-white text-sm font-medium mb-2">
                   { item.booktitle }
                   </p>
-                  <p className="text-gray-400 dark:text-gray-300 font-light text-md">
+                  <p className="text-gray-400 dark:text-gray-300 font-light text-sm">
                   { item.author }
                   </p>
               </div>
+              </div>
+              <div className="h-52">
                   <p className="text-indigo-500 text-md font-medium">
                       Your Thought
                   </p>
-                  <div className="h-32 p-2">
-                  <p className="text-gray-800 dark:text-white text-base font-medium mb-8">
-                  { item.thoughts }
-                  </p>
-                  <p className=" text-gray-400 dark:text-gray-300 font-light text-md">
-                  { dateStr }
-                  {/* { item.date } */}
-                  {/* { (item.date).toDateString() } */}
-                  </p>
+                  <div className="flex flex-col justify-between h-44 p-2">
+                    <div className=" text-gray-800 dark:text-white text-md font-medium mb-8 break-all">
+                    { item.thoughts }
+                    </div>
+                    <div>
 
+                      <div className="flex  mb-1">
+                      <p className="text-gray-800 dark:text-white text-base font-medium">
+                      { item.page }<span className="text-yellow-400 text-xs pl-1 pr-4">Page</span>
+                      </p>
+                      <p className="text-gray-800 dark:text-white text-base font-medium">
+                      { item.readingtime }<span className="text-yellow-400 text-xs pl-1">Minutes (Reading Time)</span>
+                      </p>
+                      </div>
+                      <p className=" text-gray-400 dark:text-gray-300 font-light text-md">
+                      { item.date }
+                      {/* { item.date } */}
+                      {/* { (item.date).toDateString() } */}
+                      </p>
+                    </div>
+
+                  </div>
               </div>
           </div>
-              <div onClick={() => onClickTargetEdit(item)}
+          {/* ここか！！Editボタン！！ 何を送ってるかというと.... */}
+              <div onClick={() => onClickThoughtCreate(item)}
+              //onClick={() => onClickTargetEdit(item)}
                className="mr-1 object-cover rounded-full bg-indigo-600 h-10 w-10 hover:opacity-80
                 absolute bottom-6 left-44 md:left-auto md:bottom-8 md:right-20 "
                 // style={{right: "300px"}}
@@ -366,13 +477,16 @@ export const Index = () => {
 
         );
   })}
+   {/* ------------------------------------------------------------------------------------------------ */}
       </ul>
 
       </div>
+      <TopButton />
+{/*
       <div className="rounded-full bg-yellow-400 h-16 w-16 hover:opacity-80 fixed bottom-5 right-5 " onClick={onClickTop}>
       <svg className="text-white object-cover p-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11l7-7 7 7M5 19l7-7 7 7"></path></svg>
 
-      </div>
+      </div> */}
       {/* <SButton onClick={onClickTop}>ウエーに戻る</SButton> */}
       <>
       <AlertDialog
@@ -404,58 +518,3 @@ export const Index = () => {
     </>
   )
 }
-
-
-const SContainer = styled.div`
-  margin: 10px 10px;
-  height: 100vh;
-`
-
-
-
-const SButton = styled.button`
-  background-color: #FFCCBC;
-  border: none;
-  padding: 8px;
-  border-radius: 8px;
-  margin: 0 10px;
-  color: #FAFAFA;
-  /* border: solid #81C784 1px; */
-  &:hover {
-    cursor: pointer;
-    background-color: #FFF;
-    color: #FFCCBC;
-  }
-  `
-
-
-const SItem = styled.div`
-  height: 100%;
-  border: solid #81C784 1px;
-  background-color: #FAFAFA;
-  margin: 10px;
-  border-radius: 8px;
-  padding: 8px;
-  /* box-shadow: 5px 5px 5px black; */
-`
-const SList = styled.li`
-  list-style: none;
-  text-align: center;
-  padding: 10px;
-  /* color: #81C784;
-  font-weight: bold; */
-`
-
-const SImage = styled.img`
-  margin: 0 auto;
-  display: block;
-`
-const SInput = styled.input`
-  height: 20px;
-  border-radius: 8px;
-  border: solid #81C784 1px;
-  outline: none;
-  padding: 4px;
-  width: 400px;
-  margin: 10px;
-  `
