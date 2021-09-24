@@ -8,6 +8,7 @@ import CountupItem from './organisms/collections/CountupItem';
 import CreateThoughtsModal from './organisms/collections/CreateThoughtsModal';
 import FinishDetail from './organisms/collections/FinishDetail';
 import TopButton from './atoms/TopButton'
+import BookPaginateItem from './organisms/BookPaginateItem';
 
 
 
@@ -116,8 +117,23 @@ const Collection = () => {
   //   })
   // }
 
+  // ページネーションの設定！！！
+  // 変数化 共通化って便利いいいいいいいいい！！！
+  const wantPageInit = 10
+  const [viewPages, setViewPages] = useState<ViewPages>({startpage: 0 ,endpage: wantPageInit})
+  interface ViewPages {
+    startpage: number
+    endpage: number
+  }
+
+
   return (
     <div>
+
+        {/* <BookPaginateItem
+        viewPages={viewPages}
+        setViewPages={setViewPages}
+        wantPage={5}/> */}
       {/* <button onClick={onClickGetCollection}>get collection!!!</button> */}
       <h1 className="my-10 font-black tracking-tighter text-black hover:text-indigo-700 text-3xl title-font text-center cursor-default
           transition duration-500 ease-in-out transform
@@ -127,9 +143,14 @@ const Collection = () => {
       {bookCollections.length !== 0 &&
         <>
           <div className="text-center">
+          <BookPaginateItem
+        viewPages={viewPages}
+        setViewPages={setViewPages}
+        wantPage={wantPageInit}
+        indexArray={bookCollections}
+        />
 
-
-          {bookCollections.map((c :Collection)=> {
+          {bookCollections.slice(viewPages.startpage, viewPages.endpage).map((c :Collection)=> {
             return(
               // <div className="flex items-center justify-center scrolled" >
               <div className="inline-block scrolled mx-3" >

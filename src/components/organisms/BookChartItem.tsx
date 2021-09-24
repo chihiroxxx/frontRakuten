@@ -51,11 +51,11 @@ const BookChartItem = () => {
       // ソートできたあああ！！！
       totalData.sort((a,b)=> Number(new Date(a.date)) - Number(new Date(b.date))) //これでどうだろう？？？ あ、でもどっち順かわからなくない？？？
       totalData.map((td) => {
-        console.log(td.date)
+        // console.log(td.date)
         dateArr.push(td.date)
         // dateArr.push("aa")
         // dateArr = [...dateArr,td.date]
-        console.log(td.page)
+        // console.log(td.page)
         pageArr.push(td.page)
         // pageArr = [...pageArr,td.page]
       })

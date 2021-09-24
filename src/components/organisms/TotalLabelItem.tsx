@@ -37,11 +37,11 @@ const TotalLabelItem = (props: Props) => {
       if (booksIndex.length !== 0){
       const today = `${new Date().getFullYear()}-${(`00${new Date().getMonth()+1}`).slice(-2)}`;
       // today.getFullYear();
-      console.log(today)
+      // console.log(today)
         booksIndex.map((i: Item) => {
-          console.log(i.date.slice(0,7)) //ここで月まで切り落としてるわけだけど...
+          // console.log(i.date.slice(0,7)) //ここで月まで切り落としてるわけだけど...
           if(i.date.slice(0,7) === today){
-            console.log("OK?")
+            // console.log("OK?")
             // console.log(i.page)
             if(want === "page"){
               sum += Number(i.page)
@@ -51,7 +51,7 @@ const TotalLabelItem = (props: Props) => {
             }
           }
         })
-        console.log(sum)
+        // console.log(sum)
       }
       return sum
     }
@@ -65,7 +65,7 @@ const TotalLabelItem = (props: Props) => {
       // let totalPage :number
        axios.get(`${railsUrl}/restricted/thoughts/total/${userId}`,configAxios
       ).then((res) => {
-        console.log(res.data)
+        // console.log(res.data)
         setTotal(res.data.page)
         // console.log(totalDate[0].date)
         // totalPage = totalMonth(res.data)
@@ -88,7 +88,7 @@ const TotalLabelItem = (props: Props) => {
     // getTotalPage()
     // useEffect(getTotalPage,[])
 
-  console.log(booksIndex)
+  // console.log(booksIndex)
   return (
     <div>
       {/* <button onClick={getTotalPage}>tetetetet</button> */}

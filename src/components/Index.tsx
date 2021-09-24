@@ -11,17 +11,19 @@ import './Index.scss';
 import TotalLabelItem from './organisms/TotalLabelItem'
 import BookChartItem from './organisms/BookChartItem'
 import TopButton from './atoms/TopButton'
+import BookPaginateItem from './organisms/BookPaginateItem'
+import IndexItem from './IndexItem'
 
 
 export const Index = () => {
   const { configAxios, booksIndex, setBooksIndex, loginFlag, setLoginFlag, railsUrl, userId, token,editIsOk, SetEditIsOk,onClickGetIndexRails,showToast } = useContext(MainContext)
   // const { booksIndex }:{booksIndex: Item[]} = useContext(MainContext)
 
-  const [targetEditItem, setTargetEditItem] = useState<TargetEditItem>({id: 0,date: "", author: "",booktitle: "", bookimage: "", thoughts: ""})
+  // const [targetEditItem, setTargetEditItem] = useState<TargetEditItem>({id: 0,date: "", author: "",booktitle: "", bookimage: "", thoughts: ""})
   const [targetEditThoughts, setTargetEditThoughts] = useState<string>()
 
 
-  console.log(booksIndex)
+  // console.log(booksIndex)
   // const onClickTest = () => {
   //   axios.get(`${railsUrl}`,configAxios).then((res) => {
   //   // console.log(res)
@@ -70,7 +72,7 @@ export const Index = () => {
   const onClickTargetDelete =  (e: Item)  => {
     onOpen()
     // うーん....削除しちゃうなあ....
-    console.log(e.id)
+    // console.log(e.id)
 
     setDeleteId(e.id)
     // const deleteId = e.id
@@ -111,7 +113,7 @@ export const Index = () => {
       const blob = new Blob([res.data], {
         type: res.data.type
       });
-      console.log(res)
+      // console.log(res)
       // fileDownload(res.data, "bookIndex.csv")
       fileDownload(blob, "index.csv")
     })
@@ -165,18 +167,18 @@ export const Index = () => {
 
   }
 
-  interface TargetEditItem {
-    id: number,
-    date: string,
-    booktitle: string,
-    author: string,
-    bookimage: string,
-    thoughts: any,
-    // title: string;
-    // author: string;
-    // imageUrl: string;
-    // itemUrl: string;
-  }
+  // interface TargetEditItem {
+  //   id: number,
+  //   date: string,
+  //   booktitle: string,
+  //   author: string,
+  //   bookimage: string,
+  //   thoughts: any,
+  //   // title: string;
+  //   // author: string;
+  //   // imageUrl: string;
+  //   // itemUrl: string;
+  // }
 
 
   // console.log(new Date(booksIndex[0].date))
@@ -211,16 +213,16 @@ export const Index = () => {
   // #scrolled
 
   const cb = (entris:any, observer:any) => {
-    console.log("intersecting!!!?")
+    // console.log("intersecting!!!?")
     entris.forEach((entry:any) => {
       if(entry.isIntersecting) {
-        console.log("inview!!")
-        console.log(entry.target)
+        // console.log("inview!!")
+        // console.log(entry.target)
         entry.target.classList.add("viewing")
         // entry.target.classList.remove("invisible")
 
       }else{
-        console.log("outview!!")
+        // console.log("outview!!")
         // entry.target.classList.add("invisible")
 
 
@@ -250,22 +252,31 @@ export const Index = () => {
 
 
 
-  const getTotalTest = () => {
-    axios.get(`${railsUrl}/restricted/thoughts/total/${userId}`,configAxios
-    ).then((res) => {
-      console.log(res)
-    })
-    .catch(error => {
-    });
+  // const getTotalTest = () => {
+  //   axios.get(`${railsUrl}/restricted/thoughts/total/${userId}`,configAxios
+  //   ).then((res) => {
+  //     // console.log(res)
+  //   })
+  //   .catch(error => {
+  //   });
+  // }
+
+
+
+  // const starttestpage = 0
+
+  const wantPageInit = 5
+  const [viewPages, setViewPages] = useState<ViewPages>({startpage: 0 ,endpage: wantPageInit})
+  interface ViewPages {
+    startpage: number
+    endpage: number
   }
-
-
-
-
   return(
     <>
       <>
       <div>
+        {/* <BookPaginateItem
+        viewPages={viewPages} setViewPages={setViewPages}/> */}
         {/* <button onClick={getTotalTest} >get total test!!!!</button> */}
         <h1 className="my-10 font-black tracking-tighter text-black hover:text-indigo-700 text-3xl title-font text-center cursor-default
           transition duration-500 ease-in-out transform
@@ -307,9 +318,16 @@ export const Index = () => {
                   </Tooltip>
                 </nav>
                   </div>
+                  <BookPaginateItem
+        viewPages={viewPages}
+        setViewPages={setViewPages}
+        wantPage={wantPageInit}
+        // テスト！！<- 共通化できた！！！
+        indexArray={booksIndex}
+        />
       </div>
         </>
-          <EditThoughtsModal thought={editThought}/>
+
       {/* { targetEditThoughts ?
       // ここか、モーダル...
         <>
@@ -369,114 +387,145 @@ export const Index = () => {
           <TotalLabelItem title="Monthly"
           //  indexDateArr={indexDateArr}
           />
-          <BookCalendar indexDateArr={indexDateArr}/>
+          <div className="mb-5">
           <BookChartItem />
+
+          </div>
+          <BookCalendar indexDateArr={indexDateArr}/>
         </div>
       {/* あー、これが再レンダリングしてほしくないってことか！！！ */}
       <ul>
   {/* ------------------------------------------------------------------------------------------------ */}
         {/* { mapContent } */}
         {/* <IndexItems booksIndex={booksIndex}/> */}
-        {booksIndex.map((item: Item) => {
-    const dateStr = new Date(item.date).toDateString()
+        {/* {booksIndex.length !== 0 && <>
+        {
+          (()=>{
+            for (let i = 0; i <= 10; i++) {
+              return(
+                <div>{booksIndex[i].booktitle}</div>
+              )
+              console.log('一歩西に歩く');
+            }
+          })()
+        }
 
-    return(
-      <div className="flex items-center justify-center scrolled" >{/*id="scrolled"*/}
-      {/* <div className="flex items-center justify-center"> */}
-
-      <div className="my-4 mx-auto
-      flex items-center justify-center">
-
-
-  <div key={item.id} className="overflow-hidden shadow-lg rounded-lg cursor-pointer ml-1 hover:opacity-85
-  md:w-4/5 w-72"
-  //  style={{width: "800px"}}
-   >
-      <div className="md:flex">
-
-        <div className="h-40 md:h-full md:max-h-full md:w-2/5 cursor-default bg-gray-100">
-          {/* <a href={item.Item.itemUrl} target="_blank" rel="noopener noreferrer"> */}
-          <img alt="NO Image..." src={item.bookimage} className=" max-h-full w-80 object-scale-down md:object-cover object-center"/>
-
-          {/* </a> */}
+        </>} */}
+        <div className="">
+        <EditThoughtsModal thought={editThought}/>
 
         </div>
+          {/* INDEX ITEM コンポーネント化のテスと！ */}
+          {/* できたあああああ！！！ */}
+          <IndexItem
+            viewPages={viewPages}
+            indexArray={booksIndex}
+            onClickThoughtCreate={onClickThoughtCreate}
+            onClickTargetDelete={onClickTargetDelete}
+          />
+
+        {/* これだ！！！sliceでページネーション の足掛かりになりそう！！！！<-できたよ！！ */}
+        {
+  //       booksIndex.slice(viewPages.startpage, viewPages.endpage).map((item: Item) => {
+  //   // const dateStr = new Date(item.date).toDateString()
+
+  //   return(
+  //     <div className="flex items-center justify-center scrolled" >{/*id="scrolled"*/}
 
 
-        <div className="h-full  relative"
-        style={{width: "550px"}}
-        >
+  //     <div className="my-4 mx-auto
+  //     flex items-center justify-center">
 
-          <div className="h-80 w-72 ml-2 md:m-0 bg-white dark:bg-gray-800 md:w-full  p-4 cursor-default flex justify-between flex-col">
-              <div className="h-24">
-              <p className="text-indigo-500 text-md font-medium">
-                  Book Title
-              </p>
-              <div className="mb-2 md:mb-0  p-2  md:w-full">
 
-                  <p className="break-normal text-gray-800 dark:text-white text-sm font-medium mb-2">
-                  { item.booktitle }
-                  </p>
-                  <p className="text-gray-400 dark:text-gray-300 font-light text-sm">
-                  { item.author }
-                  </p>
-              </div>
-              </div>
-              <div className="h-52">
-                  <p className="text-indigo-500 text-md font-medium">
-                      Your Thought
-                  </p>
-                  <div className="flex flex-col justify-between h-44 p-2">
-                    <div className=" text-gray-800 dark:text-white text-md font-medium mb-8 break-all">
-                    { item.thoughts }
-                    </div>
-                    <div>
+  // <div key={item.id} className="overflow-hidden shadow-lg rounded-lg cursor-pointer ml-1 hover:opacity-85
+  // md:w-4/5 w-72"
+  // //  style={{width: "800px"}}
+  //  >
+  //     <div className="md:flex">
 
-                      <div className="flex  mb-1">
-                      <p className="text-gray-800 dark:text-white text-base font-medium">
-                      { item.page }<span className="text-yellow-400 text-xs pl-1 pr-4">Page</span>
-                      </p>
-                      <p className="text-gray-800 dark:text-white text-base font-medium">
-                      { item.readingtime }<span className="text-yellow-400 text-xs pl-1">Minutes (Reading Time)</span>
-                      </p>
-                      </div>
-                      <p className=" text-gray-400 dark:text-gray-300 font-light text-md">
-                      { item.date }
-                      {/* { item.date } */}
-                      {/* { (item.date).toDateString() } */}
-                      </p>
-                    </div>
+  //       <div className="h-40 md:h-full md:max-h-full md:w-2/5 cursor-default bg-gray-100">
 
-                  </div>
-              </div>
-          </div>
-          {/* ここか！！Editボタン！！ 何を送ってるかというと.... */}
-              <div onClick={() => onClickThoughtCreate(item)}
-              //onClick={() => onClickTargetEdit(item)}
-               className="mr-1 object-cover rounded-full bg-indigo-600 h-10 w-10 hover:opacity-80
-                absolute bottom-6 left-44 md:left-auto md:bottom-8 md:right-20 "
-                // style={{right: "300px"}}
-                >
-              <svg className="text-white object-cover p-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+  //         <img alt="NO Image..." src={item.bookimage} className=" max-h-full w-80 object-scale-down md:object-cover object-center"/>
 
-              </div>
 
-               <div onClick={() => onClickTargetDelete(item)}
-               className="object-cover rounded-full bg-red-600 h-10 w-10 hover:opacity-80
-                absolute bottom-6 left-56 md:left-auto md:bottom-8 md:right-8 "
-                // style={{right: "300px"}}
-                >
-                  <svg className="text-white object-cover p-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
 
-              </div>
-        </div>
-      </div>
-  </div>
-  </div>
-      </div>
+  //       </div>
 
-        );
-  })}
+
+  //       <div className="h-full  relative"
+  //       style={{width: "550px"}}
+  //       >
+
+  //         <div className="h-80 w-72 ml-2 md:m-0 bg-white dark:bg-gray-800 md:w-full  p-4 cursor-default flex justify-between flex-col">
+  //             <div className="h-24">
+  //             <p className="text-indigo-500 text-md font-medium">
+  //                 Book Title
+  //             </p>
+  //             <div className="mb-2 md:mb-0  p-2  md:w-full">
+
+  //                 <p className="break-normal text-gray-800 dark:text-white text-sm font-medium mb-2">
+  //                 { item.booktitle }
+  //                 </p>
+  //                 <p className="text-gray-400 dark:text-gray-300 font-light text-sm">
+  //                 { item.author }
+  //                 </p>
+  //             </div>
+  //             </div>
+  //             <div className="h-52">
+  //                 <p className="text-indigo-500 text-md font-medium">
+  //                     Your Thought
+  //                 </p>
+  //                 <div className="flex flex-col justify-between h-44 p-2">
+  //                   <div className=" text-gray-800 dark:text-white text-md font-medium mb-8 break-all">
+  //                   { item.thoughts }
+  //                   </div>
+  //                   <div>
+
+  //                     <div className="flex  mb-1">
+  //                     <p className="text-gray-800 dark:text-white text-base font-medium">
+  //                     { item.page }<span className="text-yellow-400  text-xs pl-1 pr-4">Page</span>
+  //                     </p>
+  //                     <p className="text-gray-800 dark:text-white text-base font-medium">
+  //                     { item.readingtime }<span className="text-yellow-400 text-xs pl-1">Minutes (Reading Time)</span>
+  //                     </p>
+  //                     </div>
+  //                     <p className=" text-gray-400 dark:text-gray-300 font-light text-md">
+  //                     { item.date }
+
+  //                     </p>
+  //                   </div>
+
+  //                 </div>
+  //             </div>
+  //         </div>
+
+  //             <div onClick={() => onClickThoughtCreate(item)}
+  //             //onClick={() => onClickTargetEdit(item)}
+  //              className="mr-1 object-cover rounded-full bg-indigo-600 h-10 w-10 hover:opacity-80
+  //               absolute bottom-6 left-44 md:left-auto md:bottom-8 md:right-20 "
+  //               // style={{right: "300px"}}
+  //               >
+  //             <svg className="text-white object-cover p-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+
+  //             </div>
+
+  //              <div onClick={() => onClickTargetDelete(item)}
+  //              className="object-cover rounded-full bg-red-600 h-10 w-10 hover:opacity-80
+  //               absolute bottom-6 left-56 md:left-auto md:bottom-8 md:right-8 "
+  //               // style={{right: "300px"}}
+  //               >
+  //                 <svg className="text-white object-cover p-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+
+  //             </div>
+  //       </div>
+  //     </div>
+  // </div>
+  // </div>
+  //     </div>
+
+  //       );
+  // })
+  }
    {/* ------------------------------------------------------------------------------------------------ */}
       </ul>
 

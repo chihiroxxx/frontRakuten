@@ -22,7 +22,14 @@ interface Thought{
   readingtime?: number,
 
 }
-
+// ページ数の編集はいらないか.... なぜなら...都度都度、indexに記録して欲しいから！
+// ページ数の編集はいらないか.... なぜなら...都度都度、indexに記録して欲しいから！
+// ページ数の編集はいらないか.... なぜなら...都度都度、indexに記録して欲しいから！
+// ページ数の編集はいらないか.... なぜなら...都度都度、indexに記録して欲しいから！
+// ページ数の編集はいらないか.... なぜなら...都度都度、indexに記録して欲しいから！
+// ページ数の編集はいらないか.... なぜなら...都度都度、indexに記録して欲しいから！
+// ページ数の編集はいらないか.... なぜなら...都度都度、indexに記録して欲しいから！
+// ページ数の編集はいらないか.... なぜなら...都度都度、indexに記録して欲しいから！
 const EditThoughtsModal = (props: Props) => {
 
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -36,7 +43,9 @@ const EditThoughtsModal = (props: Props) => {
   // const test = () => {
   // これでモーダル初期レンダリング時に元のthoughtのvalue入れられる！！よし！
   setValue('thoughts', thought.thoughts)
-  setValue('date', thought.date)
+  // ページ数の編集はいらないか.... なぜなら...都度都度、indexに記録して欲しいから！
+  // ページ数の編集はいらないか.... なぜなら...都度都度、indexに記録して欲しいから！
+  // setValue('date', thought.date)
   // }
   // useEffect(test,[])
   // test()
@@ -116,8 +125,6 @@ const EditThoughtsModal = (props: Props) => {
           <ModalContent>
           <ModalCloseButton />
           <ModalHeader>full in your thought!!</ModalHeader>
-          {/* <h2 className="mb-3 text-xs font-semibold tracking-widest text-black uppercase title-font">full in your thought </h2> */}
-
       {/* ここの src={collection.bookimage} はこれでいいのか！！ なぜなら、SEND押した後に、collectionのbook情報を、targetItemにセットするから！*/}
           <img alt="NO IMAGE" src={thought.bookimage} className="object-contain h-72"/>
           <ModalBody>
@@ -126,12 +133,14 @@ const EditThoughtsModal = (props: Props) => {
                 <div className="relative mt-4">
                   <label htmlFor="text" className="text-base leading-7 text-blueGray-500">Thought</label>
                   <textarea //value={idea} // onChange={onChangeIdea}
+                    rows={5}
                    placeholder="感じたこと" className="border-2 border-gray-200 w-full px-4 py-2 mt-2 text-base text-black transition duration-500 ease-in-out transform border-transparent rounded-lg bg-blueGray-100 focus:border-blueGray-500 focus:bg-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2"
                   {...register("thoughts", {"required":  true})}
                   />
                      <span className="text-red-500 ">{errors.thoughts?.types?.required && "Thoughtが入力されていません"}<br/></span>
                 </div>
-                <div className="relative mt-4">
+                {/* ページ数の編集はいらないか.... なぜなら...都度都度、indexに記録して欲しいから！！！！！！ */}
+                {/* <div className="relative mt-4">
                   <label htmlFor="text" className="text-base leading-7 text-blueGray-500">Page</label>
                   <input //value={idea} // onChange={onChangeIdea}
                   type="text" placeholder="ページ数" className="border-2 border-gray-200 w-full px-4 py-2 mt-2 text-base text-black transition duration-500 ease-in-out transform border-transparent rounded-lg bg-blueGray-100 focus:border-blueGray-500 focus:bg-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2"
@@ -157,7 +166,7 @@ const EditThoughtsModal = (props: Props) => {
                     {...register("date", {"required":  true})}
                     />
                      <span className="text-red-500 ">{errors.date?.types?.required && "Dateが入力されていません"}<br/></span>
-                  </div>
+                  </div> */}
 
                 <div className="flex my-6 mt-4">
                   <label className="flex items-center">
