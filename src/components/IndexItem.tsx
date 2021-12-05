@@ -1,5 +1,6 @@
-import React, { useContext } from 'react'
+import React, { memo, useContext } from 'react'
 // import { MainContext } from '../providers/Provider';
+import './Index.scss';
 
 
 interface Props {
@@ -25,11 +26,18 @@ interface Item{
   page?: number,
   readingtime?: number,
 }
-const IndexItem = (props:Props ) => {
+
+
+
+
+
+const IndexItem = memo((props:Props ) => {
   // const { configAxios, booksIndex, setBooksIndex, loginFlag, setLoginFlag, railsUrl, userId, token,editIsOk, SetEditIsOk,onClickGetIndexRails,showToast } = useContext(MainContext)
   const {viewPages,indexArray,onClickThoughtCreate,onClickTargetDelete} =props
   // コンポーネント化！できた！！
 
+
+  console.log("レンダリング")
   return (
     <>
      {indexArray.slice(viewPages.startpage, viewPages.endpage).map((item: Item) => {
@@ -134,6 +142,6 @@ const IndexItem = (props:Props ) => {
   })}
     </>
   )
-}
+})
 
 export default IndexItem

@@ -1,5 +1,5 @@
 import { Tooltip } from '@chakra-ui/react';
-import React, { ChangeEvent, Dispatch, SetStateAction, useContext } from 'react'
+import React, { ChangeEvent, Dispatch, memo, SetStateAction, useContext } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { MainContext } from '../providers/Provider';
 
@@ -29,18 +29,12 @@ interface FormStatus{
 //   }
 }
 
-const LoginInputItem = (props: Props) => {
+const LoginInputItem = memo((props: Props) => {
   const { acitonTitle ,actionComment,onClickAciton} = props
   // onClickCangeSignupFlag ???
-  const { setName,setPassword } = useContext(MainContext);
 
 
-  const onChangeName = (e: ChangeEvent<HTMLInputElement>) => {
-    setName(() => e.target.value)
-  }
-  const onChangePassword = (e: ChangeEvent<HTMLInputElement>) => {
-    setPassword(() => e.target.value )
-  }
+
 
   // React Hook Formのところ-------------------------------
   const { register, handleSubmit, formState: {errors} , reset } = useForm<FormStatus>({criteriaMode: "all", shouldFocusError: true})
@@ -49,6 +43,7 @@ const LoginInputItem = (props: Props) => {
     // setName(() => data.username)
     // setPassword(() => data.password)
     onClickAciton(data.username, data.password)
+    reset()
   };
 
   return (
@@ -67,7 +62,7 @@ const LoginInputItem = (props: Props) => {
                   {/* <p className="mt-3 ml-1 tracking-tighter text-gray-400  text-base font-medium">小文字英数字</p> */}
                   </Tooltip>
                   <input //onChange={onChangeName} name="username"
-                  {...register("username", {"required":  true,maxLength: 16,pattern: /[a-z0-9]/,})}
+                  {...register("username", {"required":  true,maxLength: 16,pattern: /^[a-z0-9]+$/,})}
                   // {...register("maxLength", {maxLength: 16})}
                   // {...register("pattern", {pattern: /^[a-z]+$/i})}
                   type="name" placeholder="User Name "
@@ -83,7 +78,7 @@ const LoginInputItem = (props: Props) => {
                   <label className="text-base font-medium leading-relaxed text-blueGray-700">Password <span className="tracking-tighter text-gray-400  text-sm font-medium" >※ lower case letter and number, 8 or more characters </span></label>
                   </Tooltip>
                   <input //onChange={onChangePassword} name="password"
-                   {...register("password", { required: true, minLength: 8 ,pattern: /[a-z0-9]/})}
+                   {...register("password", { required: true, minLength: 8 ,pattern: /^[a-z0-9]+$/})}
                    type="password" placeholder="Password"
                    className="border-2 border-gray-500 w-full px-4 py-2 mt-2 text-base text-indigo-900 border-transparent rounded-lg bg-blueGray-100 ext-blue-700 focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2"/>
                    <span className="text-red-500 ">{errors.password?.types?.required && "Passwordが入力されていません"}<br/>
@@ -106,5 +101,5 @@ const LoginInputItem = (props: Props) => {
     </>
   )
 }
-
+)
 export default LoginInputItem

@@ -41,7 +41,7 @@ const FinishDetail = (props: Props) => {
   const arrangeLogs = () => {
     // let sum: number = 0
     let arr: Finish[]
-    if (finishLogs.length !== 0){
+    if (finishLogs !== null && finishLogs.length !== 0){
       finishLogs.map((f: Finish) => {
         if(f.bookid === collerctionBookid){
           // arr.push(f)

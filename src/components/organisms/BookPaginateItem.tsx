@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { memo } from 'react'
 import ReactPaginate from 'react-paginate';
-
+import '../RightUp.scss';
 
 interface Props{
   viewPages: ViewPages
@@ -15,7 +15,7 @@ interface ViewPages {
 }
 
 
-const BookPaginateItem = (props :Props) => {
+const BookPaginateItem = memo((props :Props) => {
   const {viewPages, setViewPages,wantPage,indexArray} = props
   // const {indexArray } = useContext(MainContext)
   // よし、mapのsliceで動的に指定できるから、それを変化させる関数を作るだけでOKそう！！！
@@ -60,7 +60,7 @@ const BookPaginateItem = (props :Props) => {
         previousLabel='<<'
         nextLabel='>>'
         containerClassName='flex justify-center flex-column w-56'
-        pageClassName='h-5 w-5 bg-gray-900 text-white text-sm block m-auto
+        pageClassName='down-up h-5 w-5 bg-gray-900 text-white text-sm block m-auto
         transition duration-500 ease-in-out transform hover:bg-yellow-400 text-center'
         previousLinkClassName="pr-2"
         nextLinkClassName="pl-2"
@@ -69,6 +69,6 @@ const BookPaginateItem = (props :Props) => {
       </div>
     </>
   )
-}
+})
 
 export default BookPaginateItem

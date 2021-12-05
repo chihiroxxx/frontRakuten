@@ -1,11 +1,11 @@
 import axios from 'axios'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { memo, useCallback, useContext, useEffect, useState } from 'react'
 import { Bar } from 'react-chartjs-2'
 import { MainContext } from '../../providers/Provider'
 
 
 
-const BookChartItem = () => {
+const BookChartItem = memo(() => {
   const { configAxios, railsUrl, userId, } = useContext(MainContext)
 
   interface TotalData {
@@ -40,14 +40,16 @@ const BookChartItem = () => {
   //     }
   //   ]
   // }
-  const calChartData = (): any => {
+
+  // うーんusecallbackいるかな...
+  const calChartData = useCallback((): any => {
     const test = "aaa"
     const test2 = 12
     // ここで、totalDataのlengthとか計算するのと
     // date配列 と page配列 に分けてreturnさせる！！！
     const dateArr : string[] = []
     const pageArr : number[] = []
-    if (totalData.length !== 0){
+    if (totalData !== null && totalData.length !== 0){
       // ソートできたあああ！！！
       totalData.sort((a,b)=> Number(new Date(a.date)) - Number(new Date(b.date))) //これでどうだろう？？？ あ、でもどっち順かわからなくない？？？
       totalData.map((td) => {
@@ -63,11 +65,6 @@ const BookChartItem = () => {
       // dateArr.sort()
       // pageArr.sort()
     }
-
-
-
-
-
     const chartData = {
       // よし！機能してる！！この方式でいこう！！！
       labels: dateArr, //てなってくると順番も保持してくれる配列に
@@ -88,7 +85,7 @@ const BookChartItem = () => {
       ]
     }
     return chartData
-  }
+  },[totalData])
   // const chartData = {
   //   labels: [totalData[0].date], //てなってくると順番も保持してくれる配列に
   //   // date配列 と page配列 に分けた方が良さそう
@@ -112,6 +109,6 @@ const BookChartItem = () => {
       </div>
     </div>
   )
-}
+})
 
 export default BookChartItem

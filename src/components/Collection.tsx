@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useContext, useEffect, useState } from 'react'
+import React, { memo, useContext, useEffect, useState } from 'react'
 import { MainContext } from '../providers/Provider';
 import { Accordion, AccordionButton, Box, AccordionIcon, AccordionItem, AccordionPanel } from '@chakra-ui/react'
 import { AlertDialog, AlertDialogBody, AlertDialogCloseButton, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Button, Tooltip, useDisclosure } from '@chakra-ui/react'
@@ -9,10 +9,10 @@ import CreateThoughtsModal from './organisms/collections/CreateThoughtsModal';
 import FinishDetail from './organisms/collections/FinishDetail';
 import TopButton from './atoms/TopButton'
 import BookPaginateItem from './organisms/BookPaginateItem';
+import './RightUp.scss';
+import Confetti from 'react-confetti'
 
-
-
-const Collection = () => {
+const Collection = memo(() => {
 
   // まずuseEffectで同じタイトルだけで、新しい配列を作る
   // ...てなってくるとさ、BookテーブルとThoughtテーブルに分けた方が良さそう....
@@ -129,26 +129,29 @@ const Collection = () => {
 
   return (
     <div>
-
+      {/* <Confetti
+        recycle={false}
+      /> */}
         {/* <BookPaginateItem
         viewPages={viewPages}
         setViewPages={setViewPages}
         wantPage={5}/> */}
       {/* <button onClick={onClickGetCollection}>get collection!!!</button> */}
-      <h1 className="my-10 font-black tracking-tighter text-black hover:text-indigo-700 text-3xl title-font text-center cursor-default
+      <h1 className="right-up my-10 font-black tracking-tighter text-black hover:text-indigo-700 text-3xl title-font text-center cursor-default
           transition duration-500 ease-in-out transform
         ">Your Book Collections!
                   <div className="mt-3 ml-1 tracking-tighter text-gray-400  text-base font-medium">Enjoy Books now!</div>
                   </h1>
-      {bookCollections.length !== 0 &&
-        <>
-          <div className="text-center">
-          <BookPaginateItem
+                  <BookPaginateItem
         viewPages={viewPages}
         setViewPages={setViewPages}
         wantPage={wantPageInit}
         indexArray={bookCollections}
         />
+      {bookCollections.length !== 0 &&
+        <>
+          <div className="text-center">
+
 
           {bookCollections.slice(viewPages.startpage, viewPages.endpage).map((c :Collection)=> {
             return(
@@ -317,6 +320,6 @@ const Collection = () => {
       <TopButton />
     </div>
   )
-}
+})
 
 export default Collection

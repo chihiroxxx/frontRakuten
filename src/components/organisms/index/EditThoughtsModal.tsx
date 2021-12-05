@@ -144,7 +144,7 @@ const EditThoughtsModal = (props: Props) => {
                   <label htmlFor="text" className="text-base leading-7 text-blueGray-500">Page</label>
                   <input //value={idea} // onChange={onChangeIdea}
                   type="text" placeholder="ページ数" className="border-2 border-gray-200 w-full px-4 py-2 mt-2 text-base text-black transition duration-500 ease-in-out transform border-transparent rounded-lg bg-blueGray-100 focus:border-blueGray-500 focus:bg-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2"
-                  {...register("page", {maxLength: 10,pattern: /[0-9]/,})}
+                  {...register("page", {maxLength: 10,pattern: /^[0-9]+$/,})}
                   />
                      <span className="text-red-500 ">{errors.page?.types?.maxLength && "10文字以内で入力してください"}<br/>
                                                         {errors.page?.types?.pattern && "半角数字で入力してください"}<br/></span>
@@ -153,7 +153,7 @@ const EditThoughtsModal = (props: Props) => {
                   <label htmlFor="text" className="text-base leading-7 text-blueGray-500">Reading Time</label>
                   <input //value={idea} // onChange={onChangeIdea}
                   type="text" placeholder="読んだ時分（分単位）" className="border-2 border-gray-200 w-full px-4 py-2 mt-2 text-base text-black transition duration-500 ease-in-out transform border-transparent rounded-lg bg-blueGray-100 focus:border-blueGray-500 focus:bg-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2"
-                  {...register("readingtime", {maxLength: 10,pattern: /[0-9]/,})}
+                  {...register("readingtime", {maxLength: 10,pattern: /^[0-9]+$/,})}
                   />
                      <span className="text-red-500 ">{errors.readingtime?.types?.maxLength && "10文字以内で入力してください"}<br/>
                                                         {errors.readingtime?.types?.pattern && "半角数字で入力してください"}<br/></span>

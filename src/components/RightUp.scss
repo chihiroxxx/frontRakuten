@@ -1,0 +1,43 @@
+.right-up {
+  animation-name: kf-right-up;
+  animation-duration: 0.7s;
+  animation-fill-mode: forwards;
+  opacity: 0;
+}
+
+@keyframes kf-right-up {
+  0% {
+    opacity: 0;
+    transform: translate(-20px, -80px) rotate(25deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0, 1) rotate(0deg);
+  }
+}
+
+.down-up {
+  animation-name: kf-down-up;
+  animation-duration: 0.7s;
+  animation-fill-mode: forwards;
+  opacity: 0;
+  @for $i from 1 through 8 {
+    &:nth-child(#{$i}) {
+      // animation-duration: $i * 0.9s;
+      animation-delay: -0.1s + $i * 0.1;
+    }
+  }
+}
+
+@keyframes kf-down-up {
+  0% {
+    opacity: 0;
+    // transform: translate(-20px, -80px) rotate(25deg);
+    transform: translateY(100px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    // transform: translate(0, 1) rotate(0deg);
+  }
+}

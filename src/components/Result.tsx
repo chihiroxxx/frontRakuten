@@ -22,8 +22,7 @@ interface PreparedData{
 }
 
 export const Result = (props: Props) => {
-  const { setData, setText, configAxios, railsUrl, userId, targetFlagChangeReset, targetItem, setTargetItem, onClickPostRails, setTime , idea, setIdea
-  ,targetFlag, setTargetFlag} = useContext(MainContext);
+  const { setTargetItem ,targetFlag, setTargetFlag} = useContext(MainContext);
 
   const {data, apiName} = props
 
@@ -46,9 +45,9 @@ export const Result = (props: Props) => {
   //   setIdea(() => (""))
   // }
 
-  const onChangeIdea = (e: ChangeEvent<HTMLInputElement>) => {
-    setIdea(() => e.target.value)
-  }
+  // const onChangeIdea = (e: ChangeEvent<HTMLInputElement>) => {
+  //   setIdea(() => e.target.value)
+  // }
 
   const onClickTargetItem = (e: TargetItem) => {
     const Target = {title: e.title, author: e.author, imageUrl: e.imageUrl}
@@ -101,22 +100,22 @@ export const Result = (props: Props) => {
 
   // }
 
-  const onChangeTime = (e: ChangeEvent<HTMLInputElement>) => {
-    setTime(() => e.target.valueAsNumber)
-  }
+  // const onChangeTime = (e: ChangeEvent<HTMLInputElement>) => {
+  //   setTime(() => e.target.valueAsNumber)
+  // }
 
 
 
 
 
-  const [ show, setShow] = useState(false)
+  // const [ show, setShow] = useState(false)
   // モーダル用
 
-  const targetFlagResetOnlyModal = () => {
-    setTargetFlag(() => false);
-    setTargetItem(() => ({}))
-    setIdea(() => (""))
-  }
+  // const targetFlagResetOnlyModal = () => {
+  //   setTargetFlag(() => false);
+  //   setTargetItem(() => ({}))
+  //   setIdea(() => (""))
+  // }
 
 
   interface TargetItem {
@@ -246,7 +245,9 @@ export const Result = (props: Props) => {
 
 
               );
-        })}
+        },
+        // (()=>{console.log("map完了！！！")})
+        )}
       </ul>
         </>
 

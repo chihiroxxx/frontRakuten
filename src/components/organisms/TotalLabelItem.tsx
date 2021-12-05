@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useContext, useEffect, useState } from 'react'
+import React, { memo, useContext, useEffect, useState } from 'react'
 import CountUp from 'react-countup';
 import { MainContext } from '../../providers/Provider';
 
@@ -8,7 +8,7 @@ interface Props{
   // indexDateArr: any
 }
 
-const TotalLabelItem = (props: Props) => {
+const TotalLabelItem = memo((props: Props) => {
   const { title } = props
   const {booksIndex} = useContext(MainContext)
   const { configAxios, railsUrl, userId, } = useContext(MainContext)
@@ -125,6 +125,6 @@ const TotalLabelItem = (props: Props) => {
         </div>
     </div>
   )
-}
+})
 
 export default TotalLabelItem

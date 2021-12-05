@@ -1,13 +1,15 @@
 import axios from 'axios'
-import React, { ChangeEvent, useContext, useState, VFC } from 'react'
+import React, { ChangeEvent, memo, useContext, useState, VFC } from 'react'
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components'
 import { MainContext } from '../providers/Provider';
 import ErrorMessage from './ErrorMessage';
 import LoginInputItem from './LoginInputItem';
 import { Box, useToast } from "@chakra-ui/react"
+import Confetti from 'react-confetti'
 
-export const Lonin: VFC = () => {
+
+export const Lonin: VFC = memo(() => {
   const {  configAxios, loginFlag, setLoginFlag, railsUrl, userId, setUserId ,showToast} = useContext(MainContext);
   // const { name, setName, password, setPassword, configAxios, loginFlag, setLoginFlag, railsUrl, userId, setUserId } = useContext(MainContext);
 
@@ -20,7 +22,7 @@ export const Lonin: VFC = () => {
     const data = new FormData()
     data.append("name", name)
     data.append("password_digest", password)
-    axios.post(`http://localhost:9090/api/v1/login`,
+    axios.post(`${railsUrl}/login`,
     data
     /*{
       name: name,
@@ -35,6 +37,14 @@ export const Lonin: VFC = () => {
       // setPassword(() => (""))
       setLoginFlag(() => true)
       showToast("ログインしました")
+      // const a = <Confetti
+      //   recycle={false} />
+      // document.querySelector("div")!.insertBefore(a, theFirstChild)
+      // (()=>{
+      //   <Confetti
+      //   recycle={false}
+      // />
+      // })()
     })
     .catch((error) => {
       showToast("ログインできません")
@@ -50,7 +60,7 @@ export const Lonin: VFC = () => {
     const data = new FormData()
     data.append("name", name)
     data.append("password_digest", password)
-    axios.post('http://localhost:9090/api/v1/users',data).then((res) => {
+    axios.post(`${railsUrl}/users`,data).then((res) => {
       document.cookie = `token=${res.data.token}`
       setUserId(res.data.userid);
       history.push("/index")
@@ -170,7 +180,7 @@ className="flex flex-col items-center h-screen md:flex-row ">
 
     </>
   )
-}
+})
 
 const SContainer = styled.div`
   padding: 20px;
