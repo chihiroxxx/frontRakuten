@@ -4,22 +4,34 @@ import { BrowserRouter, Link, Switch, Route, useHistory } from 'react-router-dom
 import axios from 'axios';
 import { MainContext } from '../providers/Provider';
 import { SideMenu } from './SideMenu';
+import './Header.scss';
+import HelpModal from './organisms/HelpModal';
 
 export const Header: VFC = () => {
-  const { configAxios, loginFlag, setLoginFlag,railsUrl } = useContext(MainContext);
+  const { configAxios, loginFlag, setLoginFlag,railsUrl,showToast } = useContext(MainContext);
 
   const history = useHistory();
 
   const onClickLogOut = (): void => {
+    /*
     axios.delete(`${railsUrl}/logout`,configAxios)
     .then((res) => {
       setLoginFlag(() => false)
       history.push("/")
-
+      showToast("ログアウトしました")
     })
     .catch(error => {
     });
+    */
 
+
+  // ここで、cookieから token削除の処理する！！！
+
+  document.cookie = "token=; max-age=0";
+
+    history.push("/")
+    setLoginFlag(() => false)
+    showToast("ログアウトしました")
   }
   // メニューバー！
     const [menuFlag, setMenuFlag] = useState<boolean>(false);
@@ -28,10 +40,14 @@ export const Header: VFC = () => {
       setMenuFlag(!menuFlag)
     }
 
+    // helpModal
+    const[isOpenProps,setIsOpenProps]= useState(false)
+
   return(
       <>
     <div className="container items-center -mb-1">
     <div className="text-ind-700 rounded-lg">
+      <div className="flex items-center">
       <div className="w-screen flex justify-between md:justify-start  p-5 mx-auto md:items-center md:flex-row">
         <a href="/" className="pr-2 md:pr-8 md:px-6 focus:outline-none">
           <div className="inline-flex items-center">
@@ -42,15 +58,16 @@ export const Header: VFC = () => {
         </a>
 
         {/* メニューバー */}
-        <nav className="hidden md:block flex flex-wrap items-center justify-center text-base md:mr-auto">
-          <ul className="items-center inline-flex list-none md:inline-flex">
-            <li>
+        <nav className="md:block flex flex-wrap items-center justify-center text-base md:mr-auto">
+          <ul className=" items-center inline-flex list-none md:inline-flex">
+            <li className="headershowup">
             <Link to="/">
               <div className="px-4 py-1 mr-1 text-base text-blueGray-500 transition duration-500 ease-in-out transform rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:text-white hover:bg-indigo-900 ">
+              {/* <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg> */}
                 HOME</div>
                 </Link>
             </li>
-            <li>
+            <li className="headershowup">
             <Link to="/login">
             <div className="px-4 py-1 mr-1 text-base text-blueGray-500 transition duration-500 ease-in-out transform rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:text-white hover:bg-indigo-900 ">
                 LOG IN</div>
@@ -58,14 +75,20 @@ export const Header: VFC = () => {
             </li>
             { loginFlag &&
             <>
-            <li>
+            <li className="headershowup">
               <div onClick={onClickLogOut} className="cursor-pointer px-4 py-1 mr-1 text-base text-blueGray-500 transition duration-500 ease-in-out transform rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:text-white hover:bg-indigo-900 ">
                 LOG OUT</div>
             </li>
-            <li>
+            <li className="headershowup">
             <Link to="/index">
               <div className="px-4 py-1 mr-1 text-base text-blueGray-500 transition duration-500 ease-in-out transform rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:text-white hover:bg-indigo-900 ">
                 INDEX</div>
+                </Link>
+            </li>
+            <li className="headershowup">
+            <Link to="/collection">
+              <div className="px-4 py-1 mr-1 text-base text-blueGray-500 transition duration-500 ease-in-out transform rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:text-white hover:bg-indigo-900 ">
+                COLLECTION</div>
                 </Link>
             </li>
             </>}
@@ -91,6 +114,24 @@ export const Header: VFC = () => {
               </>
               }
         {/* <button className="w-auto px-8 py-2 my-2 text-base font-medium text-white transition duration-500 ease-in-out transform bg-blue-600 border-blue-600 rounded-md focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 hover:b-gblue-700 ">Button </button> */}
+      </div>
+      <div>
+              <HelpModal isOpenProps={isOpenProps} setIsOpenProps={setIsOpenProps}/>
+              <div onClick={()=>{
+          if (!isOpenProps){
+            setIsOpenProps(true)
+          } else {
+            setIsOpenProps(false)
+          }
+
+        }}>
+
+        <span className="hover:text-indigo-800 transition duration-500 ease-in-out transform cursor-pointer">
+          <svg className="w-9 h-9" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+        </span>
+              </div>
+
+      </div>
       </div>
     </div>
   </div>

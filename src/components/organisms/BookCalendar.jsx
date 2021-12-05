@@ -1,14 +1,82 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Test } from '../Test';
+import Calendar from 'react-calendar';
+// import 'react-calendar/dist/Calendar.css';
+import './BookCalendar.scss';
 
-const BookCalendar = () => {
+const BookCalendar = ({indexDateArr}) => {
+    // const testData = {
+    //     month_item: {
+    //         2021-09-10: {te}
+
+    //     }
+
+    // }
+    let test = 0
+    // console.log(`test${new Date("2022-02-22")}`)
+    const getTileContent = ({date, view}) => {
+        if (view !== "month") {
+          return null;
+        }
+        // console.log(date)
+        // console.log(new Date(date))
+        // console.log(test) //数字
+        // console.log(`${date.getFullYear()}${date.getMonth()}${date.getDate()}`)
+        // test++
+        // console.log(indexDateArr)
+        // const targetDate = {date: "2021-09-09", event: "test_event"} // ここをrails All での値を評価したい
+
+        // const arrangDate = new Date(targetDate.date)
+        // console.log(`${arrangDate.getFullYear()}${arrangDate.getMonth()}${arrangDate.getDate()}`)
+        // const flag = indexDateArr.forEach(i => {
+        //     if  (`${date.getFullYear()}${date.getMonth()}${date.getDate()}` === i) {
+        //     // if  (`${date.getFullYear()}${date.getMonth()}${date.getDate()}` === `${arrangDate.getFullYear()}${arrangDate.getMonth()}${arrangDate.getDate()}`) {
+        //         // return <p>{targetDate.event}</p>
+        //         return true
+        //     }
+        //     return true
+        // }
+        //     )
+            // console.log(flag)
+        const found = indexDateArr.find(a => `${date.getFullYear()}${date.getMonth()}${date.getDate()}` === a)
+        // console.log(`あった！？${found}`)
+            if (found !== undefined ) {
+                return <div className="mx-auto pt-2 w-6 pb-4">
+                        <svg className="w-6 h-6 text-red-600 rounded-full border-2 border-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z"></path></svg>
+                    </div>
+
+            }
+
+
+
+
+        // return
+        // date === new Date() && "aaaaa"
+        // return (
+
+        //     // "sss"
+        // //   <p >
+        // //     <br />
+        // //     XXX予約数： AAA
+        // //     <br />
+        // //     YYY予約数： BBB
+        // //   </p>
+        // );
+      };
 
   return(
 
 
     <>
+
+        <Calendar locale="ja-JP" calendarType="US" value={new Date()}
+        // tileContent="test"
+        tileContent={getTileContent}
+        // onClickDay={(value) => {}}
+        />
+
     {/* <Test /> */}
-    <div>
+    {/* <div>
         <div className="mx-auto container py-20 px-6">
             <div className="w-full flex items-cente justify-between">
                 <div>
@@ -223,7 +291,7 @@ const BookCalendar = () => {
             }
         }`}
         </style>
-    </div>
+    </div> */}
     </>
   )
 }

@@ -1,49 +1,117 @@
 import axios from 'axios'
-import React, { ChangeEvent, useContext, useState, VFC } from 'react'
+import React, { ChangeEvent, memo, useContext, useState, VFC } from 'react'
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components'
 import { MainContext } from '../providers/Provider';
+import ErrorMessage from './ErrorMessage';
 import LoginInputItem from './LoginInputItem';
+import { Box, useToast } from "@chakra-ui/react"
+import Confetti from 'react-confetti'
 
-export const Lonin: VFC = () => {
-  const { name, setName, password, setPassword, configAxios, loginFlag, setLoginFlag, railsUrl, userId, setUserId } = useContext(MainContext);
+
+export const Lonin: VFC = memo(() => {
+  const {  configAxios, loginFlag, setLoginFlag, railsUrl, userId, setUserId ,showToast} = useContext(MainContext);
+  // const { name, setName, password, setPassword, configAxios, loginFlag, setLoginFlag, railsUrl, userId, setUserId } = useContext(MainContext);
 
 
   const history = useHistory();
 
-  const onClickLogIn = (): void => {
-    axios.post(`${railsUrl}/login`,{
+  // const toast = useToast()
+
+  const onClickLogIn = (name: string, password: string): void => {
+    const data = new FormData()
+    data.append("name", name)
+    data.append("password_digest", password)
+    axios.post(`${railsUrl}/login`,
+    data
+    /*{
       name: name,
       password: password
-    },configAxios).then((res) => {
-
-      setUserId(res.data.user_id);
+    }
+    ,configAxios*/).then((res) => {
+      // console.log(res.data.token)
+      document.cookie = `token=${res.data.token}`
+      setUserId(res.data.userid);
       history.push("/index")
-      setName(() => (""))
-      setPassword(() => (""))
+      // setName(() => (""))
+      // setPassword(() => (""))
       setLoginFlag(() => true)
+      showToast("ログインしました")
+      // const a = <Confetti
+      //   recycle={false} />
+      // document.querySelector("div")!.insertBefore(a, theFirstChild)
+      // (()=>{
+      //   <Confetti
+      //   recycle={false}
+      // />
+      // })()
     })
     .catch((error) => {
+      showToast("ログインできません")
+      // console.log(error)
+      // showToast("ログインしました")
+      // alert("ログインできません...（Usernameとpasswordをご確認ください...）")
     });
 
   }
-
+// const [errorFlag, setErrorFlag] = useState<boolean>(false);
   //新規登録用！！！
-  const onClickSignUp = ():void => {
+  const onClickSignUp = (name: string, password: string):void => {
+    const data = new FormData()
+    data.append("name", name)
+    data.append("password_digest", password)
+    axios.post(`${railsUrl}/users`,data).then((res) => {
+      document.cookie = `token=${res.data.token}`
+      setUserId(res.data.userid);
+      history.push("/index")
+      // setName(() => (""))
+      // setPassword(() => (""))
+      setLoginFlag(() => true)
+      showToast("アカウント作成しました")
+      console.log(res.data.userid)
+      // setUserId(res.data); //ひとまずコメントアウト（現状user_idを送り返してないから）
+      // setUserId(res.data.user_id); //ひとまずコメントアウト（現状user_idを送り返してないから）
+      console.log(res.data)
+    })
+    .catch((error) => {
+      showToast("アカウント作成できません")
+      // document.querySelector('main')?.addEventListener()
+      // console.log(error)
+      // alert("作成できません...（名前は小文字英数字16文字以内でお願いします）")
+      // てかさ送る前にバリデーションかけよ？？？
+    });
+    /*
     axios.post(`${railsUrl}/users`,{
         name: name,
         password: password
       },configAxios).then((res) => {
         setUserId(res.data.user_id);
         history.push("/index")
-        setName(() => (""))
-        setPassword(() => (""))
+        // setName(() => (""))
+        // setPassword(() => (""))
         setLoginFlag(() => true)
+        showToast("アカウント作成しました")
       })
       .catch((error) => {
+        showToast("アカウント作成できません")
+        // document.querySelector('main')?.addEventListener()
+        // console.log(error)
+        // alert("作成できません...（名前は小文字英数字16文字以内でお願いします）")
+        // てかさ送る前にバリデーションかけよ？？？
       });
+      */
   }
-
+//  const showToast = (message: string) => {
+//   toast({
+//     position: "top",
+//     duration: 2000,
+//     render: () => (
+//       <Box color="white" p={3} className="bg-indigo-800 rounded-md">
+//         {message}
+//       </Box>
+//     ),
+//   })
+//  }
 
   const [signupFlag, setSignupFlag] = useState<boolean>(true)
 
@@ -64,10 +132,13 @@ export const Lonin: VFC = () => {
 
   // const axiostest :string = `${location.href}:3000`
 
+
+
   return(
     <>
-<section className="flex flex-col items-center h-screen md:flex-row ">
-            <div className="relative hidden w-full h-screen bg-blueGray-400 lg:block md:w-1/3 xl:w-1/3">
+<section
+className="flex flex-col items-center h-screen md:flex-row ">
+            <div className="relative hidden w-full h-screen bg-blueGray-400 lg:block md:w-1/3">
               <img src="https://source.unsplash.com/random" alt="" className="absolute object-cover w-full h-full"/>
               {/* <img src="https://dummyimage.com/300x600/F3F4F7/000000" alt="" className="absolute object-cover w-full h-full"/> */}
               <div className="relative z-10 m-12 text-left">
@@ -79,7 +150,7 @@ export const Lonin: VFC = () => {
               </div>
             </div>
 
-            <div className="flex w-full h-screen px-6 bg-whitelack md:max-w-md lg:max-w-full md:mx-auto md:w-1/2 xl:w-1/3 lg:px-16 xl:px-12 items-left justify-left">
+            <div className="flex w-full h-screen px-6 bg-whitelack md:max-w-md lg:max-w-full md:mx-auto md:w-1/2 lg:px-16 xl:px-12 items-left justify-left">
               <div className="mt-6">
 
   {signupFlag ?
@@ -109,7 +180,7 @@ export const Lonin: VFC = () => {
 
     </>
   )
-}
+})
 
 const SContainer = styled.div`
   padding: 20px;

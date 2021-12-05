@@ -8,14 +8,16 @@ import { Lonin } from '../components/Login';
 import { Index } from '../components/Index';
 import { MainContext } from '../providers/Provider';
 import axios from 'axios';
+import Collection from '../components/Collection';
 
 export const Router = () => {
     const { configAxios,loginFlag, setLoginFlag, railsUrl, setUserId } = useContext(MainContext);
 
   useEffect(() => {
-    axios.get(`${railsUrl}`,configAxios).then((res) => {
-      setUserId(res.data.user_id);
-      // console.log(res)
+    axios.get(`${railsUrl}/restricted`,configAxios).then((res) => {
+      // setUserId(res.data.user_id);
+      setUserId(res.data);
+      console.log(res.data)
       setLoginFlag(() => true)
   })
   .catch(error => {
@@ -43,6 +45,10 @@ export const Router = () => {
         <Route path="/index">
           <Index />
           <Footer />
+        </Route>
+        <Route path="/collection">
+          <Collection />
+          {/* <Footer /> */}
         </Route>
       </Switch>
   )

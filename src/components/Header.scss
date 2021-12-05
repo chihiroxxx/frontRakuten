@@ -1,0 +1,58 @@
+@import url("https://fonts.googleapis.com/css2?family=Acme&display=swap");
+
+.headershowup {
+  opacity: 0;
+  animation-name: kf-headershowup;
+  animation-duration: 0.9s;
+  animation-fill-mode: forwards;
+  // @include animation(
+  //   $name: kf-headershowu,
+  //   // $iteration-count: 1,
+  //   $duration: 1.6s,
+  //   // $timing-function: ease-in-out
+  // );
+  @for $i from 1 through 5 {
+    &:nth-child(#{$i}) {
+      // animation-duration: $i * 0.9s;
+      animation-delay: -0.1s + $i * 0.1;
+    }
+  }
+}
+@keyframes kf-headershowup {
+  0% {
+    opacity: 0;
+    transform: translateY(-100px);
+  }
+
+  // 80% {
+  //   opacity: 0.8;
+  // }
+  71% {
+    transform: translateY(10px);
+    // opacity: 0;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// @mixin animation(
+//   $name,
+//   $duration: 1s,
+//   $timing-function: ease,
+//   $delay: 0s,
+//   $iteration-count: 1,
+//   $direction: normal,
+//   $fill-mode: forwards
+// ) {
+//   animation: {
+//     name: $name;
+//     duration: $duration;
+//     timing-function: $timing-function;
+//     delay: $delay;
+//     iteration-count: $iteration-count;
+//     direction: $direction;
+//     fill-mode: $fill-mode;
+//   }
+// }
